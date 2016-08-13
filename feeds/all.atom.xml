@@ -1016,6 +1016,7 @@ h6:hover .anchor-link {
 &lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.core.display&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;HTML&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pymongo&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pymongo&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;MongoClient&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s1"&gt;'Mongo version'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pymongo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__version__&lt;/span&gt;
@@ -1113,9 +1114,9 @@ Note the structure of documents, it is the same as the documents we imported fro
 &lt;div class="output"&gt;
 &lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
-&lt;pre&gt;{u'Country': u'Serbia', u'Age': 18, u'_id': ObjectId('57af8e962765a0f11dccba27'), u'Name': u'Sawyer, Neve M.', u'Location': u'-34.37446, 174.0838'}
-{u'Country': u'Somalia', u'Age': 19, u'_id': ObjectId('57af8e962765a0f11dccb9e6'), u'Name': u'Townsend, Cadman I.', u'Location': u'-87.69188, -144.16138'}
-{u'Country': u'Eritrea', u'Age': 20, u'_id': ObjectId('57af8e962765a0f11dccba0e'), u'Name': u'Graham, Emerald O.', u'Location': u'61.35398, 28.04381'}
+&lt;pre&gt;{u'Country': u'Serbia', u'Age': 18, u'_id': ObjectId('57af933a2765a0f11dccbb52'), u'Name': u'Sawyer, Neve M.', u'Location': u'-34.37446, 174.0838'}
+{u'Country': u'Somalia', u'Age': 19, u'_id': ObjectId('57af933a2765a0f11dccbb0f'), u'Name': u'Townsend, Cadman I.', u'Location': u'-87.69188, -144.16138'}
+{u'Country': u'Eritrea', u'Age': 20, u'_id': ObjectId('57af933a2765a0f11dccbb37'), u'Name': u'Graham, Emerald O.', u'Location': u'61.35398, 28.04381'}
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1262,7 +1263,7 @@ We extract the results from MongoDB aggregation into a pandas dataframe, and use
 &lt;td&gt;China&lt;/td&gt;
 &lt;td&gt;39.9127, 116.3833&lt;/td&gt;
 &lt;td&gt;Holman, Hasad O.&lt;/td&gt;
-&lt;td&gt;57af8e962765a0f11dccb9e3&lt;/td&gt;
+&lt;td&gt;57af933a2765a0f11dccbb0c&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;th&gt;1&lt;/th&gt;
@@ -1270,7 +1271,7 @@ We extract the results from MongoDB aggregation into a pandas dataframe, and use
 &lt;td&gt;China&lt;/td&gt;
 &lt;td&gt;31.2, 121.5&lt;/td&gt;
 &lt;td&gt;Byrd, Dante A.&lt;/td&gt;
-&lt;td&gt;57af8e962765a0f11dccba23&lt;/td&gt;
+&lt;td&gt;57af933a2765a0f11dccbb49&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;th&gt;2&lt;/th&gt;
@@ -1278,7 +1279,7 @@ We extract the results from MongoDB aggregation into a pandas dataframe, and use
 &lt;td&gt;China&lt;/td&gt;
 &lt;td&gt;45.75, 126.6333&lt;/td&gt;
 &lt;td&gt;Carney, Tamekah I.&lt;/td&gt;
-&lt;td&gt;57af8e962765a0f11dccba29&lt;/td&gt;
+&lt;td&gt;57af933a2765a0f11dccbb53&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;th&gt;3&lt;/th&gt;
@@ -1286,7 +1287,7 @@ We extract the results from MongoDB aggregation into a pandas dataframe, and use
 &lt;td&gt;China&lt;/td&gt;
 &lt;td&gt;40, 95&lt;/td&gt;
 &lt;td&gt;Mayer, Violet U.&lt;/td&gt;
-&lt;td&gt;57af8e962765a0f11dccba34&lt;/td&gt;
+&lt;td&gt;57af933a2765a0f11dccbb61&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -1317,20 +1318,27 @@ Click on the markers to find the personal details of the four persons located in
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [14]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [17]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython2"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;folium&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s1"&gt;'Folium version'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;folium&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__version__&lt;/span&gt;
 
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;embed_map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"map.html"&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;span class="sd"&gt;    Embeds a linked iframe to the map into the IPython notebook.&lt;/span&gt;
+&lt;span class="sd"&gt;    &lt;/span&gt;
+&lt;span class="sd"&gt;    Note: this method will not capture the source of the map into the notebook.&lt;/span&gt;
+&lt;span class="sd"&gt;    This method should work for all maps (as long as they use relative urls).&lt;/span&gt;
+&lt;span class="sd"&gt;    """&lt;/span&gt;
+    &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;HTML&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'&lt;iframe src="{path}" style="width: 100%; height: 510px; border: none"&gt;&lt;/iframe&gt;'&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
 &lt;span class="n"&gt;world_map&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;folium&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;location&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;35&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; 
                     &lt;span class="n"&gt;zoom_start&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;df2&lt;/span&gt;&lt;span class="p"&gt;)):&lt;/span&gt;
     &lt;span class="n"&gt;world_map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;simple_marker&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;location&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;df2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Location&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;','&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;popup&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;df2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Name&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="s1"&gt;', age:'&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;df2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Age&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
-
-&lt;span class="n"&gt;world_map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'map.html'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.core.display&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;HTML&lt;/span&gt;
-&lt;span class="n"&gt;HTML&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'&lt;iframe src="map.html" style="width: 100%; height: 510px; border: none"&gt;&lt;/iframe&gt;'&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'map.html'&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;embed_map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;world_map&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'MongoDBDemoMap.html'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1345,13 +1353,13 @@ Click on the markers to find the personal details of the four persons located in
 &lt;/div&gt;
 &lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stderr output_text"&gt;
-&lt;pre&gt;/home/rikard/WORK/git/DataScienceBlog/blog/lib/python2.7/site-packages/ipykernel/__main__.py:7: FutureWarning: simple_marker is deprecated. Use add_children(Marker) instead
+&lt;pre&gt;/home/rikard/WORK/git/DataScienceBlog/blog/lib/python2.7/site-packages/ipykernel/__main__.py:17: FutureWarning: simple_marker is deprecated. Use add_children(Marker) instead
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[14]:&lt;/div&gt;
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[17]:&lt;/div&gt;
 &lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
-&lt;iframe src="map.html" style="width: 100%; height: 510px; border: none"&gt;&lt;/iframe&gt;
+&lt;iframe src="MongoDBDemoMap.html" style="width: 100%; height: 510px; border: none"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
