@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Data Scientist Blog - python mongo tutorial</title>
+        <title>Data Scientist Blog - mongodb</title>
         <link rel="stylesheet" href="https://rsandstroem.github.io/theme/css/main.css" />
         <link href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Data Scientist Blog Atom Feed" />
 
         <!--[if IE]>
-            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 </head>
 
@@ -16,22 +16,16 @@
                 <h1><a href="https://rsandstroem.github.io/">Data Scientist Blog </a></h1>
                 <nav><ul>
                     <li><a href="https://rsandstroem.github.io/category/posts.html">posts</a></li>
-                </ul></nav>
+                </ul>
+                </nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://rsandstroem.github.io/MongoDBDemo.html">MongoDB demo</a></h1>
+                    <h1 class="entry-title"><a href="https://rsandstroem.github.io/MongoDBDemo.html">Simple MongoDB demo</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2016-08-08T00:00:00+02:00">
-                Published: Mon 08 August 2016
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://rsandstroem.github.io/author/rikard-sandstrom.html">Rikard Sandström</a>
-        </address>
-<p>In <a href="https://rsandstroem.github.io/category/posts.html">posts</a>.</p>
-<p>tags: <a href="https://rsandstroem.github.io/tag/python-mongo-tutorial.html">python mongo tutorial</a> </p>
+        <span>Mon 08 August 2016</span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/mongodb.html">mongodb</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
 </footer><!-- /.post-info --><style type="text/css">/*!
 *
 * IPython notebook
@@ -1009,7 +1003,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Simple-MongoDB-demonstration">Simple MongoDB demonstration<a class="anchor-link" href="#Simple-MongoDB-demonstration">¶</a></h1>
+<h2 id="Prerequisites">Prerequisites<a class="anchor-link" href="#Prerequisites">¶</a></h2>
 </div>
 </div>
 </div>
@@ -1018,59 +1012,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>by Rikard Sandström, rsandstroem@kpmg.com</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Upgrade-MongoDB">Upgrade MongoDB<a class="anchor-link" href="#Upgrade-MongoDB">¶</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>For this tutorial we will need MongoDB version 3.0 and pymongo to connect to MongoDB from Python. NB: Be careful with data loss if you are upgrading from an older release used in production!</p>
-<p>If you are running a KAVE machine on the Amazon cloud, please follow these instructions:
-<a href="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-red-hat">http://docs.mongodb.org/manual/tutorial/install-mongodb-on-red-hat</a>.
-In short, create a file /etc/yum.repos.d/mongodb-org-3.0.repo containing:</p>
-</div>
-</div>
-</div>[mongodb-org-3.0]
-name=MongoDB Repository
-baseurl=http://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.0/x86_64/
-gpgcheck=0
-enabled=1
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>then install the latest version with</p>
-</div>
-</div>
-</div>sudo yum install -y mongodb-org
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Next install pymongo:</p>
-</div>
-</div>
-</div>sudo /opt/anaconda/bin/conda install pymongo
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>If all is fine "mongo --version" should now tell you that you are using version 3.0 or later, and from a python prompt "import pymongo" will not return an error message.</p>
+<p>For this tutorial we will need MongoDB version 3.0 or later and pymongo to connect to MongoDB from Python. NB: Be careful with data loss if you are upgrading from an older release used in production!</p>
+<p>If all is fine "mongo --version" should tell you that you are using version 3.0 or later, and from a python prompt "import pymongo" will not return an error message.</p>
 </div>
 </div>
 </div>
@@ -1102,10 +1045,21 @@ enabled=1
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pymongo</span>
 <span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
+<span class="k">print</span> <span class="s1">'Mongo version'</span><span class="p">,</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">__version__</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">27017</span><span class="p">)</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">test</span>
 <span class="n">collection</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">people</span>
 </pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Mongo version 3.3.0
+</pre>
+</div>
 </div>
 </div>
 </div>
@@ -1186,9 +1140,9 @@ Note the structure of documents, it is the same as the documents we imported fro
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u'Country': u'Serbia', u'Age': 18.0, u'_id': ObjectId('55d5b8b85a1aaba39446ff29'), u'Name': u'Sawyer, Neve M.', u'Location': u'-34.37446, 174.0838'}
-{u'Country': u'Somalia', u'Age': 19.0, u'_id': ObjectId('55d5b8b85a1aaba39446fee7'), u'Name': u'Townsend, Cadman I.', u'Location': u'-87.69188, -144.16138'}
-{u'Country': u'Eritrea', u'Age': 20.0, u'_id': ObjectId('55d5b8b85a1aaba39446ff0f'), u'Name': u'Graham, Emerald O.', u'Location': u'61.35398, 28.04381'}
+<pre>{u'Country': u'Serbia', u'Age': 18, u'_id': ObjectId('57af7ffc2765a0f11dccb95e'), u'Name': u'Sawyer, Neve M.', u'Location': u'-34.37446, 174.0838'}
+{u'Country': u'Somalia', u'Age': 19, u'_id': ObjectId('57af7ffc2765a0f11dccb91d'), u'Name': u'Townsend, Cadman I.', u'Location': u'-87.69188, -144.16138'}
+{u'Country': u'Eritrea', u'Age': 20, u'_id': ObjectId('57af7ffc2765a0f11dccb946'), u'Name': u'Graham, Emerald O.', u'Location': u'61.35398, 28.04381'}
 </pre>
 </div>
 </div>
@@ -1228,10 +1182,10 @@ We extract the results from MongoDB aggregation into a pandas dataframe, and use
         <span class="p">}},</span>
         <span class="p">{</span><span class="s2">"$sort"</span><span class="p">:{</span><span class="s2">"Count"</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="s2">"AvgAge"</span><span class="p">:</span><span class="mi">1</span><span class="p">}}</span>
 <span class="p">]</span>
-<span class="n">aggResult</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)[</span><span class="s2">"result"</span><span class="p">]</span>
-<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">aggResult</span><span class="p">)</span>
+<span class="n">aggResult</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span> <span class="c1"># returns a cursor</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">aggResult</span><span class="p">))</span> <span class="c1"># use list to turn the cursor to an array of documents</span>
 <span class="n">df1</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"_id"</span><span class="p">)</span>
-<span class="n">df1</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">df1</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1305,9 +1259,9 @@ We extract the results from MongoDB aggregation into a pandas dataframe, and use
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span><span class="s2">"$match"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"Country"</span><span class="p">:</span><span class="s2">"China"</span><span class="p">}},</span>
 <span class="p">]</span>
-<span class="n">aggResult</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)[</span><span class="s2">"result"</span><span class="p">]</span>
-<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">aggResult</span><span class="p">)</span>
-<span class="n">df2</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">aggResult</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">aggResult</span><span class="p">))</span>
+<span class="n">df2</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1335,7 +1289,7 @@ We extract the results from MongoDB aggregation into a pandas dataframe, and use
 <td>China</td>
 <td>39.9127, 116.3833</td>
 <td>Holman, Hasad O.</td>
-<td>55d5b8b85a1aaba39446fee4</td>
+<td>57af7ffc2765a0f11dccb91a</td>
 </tr>
 <tr>
 <th>1</th>
@@ -1343,23 +1297,23 @@ We extract the results from MongoDB aggregation into a pandas dataframe, and use
 <td>China</td>
 <td>31.2, 121.5</td>
 <td>Byrd, Dante A.</td>
-<td>55d5b8b85a1aaba39446ff21</td>
+<td>57af7ffc2765a0f11dccb95f</td>
 </tr>
 <tr>
 <th>2</th>
-<td>57</td>
-<td>China</td>
-<td>45.75, 126.6333</td>
-<td>Carney, Tamekah I.</td>
-<td>55d5b8b85a1aaba39446ff2a</td>
-</tr>
-<tr>
-<th>3</th>
 <td>53</td>
 <td>China</td>
 <td>40, 95</td>
 <td>Mayer, Violet U.</td>
-<td>55d5b8b85a1aaba39446ff36</td>
+<td>57af7ffc2765a0f11dccb96c</td>
+</tr>
+<tr>
+<th>3</th>
+<td>57</td>
+<td>China</td>
+<td>45.75, 126.6333</td>
+<td>Carney, Tamekah I.</td>
+<td>57af7ffc2765a0f11dccb977</td>
 </tr>
 </tbody>
 </table>
@@ -1390,194 +1344,40 @@ Click on the markers to find the personal details of the four persons located in
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
 <span class="kn">import</span> <span class="nn">folium</span>
-
-<span class="k">def</span> <span class="nf">inline_map</span><span class="p">(</span><span class="nb">map</span><span class="p">):</span>
-    <span class="nb">map</span><span class="o">.</span><span class="n">_build_map</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">HTML</span><span class="p">(</span><span class="s1">'<iframe srcdoc="{srcdoc}" style="width: 100%; height: 510px; border: none"></iframe>'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">srcdoc</span><span class="o">=</span><span class="nb">map</span><span class="o">.</span><span class="n">HTML</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'"'</span><span class="p">,</span> <span class="s1">'&quot;'</span><span class="p">)))</span>
-
+<span class="k">print</span> <span class="s1">'Folium version'</span><span class="p">,</span> <span class="n">folium</span><span class="o">.</span><span class="n">__version__</span>
 
 <span class="n">world_map</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> 
                     <span class="n">zoom_start</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df2</span><span class="p">)):</span>
     <span class="n">world_map</span><span class="o">.</span><span class="n">simple_marker</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">df2</span><span class="o">.</span><span class="n">Location</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">),</span> <span class="n">popup</span><span class="o">=</span><span class="n">df2</span><span class="o">.</span><span class="n">Name</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="s1">', age:'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">Age</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
 
-<span class="n">inline_map</span><span class="p">(</span><span class="n">world_map</span><span class="p">)</span>
+<span class="n">world_map</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Folium version 0.2.1
+</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/rikard/WORK/git/DataScienceBlog/blog/lib/python2.7/site-packages/ipykernel/__main__.py:8: FutureWarning: simple_marker is deprecated. Use add_children(Marker) instead
+</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
 <div class="output_html rendered_html output_subarea output_execute_result">
-<iframe srcdoc="&lt;!DOCTYPE html&gt;
-&lt;head&gt;
-   &lt;meta http-equiv="content-type" content="text/html; charset=UTF-8" /&gt;
-   &lt;link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" /&gt;
-   &lt;script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"&gt;&lt;/script&gt;
-
-   &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"&gt;&lt;/script&gt;
-
-   &lt;link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"&gt;
-   &lt;link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"&gt;
-   &lt;script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"&gt;&lt;/script&gt;
-
-   &lt;link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"&gt;
-
-   &lt;link rel="stylesheet" href="//rawgit.com/lvoogdt/Leaflet.awesome-markers/2.0/develop/dist/leaflet.awesome-markers.css"&gt;
-   &lt;script src="//rawgithub.com/lvoogdt/Leaflet.awesome-markers/2.0/develop/dist/leaflet.awesome-markers.js"&gt;&lt;/script&gt;
-
-
-   &lt;link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.Default.css"&gt;
-   &lt;link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.css"&gt;
-   &lt;script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster-src.js"&gt;&lt;/script&gt;
-   &lt;script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js"&gt;&lt;/script&gt;
-
-   &lt;link rel="stylesheet" href="//birdage.github.io/Leaflet.awesome-markers/dist/leaflet.awesome.rotate.css"&gt;
-
-   
-   
-   
-   
-
-   &lt;style&gt;
-
-      html, body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-
-      #map {
-        position:absolute;
-        top:0;
-        bottom:0;
-        right:0;
-        left:0;
-      }
-
-   &lt;/style&gt;
-&lt;/head&gt;
-
-&lt;body&gt;
-
-   &lt;div class="folium-map" id="folium_c6df85022c9f41e7b80be656f28d4059" style="width: 960px; height: 500px"&gt;&lt;/div&gt;
-
-   &lt;script&gt;
-
-      
-
-      var base_tile = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
-          minZoom: 1,
-          attribution: 'Map data (c) &lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors'
-      });
-
-      var baseLayer = {
-        "Base Layer": base_tile
-      };
-
-      /*
-      addition of the wms layers
-      */
-
-      
-
-      /*
-      addition of the tile layers
-      */
-      
-
-      /*
-      list of layers to be added
-      */
-      var layer_list = {
-      
-      };
-
-      /*
-      Bounding box.
-      */
-      var southWest = L.latLng(-90, -180),
-          northEast = L.latLng(90, 180),
-          bounds = L.latLngBounds(southWest, northEast);
-
-      /*
-      Creates the map and adds the selected layers
-      */
-      var map = L.map('folium_c6df85022c9f41e7b80be656f28d4059', {
-                                       center:[35, 100],
-                                       zoom: 4,
-                                       maxBounds: bounds,
-                                       layers: [base_tile]
-                                     });
-
-      L.control.layers(baseLayer, layer_list).addTo(map);
-
-      //cluster group
-      var clusteredmarkers = L.markerClusterGroup();
-      //section for adding clustered markers
-      
-      //add the clustered markers to the group anyway
-      map.addLayer(clusteredmarkers);
-
-      
-      var marker_1_icon = L.AwesomeMarkers.icon({ icon: 'info-sign',markerColor: 'blue',prefix: 'glyphicon',extraClasses: 'fa-rotate-0'});
-      var marker_1 = L.marker([39.9127, 
-							 116.3833],
-							{'icon':marker_1_icon}
-							);
-      marker_1.bindPopup("Holman, Hasad O., age:32.0");
-      marker_1._popup.options.maxWidth = 300;
-      map.addLayer(marker_1)
-      
-      var marker_2_icon = L.AwesomeMarkers.icon({ icon: 'info-sign',markerColor: 'blue',prefix: 'glyphicon',extraClasses: 'fa-rotate-0'});
-      var marker_2 = L.marker([31.2, 
-							 121.5],
-							{'icon':marker_2_icon}
-							);
-      marker_2.bindPopup("Byrd, Dante A., age:43.0");
-      marker_2._popup.options.maxWidth = 300;
-      map.addLayer(marker_2)
-      
-      var marker_3_icon = L.AwesomeMarkers.icon({ icon: 'info-sign',markerColor: 'blue',prefix: 'glyphicon',extraClasses: 'fa-rotate-0'});
-      var marker_3 = L.marker([45.75, 
-							 126.6333],
-							{'icon':marker_3_icon}
-							);
-      marker_3.bindPopup("Carney, Tamekah I., age:57.0");
-      marker_3._popup.options.maxWidth = 300;
-      map.addLayer(marker_3)
-      
-      var marker_4_icon = L.AwesomeMarkers.icon({ icon: 'info-sign',markerColor: 'blue',prefix: 'glyphicon',extraClasses: 'fa-rotate-0'});
-      var marker_4 = L.marker([40, 
-							 95],
-							{'icon':marker_4_icon}
-							);
-      marker_4.bindPopup("Mayer, Violet U., age:53.0");
-      marker_4._popup.options.maxWidth = 300;
-      map.addLayer(marker_4)
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-   &lt;/script&gt;
-
-&lt;/body&gt;" style="width: 100%; height: 510px; border: none"></iframe>
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;base64,CiAgICAgICAgPCFET0NUWVBFIGh0bWw+CiAgICAgICAgPGhlYWQ+CiAgICAgICAgICAgIAogICAgICAgIAogICAgICAgICAgICA8bWV0YSBodHRwLWVxdWl2PSJjb250ZW50LXR5cGUiIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD1VVEYtOCIgLz4KICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAgIDxzY3JpcHQgc3JjPSJodHRwczovL2NkbmpzLmNsb3VkZmxhcmUuY29tL2FqYXgvbGlicy9sZWFmbGV0LzAuNy4zL2xlYWZsZXQuanMiPjwvc2NyaXB0PgogICAgICAgIAogICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vYWpheC5nb29nbGVhcGlzLmNvbS9hamF4L2xpYnMvanF1ZXJ5LzEuMTEuMS9qcXVlcnkubWluLmpzIj48L3NjcmlwdD4KICAgICAgICAKICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAgIDxzY3JpcHQgc3JjPSJodHRwczovL21heGNkbi5ib290c3RyYXBjZG4uY29tL2Jvb3RzdHJhcC8zLjIuMC9qcy9ib290c3RyYXAubWluLmpzIj48L3NjcmlwdD4KICAgICAgICAKICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAgIDxzY3JpcHQgc3JjPSJodHRwczovL2NkbmpzLmNsb3VkZmxhcmUuY29tL2FqYXgvbGlicy9MZWFmbGV0LmF3ZXNvbWUtbWFya2Vycy8yLjAuMi9sZWFmbGV0LmF3ZXNvbWUtbWFya2Vycy5taW4uanMiPjwvc2NyaXB0PgogICAgICAgIAogICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vY2RuanMuY2xvdWRmbGFyZS5jb20vYWpheC9saWJzL2xlYWZsZXQubWFya2VyY2x1c3Rlci8wLjQuMC9sZWFmbGV0Lm1hcmtlcmNsdXN0ZXItc3JjLmpzIj48L3NjcmlwdD4KICAgICAgICAKICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAgIDxzY3JpcHQgc3JjPSJodHRwczovL2NkbmpzLmNsb3VkZmxhcmUuY29tL2FqYXgvbGlicy9sZWFmbGV0Lm1hcmtlcmNsdXN0ZXIvMC40LjAvbGVhZmxldC5tYXJrZXJjbHVzdGVyLmpzIj48L3NjcmlwdD4KICAgICAgICAKICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAgIDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iaHR0cHM6Ly9jZG5qcy5jbG91ZGZsYXJlLmNvbS9hamF4L2xpYnMvbGVhZmxldC8wLjcuMy9sZWFmbGV0LmNzcyIgLz4KICAgICAgICAKICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAgIDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iaHR0cHM6Ly9tYXhjZG4uYm9vdHN0cmFwY2RuLmNvbS9ib290c3RyYXAvMy4yLjAvY3NzL2Jvb3RzdHJhcC5taW4uY3NzIiAvPgogICAgICAgIAogICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL21heGNkbi5ib290c3RyYXBjZG4uY29tL2Jvb3RzdHJhcC8zLjIuMC9jc3MvYm9vdHN0cmFwLXRoZW1lLm1pbi5jc3MiIC8+CiAgICAgICAgCiAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAgIAogICAgICAgIAogICAgICAgICAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Imh0dHBzOi8vbWF4Y2RuLmJvb3RzdHJhcGNkbi5jb20vZm9udC1hd2Vzb21lLzQuMS4wL2Nzcy9mb250LWF3ZXNvbWUubWluLmNzcyIgLz4KICAgICAgICAKICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAgIDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iaHR0cHM6Ly9jZG5qcy5jbG91ZGZsYXJlLmNvbS9hamF4L2xpYnMvTGVhZmxldC5hd2Vzb21lLW1hcmtlcnMvMi4wLjIvbGVhZmxldC5hd2Vzb21lLW1hcmtlcnMuY3NzIiAvPgogICAgICAgIAogICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL2NkbmpzLmNsb3VkZmxhcmUuY29tL2FqYXgvbGlicy9sZWFmbGV0Lm1hcmtlcmNsdXN0ZXIvMC40LjAvTWFya2VyQ2x1c3Rlci5EZWZhdWx0LmNzcyIgLz4KICAgICAgICAKICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAgIDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iaHR0cHM6Ly9jZG5qcy5jbG91ZGZsYXJlLmNvbS9hamF4L2xpYnMvbGVhZmxldC5tYXJrZXJjbHVzdGVyLzAuNC4wL01hcmtlckNsdXN0ZXIuY3NzIiAvPgogICAgICAgIAogICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vcHl0aG9uLXZpc3VhbGl6YXRpb24vZm9saXVtL21hc3Rlci9mb2xpdW0vdGVtcGxhdGVzL2xlYWZsZXQuYXdlc29tZS5yb3RhdGUuY3NzIiAvPgogICAgICAgIAogICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKICAgICAgICAgICAgPHN0eWxlPgoKICAgICAgICAgICAgaHRtbCwgYm9keSB7CiAgICAgICAgICAgICAgICB3aWR0aDogMTAwJTsKICAgICAgICAgICAgICAgIGhlaWdodDogMTAwJTsKICAgICAgICAgICAgICAgIG1hcmdpbjogMDsKICAgICAgICAgICAgICAgIHBhZGRpbmc6IDA7CiAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAjbWFwIHsKICAgICAgICAgICAgICAgIHBvc2l0aW9uOmFic29sdXRlOwogICAgICAgICAgICAgICAgdG9wOjA7CiAgICAgICAgICAgICAgICBib3R0b206MDsKICAgICAgICAgICAgICAgIHJpZ2h0OjA7CiAgICAgICAgICAgICAgICBsZWZ0OjA7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIDwvc3R5bGU+CiAgICAgICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKICAgICAgICAgICAgPHN0eWxlPiAjbWFwXzliNTk3OWVmMGRmMDQwMGViYjliYmZmZDkzMmMxNmVlIHsKICAgICAgICAgICAgICAgIHBvc2l0aW9uIDogcmVsYXRpdmU7CiAgICAgICAgICAgICAgICB3aWR0aCA6IDEwMC4wJTsKICAgICAgICAgICAgICAgIGhlaWdodDogMTAwLjAlOwogICAgICAgICAgICAgICAgbGVmdDogMC4wJTsKICAgICAgICAgICAgICAgIHRvcDogMC4wJTsKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgPC9zdHlsZT4KICAgICAgICAKICAgICAgICAKICAgICAgICAKICAgICAgICA8L2hlYWQ+CiAgICAgICAgPGJvZHk+CiAgICAgICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKICAgICAgICAgICAgPGRpdiBjbGFzcz0iZm9saXVtLW1hcCIgaWQ9Im1hcF85YjU5NzllZjBkZjA0MDBlYmI5YmJmZmQ5MzJjMTZlZSIgPjwvZGl2PgogICAgICAgIAogICAgICAgIAogICAgICAgIAogICAgICAgIDwvYm9keT4KICAgICAgICA8c2NyaXB0PgogICAgICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgCgogICAgICAgICAgICB2YXIgc291dGhXZXN0ID0gTC5sYXRMbmcoLTkwLCAtMTgwKTsKICAgICAgICAgICAgdmFyIG5vcnRoRWFzdCA9IEwubGF0TG5nKDkwLCAxODApOwogICAgICAgICAgICB2YXIgYm91bmRzID0gTC5sYXRMbmdCb3VuZHMoc291dGhXZXN0LCBub3J0aEVhc3QpOwoKICAgICAgICAgICAgdmFyIG1hcF85YjU5NzllZjBkZjA0MDBlYmI5YmJmZmQ5MzJjMTZlZSA9IEwubWFwKCdtYXBfOWI1OTc5ZWYwZGYwNDAwZWJiOWJiZmZkOTMyYzE2ZWUnLCB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjZW50ZXI6WzM1LDEwMF0sCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB6b29tOiA0LAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbWF4Qm91bmRzOiBib3VuZHMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsYXllcnM6IFtdLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY3JzOiBMLkNSUy5FUFNHMzg1NwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICAKICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgICAgIHZhciB0aWxlX2xheWVyXzFmYjIyODUzZGE2YzQyZWRhZDRhNTYxZTk0YjlkYTMyID0gTC50aWxlTGF5ZXIoCiAgICAgICAgICAgICAgICAnaHR0cHM6Ly97c30udGlsZS5vcGVuc3RyZWV0bWFwLm9yZy97en0ve3h9L3t5fS5wbmcnLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIG1heFpvb206IDE4LAogICAgICAgICAgICAgICAgICAgIG1pblpvb206IDEsCiAgICAgICAgICAgICAgICAgICAgYXR0cmlidXRpb246ICdEYXRhIGJ5IDxhIGhyZWY9Imh0dHA6Ly9vcGVuc3RyZWV0bWFwLm9yZyI+T3BlblN0cmVldE1hcDwvYT4sIHVuZGVyIDxhIGhyZWY9Imh0dHA6Ly93d3cub3BlbnN0cmVldG1hcC5vcmcvY29weXJpZ2h0Ij5PRGJMPC9hPi4nLAogICAgICAgICAgICAgICAgICAgIGRldGVjdFJldGluYTogZmFsc2UKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF85YjU5NzllZjBkZjA0MDBlYmI5YmJmZmQ5MzJjMTZlZSk7CgogICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKCiAgICAgICAgICAgIHZhciBtYXJrZXJfNDkzZDM0YWM1N2E3NGY2ZjhmMTNiYzhkMGM5MDNjMjcgPSBMLm1hcmtlcigKICAgICAgICAgICAgICAgIFszOS45MTI3LCAxMTYuMzgzM10sCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbjogbmV3IEwuSWNvbi5EZWZhdWx0KCkKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApCiAgICAgICAgICAgICAgICAuYWRkVG8obWFwXzliNTk3OWVmMGRmMDQwMGViYjliYmZmZDkzMmMxNmVlKTsKICAgICAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgIHZhciBpY29uXzA4NmUzNTAxZWQyYTQ0YjQ4MDFkODUyNjUwMWYyODM4ID0gTC5Bd2Vzb21lTWFya2Vycy5pY29uKHsKICAgICAgICAgICAgICAgICAgICBpY29uOiAnaW5mby1zaWduJywKICAgICAgICAgICAgICAgICAgICBpY29uQ29sb3I6ICd3aGl0ZScsCiAgICAgICAgICAgICAgICAgICAgbWFya2VyQ29sb3I6ICdibHVlJywKICAgICAgICAgICAgICAgICAgICBwcmVmaXg6ICdnbHlwaGljb24nLAogICAgICAgICAgICAgICAgICAgIGV4dHJhQ2xhc3NlczogJ2ZhLXJvdGF0ZS0wJwogICAgICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICAgICAgbWFya2VyXzQ5M2QzNGFjNTdhNzRmNmY4ZjEzYmM4ZDBjOTAzYzI3LnNldEljb24oaWNvbl8wODZlMzUwMWVkMmE0NGI0ODAxZDg1MjY1MDFmMjgzOCk7CiAgICAgICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKICAgICAgICAgICAgdmFyIHBvcHVwXzNjYjhlZDE4ZWQ4ODRhYzJiZWQzZjZmMjIwNGRjZTM3ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzY4ZDZhYTEwMGVhMzQ5NDg5ZmRhM2FmYmI4NWMwOWExID0gJCgnICAgICAgICAgPGRpdiBpZD0iaHRtbF82OGQ2YWExMDBlYTM0OTQ4OWZkYTNhZmJiODVjMDlhMSIgICAgICAgICAgICAgICAgIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPiAgICAgICAgICAgICAgICAgSG9sbWFuLCBIYXNhZCBPLiwgYWdlOjMyPC9kaXY+ICAgICAgICAgICAgICAgICAnKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwXzNjYjhlZDE4ZWQ4ODRhYzJiZWQzZjZmMjIwNGRjZTM3LnNldENvbnRlbnQoaHRtbF82OGQ2YWExMDBlYTM0OTQ4OWZkYTNhZmJiODVjMDlhMSk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgbWFya2VyXzQ5M2QzNGFjNTdhNzRmNmY4ZjEzYmM4ZDBjOTAzYzI3LmJpbmRQb3B1cChwb3B1cF8zY2I4ZWQxOGVkODg0YWMyYmVkM2Y2ZjIyMDRkY2UzNyk7CgogICAgICAgICAgICAKICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgCgogICAgICAgICAgICB2YXIgbWFya2VyXzczYTI1MzU2YmZjYjRjNTc5ZmEwNjRiZmI0NzYxMGU0ID0gTC5tYXJrZXIoCiAgICAgICAgICAgICAgICBbMzEuMiwgMTIxLjVdLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb246IG5ldyBMLkljb24uRGVmYXVsdCgpCiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKQogICAgICAgICAgICAgICAgLmFkZFRvKG1hcF85YjU5NzllZjBkZjA0MDBlYmI5YmJmZmQ5MzJjMTZlZSk7CiAgICAgICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKCiAgICAgICAgICAgICAgICB2YXIgaWNvbl8yMTgxMjVkMGNjOGM0ZDFiOWY2OGJjYmY0NjVhODQwZCA9IEwuQXdlc29tZU1hcmtlcnMuaWNvbih7CiAgICAgICAgICAgICAgICAgICAgaWNvbjogJ2luZm8tc2lnbicsCiAgICAgICAgICAgICAgICAgICAgaWNvbkNvbG9yOiAnd2hpdGUnLAogICAgICAgICAgICAgICAgICAgIG1hcmtlckNvbG9yOiAnYmx1ZScsCiAgICAgICAgICAgICAgICAgICAgcHJlZml4OiAnZ2x5cGhpY29uJywKICAgICAgICAgICAgICAgICAgICBleHRyYUNsYXNzZXM6ICdmYS1yb3RhdGUtMCcKICAgICAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgICAgIG1hcmtlcl83M2EyNTM1NmJmY2I0YzU3OWZhMDY0YmZiNDc2MTBlNC5zZXRJY29uKGljb25fMjE4MTI1ZDBjYzhjNGQxYjlmNjhiY2JmNDY1YTg0MGQpOwogICAgICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgICAgIHZhciBwb3B1cF9mY2Q0ZmVlZTY3OTA0N2FjOTJmZDZiNTk3Y2Q4NWJkNSA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJ30pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF85YTc3Zjg2MmEzYzE0OTRiYWJhMWNiNTNjMTZiZjE4YiA9ICQoJyAgICAgICAgIDxkaXYgaWQ9Imh0bWxfOWE3N2Y4NjJhM2MxNDk0YmFiYTFjYjUzYzE2YmYxOGIiICAgICAgICAgICAgICAgICBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij4gICAgICAgICAgICAgICAgIEJ5cmQsIERhbnRlIEEuLCBhZ2U6NDM8L2Rpdj4gICAgICAgICAgICAgICAgICcpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfZmNkNGZlZWU2NzkwNDdhYzkyZmQ2YjU5N2NkODViZDUuc2V0Q29udGVudChodG1sXzlhNzdmODYyYTNjMTQ5NGJhYmExY2I1M2MxNmJmMThiKTsKICAgICAgICAgICAgCgogICAgICAgICAgICBtYXJrZXJfNzNhMjUzNTZiZmNiNGM1NzlmYTA2NGJmYjQ3NjEwZTQuYmluZFBvcHVwKHBvcHVwX2ZjZDRmZWVlNjc5MDQ3YWM5MmZkNmI1OTdjZDg1YmQ1KTsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKCiAgICAgICAgICAgIHZhciBtYXJrZXJfMDdmNzc2MDgxNGM5NDRlNWEwYmRjODc5MWE3ZGU1NmQgPSBMLm1hcmtlcigKICAgICAgICAgICAgICAgIFs0MCwgOTVdLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb246IG5ldyBMLkljb24uRGVmYXVsdCgpCiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKQogICAgICAgICAgICAgICAgLmFkZFRvKG1hcF85YjU5NzllZjBkZjA0MDBlYmI5YmJmZmQ5MzJjMTZlZSk7CiAgICAgICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKCiAgICAgICAgICAgICAgICB2YXIgaWNvbl82NDNlYWIxNWM1N2I0YmRiYWI4ODJmNzUzNTcyYzliZSA9IEwuQXdlc29tZU1hcmtlcnMuaWNvbih7CiAgICAgICAgICAgICAgICAgICAgaWNvbjogJ2luZm8tc2lnbicsCiAgICAgICAgICAgICAgICAgICAgaWNvbkNvbG9yOiAnd2hpdGUnLAogICAgICAgICAgICAgICAgICAgIG1hcmtlckNvbG9yOiAnYmx1ZScsCiAgICAgICAgICAgICAgICAgICAgcHJlZml4OiAnZ2x5cGhpY29uJywKICAgICAgICAgICAgICAgICAgICBleHRyYUNsYXNzZXM6ICdmYS1yb3RhdGUtMCcKICAgICAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgICAgIG1hcmtlcl8wN2Y3NzYwODE0Yzk0NGU1YTBiZGM4NzkxYTdkZTU2ZC5zZXRJY29uKGljb25fNjQzZWFiMTVjNTdiNGJkYmFiODgyZjc1MzU3MmM5YmUpOwogICAgICAgICAgICAKICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgICAgIHZhciBwb3B1cF9lMjk4OWI0ODM3ZDk0MmUwOTk2NmJjMzZlZDljMGVlYiA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJ30pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF9hNWZmNDFiZDE1ZDc0OGQ2YjUxNjEwZmIwNTRkOTAxZiA9ICQoJyAgICAgICAgIDxkaXYgaWQ9Imh0bWxfYTVmZjQxYmQxNWQ3NDhkNmI1MTYxMGZiMDU0ZDkwMWYiICAgICAgICAgICAgICAgICBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij4gICAgICAgICAgICAgICAgIE1heWVyLCBWaW9sZXQgVS4sIGFnZTo1MzwvZGl2PiAgICAgICAgICAgICAgICAgJylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF9lMjk4OWI0ODM3ZDk0MmUwOTk2NmJjMzZlZDljMGVlYi5zZXRDb250ZW50KGh0bWxfYTVmZjQxYmQxNWQ3NDhkNmI1MTYxMGZiMDU0ZDkwMWYpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIG1hcmtlcl8wN2Y3NzYwODE0Yzk0NGU1YTBiZGM4NzkxYTdkZTU2ZC5iaW5kUG9wdXAocG9wdXBfZTI5ODliNDgzN2Q5NDJlMDk5NjZiYzM2ZWQ5YzBlZWIpOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAgIAoKICAgICAgICAgICAgdmFyIG1hcmtlcl8xMWMzN2VjOTYzMWU0ZDNlOTg5M2MwNTBhYTYzNjM2YSA9IEwubWFya2VyKAogICAgICAgICAgICAgICAgWzQ1Ljc1LCAxMjYuNjMzM10sCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbjogbmV3IEwuSWNvbi5EZWZhdWx0KCkKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApCiAgICAgICAgICAgICAgICAuYWRkVG8obWFwXzliNTk3OWVmMGRmMDQwMGViYjliYmZmZDkzMmMxNmVlKTsKICAgICAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgIHZhciBpY29uXzA4ZDVjODYzMWI2NjQ2NDFhZGRlMzg0MzZkOGYwZmZkID0gTC5Bd2Vzb21lTWFya2Vycy5pY29uKHsKICAgICAgICAgICAgICAgICAgICBpY29uOiAnaW5mby1zaWduJywKICAgICAgICAgICAgICAgICAgICBpY29uQ29sb3I6ICd3aGl0ZScsCiAgICAgICAgICAgICAgICAgICAgbWFya2VyQ29sb3I6ICdibHVlJywKICAgICAgICAgICAgICAgICAgICBwcmVmaXg6ICdnbHlwaGljb24nLAogICAgICAgICAgICAgICAgICAgIGV4dHJhQ2xhc3NlczogJ2ZhLXJvdGF0ZS0wJwogICAgICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICAgICAgbWFya2VyXzExYzM3ZWM5NjMxZTRkM2U5ODkzYzA1MGFhNjM2MzZhLnNldEljb24oaWNvbl8wOGQ1Yzg2MzFiNjY0NjQxYWRkZTM4NDM2ZDhmMGZmZCk7CiAgICAgICAgICAgIAogICAgICAgIAogICAgICAgICAgICAKICAgICAgICAgICAgdmFyIHBvcHVwX2NjNGY2ZmEzMTExODQ4NWI4NjY3MmEwMmU2MTgyNjQzID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzQ1NzJiYjdmZWY0ZTRjY2FhOTNjYjQzYmM5NTc5MGY3ID0gJCgnICAgICAgICAgPGRpdiBpZD0iaHRtbF80NTcyYmI3ZmVmNGU0Y2NhYTkzY2I0M2JjOTU3OTBmNyIgICAgICAgICAgICAgICAgIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPiAgICAgICAgICAgICAgICAgQ2FybmV5LCBUYW1la2FoIEkuLCBhZ2U6NTc8L2Rpdj4gICAgICAgICAgICAgICAgICcpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfY2M0ZjZmYTMxMTE4NDg1Yjg2NjcyYTAyZTYxODI2NDMuc2V0Q29udGVudChodG1sXzQ1NzJiYjdmZWY0ZTRjY2FhOTNjYjQzYmM5NTc5MGY3KTsKICAgICAgICAgICAgCgogICAgICAgICAgICBtYXJrZXJfMTFjMzdlYzk2MzFlNGQzZTk4OTNjMDUwYWE2MzYzNmEuYmluZFBvcHVwKHBvcHVwX2NjNGY2ZmEzMTExODQ4NWI4NjY3MmEwMmU2MTgyNjQzKTsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgICAgIAogICAgICAgIAogICAgICAgIDwvc2NyaXB0PgogICAgICAgIA==" style="position:absolute;width:100%;height:100%;left:0;top:0;"></iframe></div></div>
 </div>
 </div>
 </div>
@@ -1591,7 +1391,18 @@ Click on the markers to find the personal details of the four persons located in
 <p>In case no map is shown, try the following command from a terminal window and retry:</p>
 </div>
 </div>
-</div>sudo /opt/anaconda/bin/conda install --channel https://conda.binstar.org/IOOS folium
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>pip install folium 
+or 
+sudo conda install --channel <a href="https://conda.binstar.org/IOOS">https://conda.binstar.org/IOOS</a> folium</p>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -1630,6 +1441,8 @@ Click on the markers to find the personal details of the four persons located in
 </script>
                 </article>
             </aside><!-- /#featured -->
+            </ol><!-- /#posts-list -->
+            </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>
@@ -1637,7 +1450,6 @@ Click on the markers to find the personal details of the four persons located in
                             <li><a href="http://getpelican.com/">Pelican</a></li>
                             <li><a href="http://python.org/">Python.org</a></li>
                             <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
                         </ul>
                 </div><!-- /.blogroll -->
                 <div class="social">
@@ -1645,18 +1457,13 @@ Click on the markers to find the personal details of the four persons located in
                         <ul>
                             <li><a href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
+                            <li><a href="https://ch.linkedin.com/in/rikard-sandström-a0b3229">LinkedIn</a></li>
                         </ul>
                 </div><!-- /.social -->
         </section><!-- /#extras -->
 
         <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
-
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+                <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme <a href="https://github.com/blueicefield/pelican-blueidea/">blueidea</a>, inspired by the default theme.</p>
         </footer><!-- /#contentinfo -->
 
 </body>
