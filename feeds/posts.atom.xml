@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Data Scientist Blog</title><link href="https://rsandstroem.github.io/" rel="alternate"></link><link href="https://rsandstroem.github.io/feeds/posts.atom.xml" rel="self"></link><id>https://rsandstroem.github.io/</id><updated>2016-08-08T00:00:00+02:00</updated><entry><title>Simple MongoDB demo</title><link href="https://rsandstroem.github.io/MongoDBDemo.html" rel="alternate"></link><published>2016-08-08T00:00:00+02:00</published><author><name>Rikard Sandström</name></author><id>tag:rsandstroem.github.io,2016-08-08:MongoDBDemo.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Data Scientist Blog</title><link href="https://rsandstroem.github.io/" rel="alternate"></link><link href="https://rsandstroem.github.io/feeds/posts.atom.xml" rel="self"></link><id>https://rsandstroem.github.io/</id><updated>2016-08-14T00:00:00+02:00</updated><entry><title>Simple MongoDB demo</title><link href="https://rsandstroem.github.io/MongoDBDemo.html" rel="alternate"></link><published>2016-08-14T00:00:00+02:00</published><author><name>Rikard Sandström</name></author><id>tag:rsandstroem.github.io,2016-08-14:MongoDBDemo.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -971,6 +971,27 @@ h6:hover .anchor-link {
 
 .ansi-bold { font-weight: bold; }
 &lt;/style&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;h2 id="Introduction"&gt;Introduction&lt;a class="anchor-link" href="#Introduction"&gt;¶&lt;/a&gt;&lt;/h2&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;This blog post is a tutorial that introduces the basics of MongoDB and how to utilize it within a python environment. To accomplish this we will use pymongo to connect python with MongoDB.&lt;/p&gt;
+&lt;p&gt;Mongo DB is a convenient NoSQL database which uses JSON syntax to store and query documents. I am frequently using MongoDB when dealing with streaming data from sensors or APIs. In big data scenarios I find MongoDB powerful since it allows for replication and sharding, thus enabling distributed computing and high availability, but that is a topic for another tutorial!&lt;/p&gt;
+&lt;p&gt;For more information on MongoDB see &lt;a href="https://www.mongodb.com/"&gt;https://www.mongodb.com/&lt;/a&gt; .&lt;/p&gt;
+&lt;p&gt;This post was generated with Jupyter Notebook and is accessible at &lt;a href="https://github.com/rsandstroem/IPythonNotebooks/blob/master/MongoDBDemo/MongoDB_demo.ipynb"&gt;https://github.com/rsandstroem/IPythonNotebooks/blob/master/MongoDBDemo/MongoDB_demo.ipynb&lt;/a&gt; .&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;
 &lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
