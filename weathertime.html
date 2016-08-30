@@ -1058,13 +1058,14 @@ h6:hover .anchor-link {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">urllib2</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 
 <span class="n">f</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s1">'http://api.wunderground.com/api/'</span><span class="o">+</span><span class="n">apikey</span><span class="o">+</span><span class="s1">'/geolookup/conditions/forecast/q/46.94809341,7.44744301.json'</span><span class="p">)</span>
 <span class="n">json_string</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
@@ -1084,7 +1085,7 @@ h6:hover .anchor-link {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s1">'http://api.wunderground.com/api/'</span><span class="o">+</span><span class="n">apikey</span><span class="o">+</span><span class="s1">'/geolookup/conditions/q/CH/Bern.json'</span><span class="p">)</span>
@@ -1141,7 +1142,7 @@ h6:hover .anchor-link {
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Current temperature in Berne is: 20.9
+<pre>Current temperature in Berne is: 19.6
 </pre>
 </div>
 </div>
@@ -1180,7 +1181,7 @@ h6:hover .anchor-link {
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Last Updated on August 20, 2:20 PM CEST
+<pre>Last Updated on August 30, 7:50 AM CEST
 </pre>
 </div>
 </div>
@@ -1211,7 +1212,7 @@ h6:hover .anchor-link {
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>1471695656
+<pre>1472536249
 </pre>
 </div>
 </div>
@@ -1241,7 +1242,7 @@ h6:hover .anchor-link {
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Observation time 2016-08-20 14:20:56 CEST
+<pre>Observation time 2016-08-30 07:50:49 CEST
 </pre>
 </div>
 </div>
@@ -1264,6 +1265,175 @@ h6:hover .anchor-link {
 <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'TZ'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'Europe/Zurich'</span>
 <span class="n">time</span><span class="o">.</span><span class="n">tzset</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="CSV-output">CSV output<a class="anchor-link" href="#CSV-output">¶</a></h2><p>While nested JSON files provide a high level of flexibility, they add a degree of complication if we want to query them with SQL of Hive. For this reason I decided to select only the fields that I am interested in and store them as flat comma separated files. (Incidentally, this also saves storage space, although it is not relevant in this project.)</p>
+<p>Given a target dictionary, look for keys in a list of keys to keep in the root of another nested dictionary:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">addToFlatDict</span><span class="p">(</span><span class="n">mydict</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">keep_list</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keep_list</span> <span class="p">:</span>
+            <span class="n">mydict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">root</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can then define a dictionary of field that we want to keep.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">mydict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="n">addToFlatDict</span><span class="p">(</span><span class="n">mydict</span><span class="p">,</span> <span class="n">parsed_json</span><span class="p">[</span><span class="s1">'current_observation'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'temp_c'</span><span class="p">,</span> <span class="s1">'wind_kph'</span><span class="p">,</span> <span class="s1">'wind_gust_kph'</span><span class="p">,</span> <span class="s1">'local_epoch'</span><span class="p">,</span> <span class="s1">'wind_degrees'</span><span class="p">,</span> <span class="s1">'dewpoint_c'</span><span class="p">,</span> <span class="s1">'precip_1hr_metric'</span><span class="p">,</span> <span class="s1">'precip_today_metric'</span><span class="p">]</span> <span class="p">)</span>
+<span class="n">addToFlatDict</span><span class="p">(</span><span class="n">mydict</span><span class="p">,</span> <span class="n">parsed_json</span><span class="p">[</span><span class="s1">'current_observation'</span><span class="p">][</span><span class="s1">'observation_location'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'latitude'</span><span class="p">,</span> <span class="s1">'longitude'</span><span class="p">]</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Then create a pandas dataframe from the dictionary we just produced.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mydict</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'observation_time'</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S'</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">obs_time</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I want to start a new CSV file once a day, and append all the measurements for that day as new rows of that file. This requires that each row follows the same schema.</p>
+<p>Let's use a convenient helper method for checking the validity. (I copied this method from a discussion on StackOverflow.)</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [13]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">appendDFToCSV_void</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">csvFilePath</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">","</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">csvFilePath</span><span class="p">):</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csvFilePath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csvFilePath</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Columns do not match!! Dataframe has "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span> <span class="o">+</span> <span class="s2">" columns. CSV file has "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csvFilePath</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span> <span class="o">+</span> <span class="s2">" columns."</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">==</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csvFilePath</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Columns and column order of dataframe and csv file do not match!!"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csvFilePath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        
+<span class="n">appendDFToCSV_void</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">'weather'</span><span class="o">+</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">'</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">obs_time</span><span class="p">)))</span><span class="o">+</span><span class="s1">'.csv'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-finished-script">The finished script<a class="anchor-link" href="#The-finished-script">¶</a></h2><p>Putting all the pieces together we end up with the script below:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [16]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># coding: utf-8</span>
+<span class="c1">#!/usr/bin/python</span>
+<span class="kn">import</span> <span class="nn">urllib2</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="c1">#os.environ['TZ'] = 'Europe/Zurich'</span>
+<span class="c1">#time.tzset()</span>
+
+<span class="c1"># Given a target dictionary, look for keys in a list of keys to keep in the root of another nested dictionary</span>
+<span class="k">def</span> <span class="nf">addToFlatDict</span><span class="p">(</span><span class="n">mydict</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">keep_list</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keep_list</span> <span class="p">:</span>
+            <span class="n">mydict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">root</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+<span class="c1"># Write a new csv file with headers from an input pandas DataFrame if the file does not exist. If the file exists append data as new rows.</span>
+<span class="k">def</span> <span class="nf">appendDFToCSV_void</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">csvFilePath</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">","</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">csvFilePath</span><span class="p">):</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csvFilePath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csvFilePath</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Columns do not match!! Dataframe has "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span> <span class="o">+</span> <span class="s2">" columns. CSV file has "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csvFilePath</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span> <span class="o">+</span> <span class="s2">" columns."</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">==</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csvFilePath</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Columns and column order of dataframe and csv file do not match!!"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csvFilePath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="c1"># Get the weather information as a json file</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s1">'http://api.wunderground.com/api/'</span><span class="o">+</span><span class="n">apikey</span><span class="o">+</span><span class="s1">'/geolookup/conditions/forecast/q/46.94809341,7.44744301.json'</span><span class="p">)</span>
+
+<span class="c1"># Write out the full response of the API call as a json file</span>
+<span class="n">json_string</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">parsed_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_string</span><span class="p">)</span>
+<span class="n">obs_time</span> <span class="o">=</span> <span class="n">parsed_json</span><span class="p">[</span><span class="s1">'current_observation'</span><span class="p">][</span><span class="s1">'observation_epoch'</span><span class="p">]</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'weather'</span><span class="o">+</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">-%H-%M-%S'</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">obs_time</span><span class="p">)))</span><span class="o">+</span><span class="s1">'.json'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+  <span class="nb">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json_string</span><span class="p">)</span>
+<span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># Define a dictionary of field that we want to keep.</span>
+<span class="n">mydict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="n">addToFlatDict</span><span class="p">(</span><span class="n">mydict</span><span class="p">,</span> <span class="n">parsed_json</span><span class="p">[</span><span class="s1">'current_observation'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'temp_c'</span><span class="p">,</span> <span class="s1">'wind_kph'</span><span class="p">,</span> <span class="s1">'wind_gust_kph'</span><span class="p">,</span> <span class="s1">'local_epoch'</span><span class="p">,</span> <span class="s1">'wind_degrees'</span><span class="p">,</span> <span class="s1">'dewpoint_c'</span><span class="p">,</span> <span class="s1">'precip_1hr_metric'</span><span class="p">,</span> <span class="s1">'precip_today_metric'</span><span class="p">]</span> <span class="p">)</span>
+<span class="n">addToFlatDict</span><span class="p">(</span><span class="n">mydict</span><span class="p">,</span> <span class="n">parsed_json</span><span class="p">[</span><span class="s1">'current_observation'</span><span class="p">][</span><span class="s1">'observation_location'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'latitude'</span><span class="p">,</span> <span class="s1">'longitude'</span><span class="p">]</span> <span class="p">)</span>
+
+<span class="c1"># Turn the dictionary into a DataFrame and extract time fields for easier joins further downstream</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mydict</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'observation_time'</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S'</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">obs_time</span><span class="p">)))</span>
+
+<span class="c1"># Write the DataFrame to disk as a csv file</span>
+<span class="n">appendDFToCSV_void</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">'weather'</span><span class="o">+</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">'</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">obs_time</span><span class="p">)))</span><span class="o">+</span><span class="s1">'.csv'</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
