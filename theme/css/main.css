@@ -138,6 +138,8 @@ aside, nav, article, figure {
 img.right, figure.right {float: right; margin: 0 0 2em 2em;}
 img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 
+img[alt=drawing] { width: 960px; margin: 0 2em 2em 0;}
+)
 /*
   Header
 *****************/

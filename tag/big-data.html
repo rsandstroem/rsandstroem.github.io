@@ -27,39 +27,50 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://rsandstroem.github.io/BigDataInsurance.html">Impact of Big Data on the Insurance Industry</a></h1>
+                    <h1 class="entry-title"><a href="https://rsandstroem.github.io/azurehdinsighttemplate.html">Create Azure HDInsight clusters using templates</a></h1>
+<footer class="post-info">
+        <span>Don 01 September 2016</span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/cloud.html">cloud</a><a href="https://rsandstroem.github.io/tag/architecture.html">architecture</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a><a href="https://rsandstroem.github.io/tag/big-data.html">big data</a></span>
+</footer><!-- /.post-info --><p>Microsoft Azure provides big data infrastructure through the HDInsight product. However, they bill you per hour no matter if you use the computing resources or not. An option is to destroy clusters when they are not needed, but to get the clusters back up with minimum effort it is best to use predefined scripts or templates. This post shows you a few alternatives how to accomplish this.</p>
+<h2>Accessing templates from the Azure portal</h2>
+<p>Your templates are collected in one central location on the Azure portal, conveniently named "Templates". To find it click on "More Services &gt;" in the bottom left, and select it. I recommend saving this blade as a favourite to always have it visible in the left pane.
+<img alt="drawing" src="https://rsandstroem.github.io/images/azureportal_template1.png" />
+This will show you a list of saved templates which you can edit and deploy. It is likely an empty list if you did not yet create any template, so let's get straight to creating one.</p>
+<h2>Save existing cluster as a template</h2>
+<p>There is an option to export the configuration of an running cluster as a template. From the <a href="https://portal.azure.com">Azure portal</a>, go to the HDInsight cluster blade. The menu item "Automation script" shows you the configuration of the current HDInsight cluster.
+<img alt="drawing" src="https://rsandstroem.github.io/images/azureportal_export_template.png" />
+Click on "Add to library" to save this template to your collection of templates in the Azure portal.</p>
+<p><em>By the time I am writing this post, this export feature does not work well, as is evident from the orange warning message. The cluster I created from these auto generated templates were not achieving the desired result. I had better success with the following method:</em></p>
+<h2>Use Azure quickstart templates</h2>
+<p>There is a maintained repository of pre-configured templates at <a href="https://github.com/Azure/azure-quickstart-templates">github</a>. I contain many useful templates to use or look at for inspiration.</p>
+<p><em>It should be possible to use Microsoft provided links that ties the Azure portal to the templates on github to deploy a new cluster with a single click. In practice always had issues with this process so I prefer to copy the content of an quickstart template into the Template blade of Azure portal and save it as a new template.</em></p>
+<p>Select a template that fits your purpose and adapt it by adding in some default values. It will decrease the manual labour of recreating the cluster and also reduce the risk of providing the wrong parameter values, e.g., the cluster name.</p>
+<h2>Deploy template</h2>
+<p>Once the template is properly configured, hit the "Deploy" button. If you filled out the configuration with sensible default, you just need to type in the passwords, accept the conditions and click "Create" to deploy the cluster.
+<img alt="drawing" src="https://rsandstroem.github.io/images/azureportal_template0.png" />
+It will take about 20 minutes to start all services, depending on your configuration.</p>
+<p>If one service fails, you can edit the template and repeat the steps above. It will not touch services which were marked as successful in the previous deployment.</p>
+<h2>Next steps</h2>
+<p>It is possible to script post deployment actions in the template, saving you the trouble of manual installation of applications such as R-Studio. This will be shown in another blog post.</p><p><a href="https://rsandstroem.github.io/azurehdinsighttemplate.html#disqus_thread">comments</a></p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://rsandstroem.github.io/BigDataInsurance.html" rel="bookmark"
+                           title="Permalink to Impact of Big Data on the Insurance Industry">Impact of Big Data on the Insurance Industry</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <span>Son 28 August 2016</span>
 <span>| tags: <a href="https://rsandstroem.github.io/tag/business.html">business</a><a href="https://rsandstroem.github.io/tag/perspective.html">perspective</a><a href="https://rsandstroem.github.io/tag/insurance.html">insurance</a><a href="https://rsandstroem.github.io/tag/big-data.html">big data</a></span>
-</footer><!-- /.post-info --><p><em>Originally published <a href="http://blog.kpmg.ch/impact-of-big-data-on-the-insurance-industry/">March 30, 2015</a></em></p>
-<p>Big Data is bringing decisive advantages to insurers through more relevant, detailed, and up to date information than was previously possible. At the center of this transformation are customers. They expect to be able to select products defined and driven by their needs, preferences and convenience.</p>
-<p>Insurance executives globally are trying to work out what all this means for their customers, their operating models, their bottom lines. Some are successful in finding ways of harnessing the power of digital to drive change and improve customer experience. Some are struggling. Some have other priorities.</p>
-<p>Studies estimate that <a href="http://www.stratresearch.se/sv/ssf/Nyheter/2014/Vartannat-jobb-automatiseras/">50% of current jobs</a> in Europe and North America will be replaced by automated robots and computers within the next 20 years. This disruptive change is hitting the insurance world particularly hard, as other studies have shown that <a href="http://www.futuretech.ox.ac.uk/sites/futuretech.ox.ac.uk/files/The_Future_of_Employment_OMS_Working_Paper_1.pdf">99% of the work of an insurance underwriter can be replaced by a computer</a>. With this in mind, it is not surprizing that the Big Data frontline is largely populated by major insurance companies, as the cost of doing nothing is impossible to overcome.</p>
-<p>I present below seven transformation cases which show the benefits Big Data analytics can give insurers and the challenges they might have with the transformation to a data-driven organization.</p>
-<h2>Automated underwriting</h2>
-<p>Through automated underwriting, life insurers can reduce the underwriting overhead and create affordable products to gain access to new markets. Data from multiple sources are combined to evaluate each applicant’s risk profile using statistical methods. Insurers already using automated underwriting can reduce the manual labour by 95%. In other words, the prophecies from the studies mentioned earlier are already becoming reality.</p>
-<h2>Product individualization</h2>
-<p>Big data creates increasing knowledge of the customer’s needs and behavioral patterns. This can be used to deliver insurance products specially tailored for the individual customer, at an individual premium. Insurance companies doing this have seen improved customer satisfaction and have been able to access previously inaccessible markets. Instead of finding the right customer for the product, insurers are developing the right product for the customer.</p>
-<h2>Customer retention</h2>
-<p>Life insurers that can develop a stronger relationship with the customer through quality of services and social media enjoy stronger</p>
-<p>customer retention. This has already been observed in insurance products using wearables and telematics data to track customer activities and encourage healthy lifestyles to improve longevity and reduce risks.</p>
-<h2>Conduct risk &amp; compliance</h2>
-<p>Conduct risk and mis-selling are directly linked to understanding the client needs gained through big data. By combining this knowledge with salesperson statistics the conduct risks can be accurately estimated. KPIs linked to customer satisfaction metrics can be used in addition to sales volume to encourage good sales behavior.</p>
-<h2>Sales channel optimization</h2>
-<p>Utilizing detailed information on how users interact with the company website, such as navigation history, time spent on each page etc, can help optimize the structure and layout for the customer, increasing sales.</p>
-<h2>Marketing campaign selection</h2>
-<p>Marketing campaigns that target the most valuable segments of the population that are most likely to buy the product give a better return on investment.</p>
-<h2>Price optimization</h2>
-<p>With an internet search a customer can today in minutes compare her current insurance with competing offers. Price sensitivity is increasing, and the insurer that has the most accurate risk assessment can make the best offer.</p>
-<h2>What specific challenges do we see globally?</h2>
-<ul>
-<li>Assessment in an increasingly digital world</li>
-<li>Making best use of the vast amounts of available data</li>
-<li>Taming the challenge of legacy systems</li>
-<li>Keeping the business secure given increased cyber threats</li>
-<li>Attracting and retaining the people needed to drive the change</li>
-</ul><p><a href="https://rsandstroem.github.io/BigDataInsurance.html#disqus_thread">comments</a></p>                </article>
-            </aside><!-- /#featured -->
+</footer><!-- /.post-info -->                <p>Big Data is bringing decisive advantages to insurers through more relevant, detailed, and up to date information than was previously possible. At the center of this transformation are customers. They expect to be able to select products defined and driven by their needs, preferences and convenience.</p>
+                <a class="readmore" href="https://rsandstroem.github.io/BigDataInsurance.html">read more</a>
+<p><a href="https://rsandstroem.github.io/BigDataInsurance.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
+            </article></li>
             </ol><!-- /#posts-list -->
             </section><!-- /#content -->
         <section id="extras" class="body">
