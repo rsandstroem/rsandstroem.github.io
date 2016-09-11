@@ -1023,7 +1023,7 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Method-1:-Manual-installation">Method 1: Manual installation<a class="anchor-link" href="#Method-1:-Manual-installation">¶</a></h2><p>This method is described by Microsoft: <a href="https://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-r-server-install-r-studio/">https://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-r-server-install-r-studio/</a></p>
+<h2 id="Method-1:-Manual-installation">Method 1: Manual installation<a class="anchor-link" href="#Method-1:-Manual-installation">¶</a></h2><p>This method is <a href="https://azure.microsoft.com/en-us/documentation/articles/hdinsight-hadoop-r-server-install-r-studio/">described by Microsoft</a>.</p>
 <p>I will not repeat what they have already written on that page, but in short the steps consist of using ssh to log in to the edge node and run an installation script.</p>
 <h2 id="Method-2:-Use-Script-Actions-from-the-portal">Method 2: Use Script Actions from the portal<a class="anchor-link" href="#Method-2:-Use-Script-Actions-from-the-portal">¶</a></h2><p>Another way, which does not require connecting by ssh, is to use Script Actions from the Azure portal.</p>
 <p>From the Azure portal, navigate to the HDInsight cluster, and click “Script Actions”. You should already see the R-server in the script action history. 
@@ -1036,7 +1036,7 @@ h6:hover .anchor-link {
 <li>Click “Create”. </li>
 </ul>
 <p>Give it a short while, then you are done!</p>
-<h2 id="Method-3:-Use-Script-Actions-from-a-template">Method 3: Use Script Actions from a template<a class="anchor-link" href="#Method-3:-Use-Script-Actions-from-a-template">¶</a></h2><p>A fully automatic way to install R-studio is to include the installation as a Script Action in a [cluster deployment script][<a href="https://rsandstroem.github.io/azurehdinsighttemplate.html">https://rsandstroem.github.io/azurehdinsighttemplate.html</a>].</p>
+<h2 id="Method-3:-Use-Script-Actions-from-a-template">Method 3: Use Script Actions from a template<a class="anchor-link" href="#Method-3:-Use-Script-Actions-from-a-template">¶</a></h2><p>A fully automatic way to install R-studio is to include the installation as a Script Action in a <a href="https://rsandstroem.github.io/azurehdinsighttemplate.html">cluster deployment script</a>.</p>
 <p>Look for the the document that configures the R-server in the array of <em>resources</em>. What you want to edit is the <em>installScriptActions</em> section. Add the same link to the R-studio installation script that we used in the previous method as the <em>uri</em>. Provide the other parameters as in the code extract below, or modify to fit your purpose.</p>
 </div>
 </div>
