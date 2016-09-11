@@ -31,19 +31,19 @@
 <footer class="post-info">
         <span>Don 01 September 2016</span>
 <span>| tags: <a href="https://rsandstroem.github.io/tag/cloud.html">cloud</a><a href="https://rsandstroem.github.io/tag/architecture.html">architecture</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a><a href="https://rsandstroem.github.io/tag/big-data.html">big data</a></span>
-</footer><!-- /.post-info --><p>Microsoft Azure provides big data infrastructure through the HDInsight product. However, they bill you per hour no matter if you use the computing resources or not. An option is to destroy clusters when they are not needed, but to get the clusters back up with minimum effort it is best to use predefined scripts or templates. This post shows you a few alternatives how to accomplish this.</p>
+</footer><!-- /.post-info --><p>Microsoft Azure provides big data infrastructure through the HDInsight product. However, they bill you per hour no matter if you use the computing resources or not. One option is to destroy clusters when they are not needed, but to get the clusters back up with minimum effort it is best to use predefined scripts or templates. This post shows you a few alternatives how to accomplish this.</p>
 <h2>Accessing templates from the Azure portal</h2>
 <p>Your templates are collected in one central location on the Azure portal, conveniently named "Templates". To find it click on "More Services &gt;" in the bottom left, and select it. I recommend saving this blade as a favourite to always have it visible in the left pane.
 <img alt="drawing" src="https://rsandstroem.github.io/images/azureportal_template1.png" />
 This will show you a list of saved templates which you can edit and deploy. It is likely an empty list if you did not yet create any template, so let's get straight to creating one.</p>
 <h2>Save existing cluster as a template</h2>
-<p>There is an option to export the configuration of an running cluster as a template. From the <a href="https://portal.azure.com">Azure portal</a>, go to the HDInsight cluster blade. The menu item "Automation script" shows you the configuration of the current HDInsight cluster.
+<p>It is possible to export the configuration of an running cluster as a template. From the <a href="https://portal.azure.com">Azure portal</a>, go to the HDInsight cluster blade. The menu item "Automation script" shows you the configuration of the current HDInsight cluster.
 <img alt="drawing" src="https://rsandstroem.github.io/images/azureportal_export_template.png" />
 Click on "Add to library" to save this template to your collection of templates in the Azure portal.</p>
 <p><em>By the time I am writing this post, this export feature does not work well, as is evident from the orange warning message. The cluster I created from these auto generated templates were not achieving the desired result. I had better success with the following method:</em></p>
 <h2>Use Azure quickstart templates</h2>
-<p>There is a maintained repository of pre-configured templates at <a href="https://github.com/Azure/azure-quickstart-templates">github</a>. I contain many useful templates to use or look at for inspiration.</p>
-<p><em>It should be possible to use Microsoft provided links that ties the Azure portal to the templates on github to deploy a new cluster with a single click. In practice always had issues with this process so I prefer to copy the content of an quickstart template into the Template blade of Azure portal and save it as a new template.</em></p>
+<p>There is a maintained repository of pre-configured templates at <a href="https://github.com/Azure/azure-quickstart-templates">github</a>. It contains many useful templates to use or look at for inspiration.</p>
+<p><em>It should be possible to use the links that Microsoft provides on the github pages to deploy a new cluster with a single click. In practice I always had issues with this process so I prefer to (1) copy the content of an quickstart template into the Template blade of Azure portal and (2) save it as a new template.</em></p>
 <p>Select a template that fits your purpose and adapt it by adding in some default values. It will decrease the manual labour of recreating the cluster and also reduce the risk of providing the wrong parameter values, e.g., the cluster name.</p>
 <h2>Deploy template</h2>
 <p>Once the template is properly configured, hit the "Deploy" button. If you filled out the configuration with sensible default, you just need to type in the passwords, accept the conditions and click "Create" to deploy the cluster.
@@ -51,7 +51,7 @@ Click on "Add to library" to save this template to your collection of templates 
 It will take about 20 minutes to start all services, depending on your configuration.</p>
 <p>If one service fails, you can edit the template and repeat the steps above. It will not touch services which were marked as successful in the previous deployment.</p>
 <h2>Next steps</h2>
-<p>It is possible to script post deployment actions in the template, saving you the trouble of manual installation of applications such as R-Studio. This will be shown in another blog post.</p><p><a href="https://rsandstroem.github.io/azurehdinsighttemplate.html#disqus_thread">comments</a></p>                </article>
+<p>It is possible to script post-deployment actions in the template, saving you the trouble of manual installation of applications such as R-Studio. This will be shown in another blog post.</p><p><a href="https://rsandstroem.github.io/azurehdinsighttemplate.html#disqus_thread">comments</a></p>                </article>
             </aside><!-- /#featured -->
             </ol><!-- /#posts-list -->
             </section><!-- /#content -->
