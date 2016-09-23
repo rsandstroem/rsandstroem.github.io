@@ -1023,7 +1023,7 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Sometime you have a time series of historical data and you would like to know how this series of data will look in the days or years to come. If the data looks "smooth" you would probably make a linear fit and extrapolate from the historical data to the future.</p>
-<p>But what if the data is not resembling a line, but has time dependent structures. For example, the outdoor temperature is strongly dependent on the season, and while a straight line fit could be a pretty good representation of the yearly average temperature, it helps me very little if I need to know if I need to bring a scarf tomorrow.</p>
+<p>But what if the data is not resembling a line, but has time dependent structures? For example, the outdoor temperature is strongly dependent on the season, and while a straight line fit could be a pretty good representation of the <em>yearly average</em> temperature, it helps me very little if I need to know if I need to bring a scarf tomorrow.</p>
 <p>If you have multiple features in the data, you could run a multivariate machine learning regression on the problem, e.g., using a random forest regression with influencing factors as features, and some of the periodicity modelled as explicit features.</p>
 <p>But what if all you have is a time series of values? In this post I will demonstrate using Gaussian Process regression to predict the monthly retail trade turnover in Switzerland for the coming year.</p>
 </div>
@@ -1071,14 +1071,14 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The data was downloaded from the Swiss Federal Statistical Office: 
-<a href="http://www.bfs.admin.ch/bfs/portal/en/index/infothek/onlinedb/stattab.html">http://www.bfs.admin.ch/bfs/portal/en/index/infothek/onlinedb/stattab.html</a></p>
+<p>The data was downloaded from the <a href="http://www.bfs.admin.ch/bfs/portal/en/index/infothek/onlinedb/stattab.html">Swiss Federal Statistical Office</a>.
+Use the "STAT-TAB" query tool and select data from "Retail Trade Turnover Statistics - monthly series".</p>
 <p>After loading the Excel file as a pandas dataframe, we see that we only have two columns:</p>
 <ul>
 <li>The date, with monthly granularity</li>
 <li>The retail trade turnover in billions of Swiss francs.</li>
 </ul>
-<p>Let's take advantage of the time series functionality of pandas. I replaced the default index with a date time index. The upper data frame is the original, and the lower data frame is the result.</p>
+<p>Let's take advantage of the <a href="http://pandas.pydata.org/pandas-docs/stable/timeseries.html">time series functionality of pandas</a>. I replaced the default index with a date time index. (Since our input data is only at monthly granularity, I gave each month a default day in order to have full dates in the index. Using PeriodIndex would also be an option.) The upper data frame is the original, and the lower data frame is the result.</p>
 </div>
 </div>
 </div>
@@ -1088,9 +1088,11 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">"px-x-0603020000_101.xlsx"</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">'Original data frame:'</span>
 <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'date'</span><span class="p">:</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s2">"%YM%m"</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">15</span><span class="p">)),</span> <span class="s1">'Retail trade turnover'</span> <span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Retail trade turnover'</span><span class="p">]}</span> <span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'date'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">'Data frame with DateTimeIndex:'</span>
 <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -1098,6 +1100,12 @@ h6:hover .anchor-link {
 </div>
 <div class="output_wrapper">
 <div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Original data frame:
+</pre>
+</div>
+</div>
 <div class="output_area"><div class="prompt"></div>
 <div class="output_html rendered_html output_subarea ">
 <div>
@@ -1138,6 +1146,12 @@ h6:hover .anchor-link {
 </tbody>
 </table>
 </div>
+</div>
+</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Data frame with DateTimeIndex:
+</pre>
 </div>
 </div>
 <div class="output_area"><div class="prompt"></div>
@@ -1202,7 +1216,6 @@ h6:hover .anchor-link {
 <li>There is a strong sales peak at Christmas times, followed by a dip shortly thereafter.</li>
 <li>For many years the yearly turnover was increasing, but this growth appears to have stagnated now.</li>
 </ul>
-<p>Since we want to make predictions, we need to append some future dates to the data frame. Here is one example where it is convenient to use the date time as index of the data frame.</p>
 </div>
 </div>
 </div>
@@ -1212,25 +1225,12 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">'k-'</span><span class="p">)</span>
-<span class="n">periodicity</span> <span class="o">=</span> <span class="s1">'m'</span>
-<span class="n">last_data_date</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="k">print</span> <span class="s1">'Last data was collected '</span><span class="p">,</span> <span class="n">last_data_date</span>
-<span class="n">dfFuture</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span> <span class="s1">'day'</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">last_data_date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">30</span><span class="p">)])})</span>
-<span class="n">dfFuture</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'day'</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">dfFuture</span> <span class="o">=</span> <span class="n">dfFuture</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="n">periodicity</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dfFuture</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="output_wrapper">
 <div class="output">
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Last data was collected  2016-07-15 00:00:00
-</pre>
-</div>
-</div>
 <div class="output_area"><div class="prompt"></div>
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAzIAAAFqCAYAAADBd2+eAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
@@ -1983,6 +1983,79 @@ IwiCIAiCIAiC4/j/mXVULGNecqMAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>Since we want to make predictions, we need to append some future dates to the data frame. Here is one example where it is convenient to use the date time as index of the data frame.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">last_data_date</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="s1">'Last data was collected '</span><span class="p">,</span> <span class="n">last_data_date</span>
+<span class="n">periodicity</span> <span class="o">=</span> <span class="s1">'m'</span>
+<span class="n">dfFuture</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span> <span class="s1">'day'</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">last_data_date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">30</span><span class="p">)])})</span>
+<span class="n">dfFuture</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'day'</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">dfFuture</span> <span class="o">=</span> <span class="n">dfFuture</span><span class="o">.</span><span class="n">asfreq</span><span class="p">(</span><span class="n">periodicity</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dfFuture</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Last data was collected  2016-07-15 00:00:00
+</pre>
+</div>
+</div>
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Retail trade turnover</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>2019-05-31</th>
+<td>NaN</td>
+</tr>
+<tr>
+<th>2019-06-30</th>
+<td>NaN</td>
+</tr>
+<tr>
+<th>2019-07-31</th>
+<td>NaN</td>
+</tr>
+<tr>
+<th>2019-08-31</th>
+<td>NaN</td>
+</tr>
+<tr>
+<th>2019-09-30</th>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Define-train-and-test-data-sets">Define train and test data sets<a class="anchor-link" href="#Define-train-and-test-data-sets">¶</a></h2>
 </div>
 </div>
@@ -1992,7 +2065,7 @@ IwiCIAiCIAiC4/j/mXVULGNecqMAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We will train the machine learning model on one part of the data, then use the model to predict how the future will be. To ensure that the model is not overfitting the data it is given, it is important to validate the model on a part of the data that the model never saw during training. In other words, the training data set and the validation data sets must not overlap.</p>
+<p>We will train the machine learning model on one part of the data, then use the model to predict how the future will be. To ensure that the model is not overfitting the data, it is important to validate the model on a part of the data that the model never saw during training. In other words, the training data set and the validation data sets must not overlap.</p>
 <p>There are hence three sets of the data that should be considered:</p>
 <ul>
 <li>The training data set - used to build an accurate model</li>
@@ -2000,7 +2073,7 @@ IwiCIAiCIAiC4/j/mXVULGNecqMAAAAASUVORK5CYII=
 <li>The testing data set - used to make prediction of future events</li>
 </ul>
 <p>To keep it simple in this example, I defined a date where I stop using data for training. The "test" dataset is is covering a wide range of dates, so we can see what happens when we predict dates we used for training, the actual validation date range, and the future prediction date range.</p>
-<p>The "nugget" below should ideally contain and uncertainty measurement of the central values. In this simple example we do not have access to this, so we cheat a bit and add an arbritrary value.</p>
+<p>The "nugget" below should ideally contain the uncertainty of the central values. In this simple example we do not have access to the uncertainties, so we cheat a bit and add an arbritrary value.</p>
 </div>
 </div>
 </div>
@@ -2083,7 +2156,7 @@ IwiCIAiCIAiC4/j/mXVULGNecqMAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now we take the trained model and predict the retail trade turnover as a function of the date. This model returns also the uncertainty of the prediction, and both the prediction and the uncertainty are added as columns to the data frame. As expected the early data have both the actual turn over and the prediction, while the future dates only have the prediction.</p>
+<p>Now we take the trained model and predict the retail trade turnover as a function of the date. This model returns also the uncertainty of the prediction, and both the prediction and the uncertainty are added as columns to the data frame. As expected the early data have both the actual turnover and the prediction, while the future dates only have the prediction.</p>
 </div>
 </div>
 </div>
@@ -2223,7 +2296,7 @@ IwiCIAiCIAiC4/j/mXVULGNecqMAAAAASUVORK5CYII=
 <li>The 95% confidence interval of the prediction is shown as a shaded region around the prediction.</li>
 </ul>
 <p>It is interesting to see that the model successfully learned that there is a large peak around Christmas, which it accurately predicted for December 2015. The model is quite confident that sales will go up also this coming Christmas, and I think not many would argue against that prediction.</p>
-<p>So how accurate is our model? From the validation data set we estimate that the prediction is on average overestimating by the turnover by 3 billion Swiss francs, and it is typically wrong (in either direction) by 5 billion each month.</p>
+<p>So how accurate is our model? From the validation data set we estimate that the prediction is on average overestimating by the turnover by 3 billion Swiss francs, and it is typically wrong (in either direction) by 5 billion each month. The uncertainties of the prediction make a decent estimate of this accuracy and precision. However, as we predict further into the future the machine learning model gives growing uncertainty of it's predictions.</p>
 </div>
 </div>
 </div>
