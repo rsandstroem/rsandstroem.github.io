@@ -3,8 +3,7 @@
 <head>
         <meta charset="utf-8" />
         <title>Data Scientist Blog - architecture</title>
-        <link rel="stylesheet" href="https://rsandstroem.github.io/theme/css/main.css" />
-        <link href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Data Scientist Blog Atom Feed" />
+        <link rel="stylesheet" href="/theme/css/main.css" />
 
         <!--[if IE]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -16,29 +15,29 @@
 <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
 </a>
         <header id="banner" class="body">
-                <h1><a href="https://rsandstroem.github.io/">Data Scientist Blog </a></h1>
+                <h1><a href="/">Data Scientist Blog </a></h1>
                 <nav><ul>
     
-                        <li><a href="https://rsandstroem.github.io/pages/about.html">about</a></li>
-                    <li><a href="https://rsandstroem.github.io/category/posts.html">posts</a></li>
+                        <li><a href="/pages/about.html">about</a></li>
+                    <li><a href="/category/posts.html">posts</a></li>
                 </ul>
                 </nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://rsandstroem.github.io/azurehdinsighttemplate.html">Create Azure HDInsight clusters using templates</a></h1>
+                    <h1 class="entry-title"><a href="/azurehdinsighttemplate.html">Create Azure HDInsight clusters using templates</a></h1>
 <footer class="post-info">
         <span>Don 01 September 2016</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/cloud.html">cloud</a><a href="https://rsandstroem.github.io/tag/architecture.html">architecture</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a><a href="https://rsandstroem.github.io/tag/big-data.html">big data</a></span>
+<span>| tags: <a href="/tag/cloud.html">cloud</a><a href="/tag/architecture.html">architecture</a><a href="/tag/tutorial.html">tutorial</a><a href="/tag/big-data.html">big data</a></span>
 </footer><!-- /.post-info --><p>Microsoft Azure provides big data infrastructure through the HDInsight product. However, they bill you per hour no matter if you use the computing resources or not. One option is to destroy clusters when they are not needed, but to get the clusters back up with minimum effort it is best to use predefined scripts or templates. This post shows you a few alternatives how to accomplish this.</p>
 <h2>Accessing templates from the Azure portal</h2>
 <p>Your templates are collected in one central location on the Azure portal, conveniently named "Templates". To find it click on "More Services &gt;" in the bottom left, and select it. I recommend saving this blade as a favourite to always have it visible in the left pane.
-<img alt="drawing" src="https://rsandstroem.github.io/images/azureportal_template1.png" />
+<img alt="drawing" src="/images/azureportal_template1.png" />
 This will show you a list of saved templates which you can edit and deploy. It is likely an empty list if you did not yet create any template, so let's get straight to creating one.</p>
 <h2>Save existing cluster as a template</h2>
 <p>It is possible to export the configuration of an running cluster as a template. From the <a href="https://portal.azure.com">Azure portal</a>, go to the HDInsight cluster blade. The menu item "Automation script" shows you the configuration of the current HDInsight cluster.
-<img alt="drawing" src="https://rsandstroem.github.io/images/azureportal_export_template.png" />
+<img alt="drawing" src="/images/azureportal_export_template.png" />
 Click on "Add to library" to save this template to your collection of templates in the Azure portal.</p>
 <p><em>By the time I am writing this post, this export feature does not work well, as is evident from the orange warning message. The cluster I created from these auto generated templates were not achieving the desired result. I had better success with the following method:</em></p>
 <h2>Use Azure quickstart templates</h2>
@@ -47,11 +46,11 @@ Click on "Add to library" to save this template to your collection of templates 
 <p>Select a template that fits your purpose and adapt it by adding in some default values. It will decrease the manual labour of recreating the cluster and also reduce the risk of providing the wrong parameter values, e.g., the cluster name.</p>
 <h2>Deploy template</h2>
 <p>Once the template is properly configured, hit the "Deploy" button. If you filled out the configuration with sensible default, you just need to type in the passwords, accept the conditions and click "Create" to deploy the cluster.
-<img alt="drawing" src="https://rsandstroem.github.io/images/azureportal_template0.png" />
+<img alt="drawing" src="/images/azureportal_template0.png" />
 It will take about 20 minutes to start all services, depending on your configuration.</p>
 <p>If one service fails, you can edit the template and repeat the steps above. It will not touch services which were marked as successful in the previous deployment.</p>
 <h2>Next steps</h2>
-<p>It is possible to script post-deployment actions in the template, saving you the trouble of manual installation of applications such as R-Studio. This will be shown in another blog post.</p><p><a href="https://rsandstroem.github.io/azurehdinsighttemplate.html#disqus_thread">comments</a></p>                </article>
+<p>It is possible to script post-deployment actions in the template, saving you the trouble of manual installation of applications such as R-Studio. This will be shown in another blog post.</p><p><a href="/azurehdinsighttemplate.html#disqus_thread">comments</a></p>                </article>
             </aside><!-- /#featured -->
             </ol><!-- /#posts-list -->
             </section><!-- /#content -->
@@ -67,7 +66,6 @@ It will take about 20 minutes to start all services, depending on your configura
                 <div class="social">
                         <h2>social</h2>
                         <ul>
-                            <li><a href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://ch.linkedin.com/in/rikard-sandström-a0b3229">LinkedIn</a></li>
                         </ul>
@@ -78,16 +76,6 @@ It will take about 20 minutes to start all services, depending on your configura
                 <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme <a href="https://github.com/blueicefield/pelican-blueidea/">blueidea</a>, inspired by the default theme.</p>
         </footer><!-- /#contentinfo -->
 
-    <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-83199770-1']);
-    _gaq.push(['_trackPageview']);
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-    </script>
 <script type="text/javascript">
     var disqus_shortname = 'data-scientist-blog';
     (function () {
