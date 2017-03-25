@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Building a data lake 2: Querying JSON from Hive</title>
+        <link rel="stylesheet" href="https://rsandstroem.github.io/theme/css/main.css" />
+        <link href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Data Scientist Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="https://github.com/rsandstroem/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="https://rsandstroem.github.io/">Data Scientist Blog </a></h1>
+                <nav><ul>
+    
+                        <li><a href="https://rsandstroem.github.io/pages/about.html">about</a></li>
+                    <li class="active"><a href="https://rsandstroem.github.io/category/posts.html">posts</a></li>
+                </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://rsandstroem.github.io/building-a-data-lake-2-querying-json-from-hive.html" rel="bookmark"
+           title="Permalink to Building a data lake 2: Querying JSON from Hive">Building a data lake 2: Querying JSON from Hive</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <span>Don 06 Oktober 2016</span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/azure.html">azure</a><a href="https://rsandstroem.github.io/tag/hive.html">hive</a><a href="https://rsandstroem.github.io/tag/json.html">json</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a><a href="https://rsandstroem.github.io/tag/big-data.html">big data</a></span>
+</footer><!-- /.post-info -->      
+<h2>Introduction</h2>
+<p>In a <a href="https://rsandstroem.github.io/weathertime.html">previous blog post</a> we started gathering the building blocks for creating a data lake for an energy company. It showed how to import information of the current and forecasted weather. Today's post will use this data and join it with the power plant production data in preparation for Hadoop, Spark and machine learning jobs. This is a very technical post, so bear with me.</p>
+<p>Since both sources of input data is in JSON format, I will spend most of this post demonstrating different ways to read JSON files using Hive. As was shown in the previous blog post, python has a easier way of extracting data from JSON files, so using pySpark should be considered as an alternative if you are already running a Spark cluster.</p>
+<h2>Reading flat JSON files with Hive</h2>
+<p>The production data has a simple structure. The files contain a couple of thousand JSON documents, with one document per row, and there are no nested documents. As such, this data could easily have been stored in a regular table format, such as an SQL table, CSV or Excel, which would have made the Hive queries on the data a lot easier, but as data scientists we rarely choose our own input format. Below is an example of two documents.</p>
+<div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;MeteringPointId&quot;</span><span class="o">:</span><span class="mi">42</span><span class="p">,</span> <span class="s2">&quot;MeteringTimeStamp&quot;</span><span class="o">:</span><span class="s2">&quot;2016-08-05T00:50:00Z&quot;</span><span class="p">,</span><span class="s2">&quot;MeasuredValue&quot;</span><span class="o">:</span><span class="s2">&quot;79.498291&quot;</span><span class="p">,</span><span class="s2">&quot;Unit&quot;</span><span class="o">:</span><span class="s2">&quot;A&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;MeteringPointId&quot;</span><span class="o">:</span><span class="mi">1337</span><span class="p">,</span><span class="s2">&quot;MeteringTimeStamp&quot;</span><span class="o">:</span><span class="s2">&quot;2016-08-05T00:50:00Z&quot;</span><span class="p">,</span><span class="s2">&quot;MeasuredValue&quot;</span><span class="o">:</span><span class="s2">&quot;62.5&quot;</span><span class="p">,</span><span class="s2">&quot;Unit&quot;</span><span class="o">:</span><span class="s2">&quot;kW&quot;</span><span class="p">}</span>
+</pre></div>
+
+
+<p>The data is being streamed to a blob storage on the Azure cloud, where the folder names are given by the current date, e.g., "/[year]/[month]/[day]/[filename]_[time].json". To read in all files it is sufficient to give the address to the root folder of the blob. First, we create an external table which stores each document as a string.</p>
+<div class="highlight"><pre><span></span><span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">MyJSONTable</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">EXTERNAL</span> <span class="k">TABLE</span> <span class="n">MyJSONTable</span> <span class="p">(</span><span class="n">textcol</span> <span class="n">string</span><span class="p">)</span> <span class="n">STORED</span> <span class="k">AS</span> <span class="n">TEXTFILE</span> <span class="k">LOCATION</span> <span class="ss">&quot;wasb://myhdinsight@mydatastorage.blob.core.windows.net/2016/&quot;</span><span class="p">;</span>
+</pre></div>
+
+
+<p>Next we use <code>LATERAL VIEW</code> and <code>JSON_TUPLE</code> to convert the string into columns.</p>
+<div class="highlight"><pre><span></span><span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">SENSORS</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">SENSORS</span><span class="p">(</span>
+        <span class="n">meteringpointid</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">meteringtimestamp</span> <span class="k">TimeStamp</span><span class="p">,</span>
+        <span class="n">measuredvalue</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">unit</span> <span class="n">string</span><span class="p">);</span>
+
+<span class="k">INSERT</span> <span class="n">OVERWRITE</span> <span class="k">TABLE</span> <span class="n">SENSORS</span>
+<span class="k">SELECT</span>
+    <span class="n">q1</span><span class="p">.</span><span class="n">meteringpointid</span><span class="p">,</span>
+    <span class="k">CAST</span><span class="p">(</span>
+      <span class="n">CONCAT</span><span class="p">(</span>
+          <span class="n">SPLIT</span><span class="p">(</span><span class="n">q1</span><span class="p">.</span><span class="n">meteringtimestamp</span><span class="p">,</span> <span class="ss">&quot;T&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+          <span class="s1">&#39; &#39;</span><span class="p">,</span>
+          <span class="n">SUBSTR</span><span class="p">(</span><span class="n">SPLIT</span><span class="p">(</span><span class="n">q1</span><span class="p">.</span><span class="n">meteringtimestamp</span><span class="p">,</span><span class="ss">&quot;T&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+      <span class="p">)</span> <span class="k">AS</span> <span class="k">TimeStamp</span>
+    <span class="p">),</span>
+    <span class="n">q1</span><span class="p">.</span><span class="n">measuredvalue</span><span class="p">,</span>
+    <span class="n">q1</span><span class="p">.</span><span class="n">unit</span>
+
+<span class="k">FROM</span> <span class="n">myjsontable</span> <span class="n">jt</span> <span class="k">LATERAL</span> <span class="k">VIEW</span> <span class="n">JSON_TUPLE</span><span class="p">(</span><span class="n">jt</span><span class="p">.</span><span class="n">textcol</span><span class="p">,</span>
+    <span class="s1">&#39;meteringpointid&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;meteringtimestamp&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;measuredvalue&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;unit&#39;</span>
+<span class="p">)</span> <span class="n">q1</span> <span class="k">AS</span>
+    <span class="n">meteringpointid</span><span class="p">,</span>
+    <span class="n">meteringtimestamp</span><span class="p">,</span>
+    <span class="n">measuredvalue</span><span class="p">,</span>
+    <span class="n">unit</span><span class="p">,</span>
+    <span class="p">;</span>
+</pre></div>
+
+
+<p><em>The metering time stamp has a format that was somewhat problematic to convert into Hive's TimeStamp type. I am sure that there is a cleaner way to accomplish it, so if you have a suggestion please let me know in the comment section.</em></p>
+<p>The result of this query is a Hive table called "sensors" that is stored on HDFS in a sub folder of /hive.</p>
+<p>The advantage of this method is that you can restrict the query to only the fields that are of interest, making it suitable for grabbing a handful of fields from a data set with many columns. The down side is that each field needs to be written four times, making it cumbersome if you want to import all fields of the JSON file into a Hive table.</p>
+<h2>Reading nested JSON files with Hive</h2>
+<p>The output of the weather API call contains nested documents, so the method above will not work. Here is a shortened example of what the API returns:</p>
+<div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;response&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;version&quot;</span><span class="o">:</span><span class="s2">&quot;0.1&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;termsofService&quot;</span><span class="o">:</span><span class="s2">&quot;http://www.wunderground.com/weather/api/d/terms.html&quot;</span><span class="p">,</span>
+  <span class="p">...</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+  <span class="p">,</span> <span class="s2">&quot;current_observation&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="s2">&quot;station_id&quot;</span><span class="o">:</span><span class="s2">&quot;IBERNE6&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;observation_time&quot;</span><span class="o">:</span><span class="s2">&quot;Last Updated on August 30, 7:50 AM CEST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;observation_time_rfc822&quot;</span><span class="o">:</span><span class="s2">&quot;Tue, 30 Aug 2016 07:50:49 +0200&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;observation_epoch&quot;</span><span class="o">:</span><span class="s2">&quot;1472536249&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;local_time_rfc822&quot;</span><span class="o">:</span><span class="s2">&quot;Tue, 30 Aug 2016 07:58:08 +0200&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;local_epoch&quot;</span><span class="o">:</span><span class="s2">&quot;1472536688&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;local_tz_short&quot;</span><span class="o">:</span><span class="s2">&quot;CEST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;local_tz_long&quot;</span><span class="o">:</span><span class="s2">&quot;Europe/Zurich&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;local_tz_offset&quot;</span><span class="o">:</span><span class="s2">&quot;+0200&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;weather&quot;</span><span class="o">:</span><span class="s2">&quot;Mostly Cloudy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;temperature_string&quot;</span><span class="o">:</span><span class="s2">&quot;67.3 F (19.6 C)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;temp_f&quot;</span><span class="o">:</span><span class="mf">67.3</span><span class="p">,</span>
+    <span class="s2">&quot;temp_c&quot;</span><span class="o">:</span><span class="mf">19.6</span><span class="p">,</span>
+    <span class="s2">&quot;relative_humidity&quot;</span><span class="o">:</span><span class="s2">&quot;68%&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wind_string&quot;</span><span class="o">:</span><span class="s2">&quot;Calm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wind_dir&quot;</span><span class="o">:</span><span class="s2">&quot;SSE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wind_degrees&quot;</span><span class="o">:</span><span class="mi">161</span><span class="p">,</span>
+    <span class="s2">&quot;wind_mph&quot;</span><span class="o">:</span><span class="mf">0.6</span><span class="p">,</span>
+    <span class="s2">&quot;wind_gust_mph&quot;</span><span class="o">:</span><span class="s2">&quot;1.9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wind_kph&quot;</span><span class="o">:</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="s2">&quot;wind_gust_kph&quot;</span><span class="o">:</span><span class="s2">&quot;3.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pressure_mb&quot;</span><span class="o">:</span><span class="s2">&quot;1022&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pressure_in&quot;</span><span class="o">:</span><span class="s2">&quot;30.18&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pressure_trend&quot;</span><span class="o">:</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dewpoint_string&quot;</span><span class="o">:</span><span class="s2">&quot;56 F (14 C)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dewpoint_f&quot;</span><span class="o">:</span><span class="mi">56</span><span class="p">,</span>
+    <span class="s2">&quot;dewpoint_c&quot;</span><span class="o">:</span><span class="mi">14</span><span class="p">,</span>
+    <span class="s2">&quot;heat_index_string&quot;</span><span class="o">:</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heat_index_f&quot;</span><span class="o">:</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heat_index_c&quot;</span><span class="o">:</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;windchill_string&quot;</span><span class="o">:</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;windchill_f&quot;</span><span class="o">:</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;windchill_c&quot;</span><span class="o">:</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;feelslike_string&quot;</span><span class="o">:</span><span class="s2">&quot;67.3 F (19.6 C)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;feelslike_f&quot;</span><span class="o">:</span><span class="s2">&quot;67.3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;feelslike_c&quot;</span><span class="o">:</span><span class="s2">&quot;19.6&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;visibility_mi&quot;</span><span class="o">:</span><span class="s2">&quot;6.2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;visibility_km&quot;</span><span class="o">:</span><span class="s2">&quot;10.0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;solarradiation&quot;</span><span class="o">:</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UV&quot;</span><span class="o">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="s2">&quot;precip_1hr_string&quot;</span><span class="o">:</span><span class="s2">&quot;-999.00 in ( 0 mm)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;precip_1hr_in&quot;</span><span class="o">:</span><span class="s2">&quot;-999.00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;precip_1hr_metric&quot;</span><span class="o">:</span><span class="s2">&quot; 0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;precip_today_string&quot;</span><span class="o">:</span><span class="s2">&quot;0.00 in (0 mm)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;precip_today_in&quot;</span><span class="o">:</span><span class="s2">&quot;0.00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;precip_today_metric&quot;</span><span class="o">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;icon&quot;</span><span class="o">:</span><span class="s2">&quot;mostlycloudy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;icon_url&quot;</span><span class="o">:</span><span class="s2">&quot;http://icons.wxug.com/i/c/k/mostlycloudy.gif&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;forecast_url&quot;</span><span class="o">:</span><span class="s2">&quot;http://www.wunderground.com/global/stations/06631.html&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;history_url&quot;</span><span class="o">:</span><span class="s2">&quot;http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=IBERNE6&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ob_url&quot;</span><span class="o">:</span><span class="s2">&quot;http://www.wunderground.com/cgi-bin/findweather/getForecast?query=46.943199,7.441810&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nowcast&quot;</span><span class="o">:</span><span class="s2">&quot;&quot;</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>If we want to access the wind speed from this document we hence need to navigate to the nested document "current_observation".</p>
+<p>The beginning of the query is similar to the case with a flat file, by making an external table from the content of the cloud storage. Then we create a table containing the body of the JSON document.</p>
+<div class="highlight"><pre><span></span><span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">RAW_weather</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">EXTERNAL</span> <span class="k">TABLE</span> <span class="n">RAW_weather</span><span class="p">(</span><span class="n">textcol</span> <span class="n">STRING</span><span class="p">)</span>
+<span class="n">STORED</span> <span class="k">AS</span> <span class="n">TEXTFILE</span> <span class="k">LOCATION</span> <span class="s1">&#39;wasb://meteo@yourdatastorage.blob.core.windows.net/&#39;</span><span class="p">;</span>
+
+<span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">WeatherOneLine</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">EXTERNAL</span> <span class="k">TABLE</span> <span class="n">WeatherOneLine</span>
+<span class="p">(</span>
+  <span class="n">json_body</span> <span class="n">string</span>
+<span class="p">)</span>
+<span class="n">STORED</span> <span class="k">AS</span> <span class="n">TEXTFILE</span> <span class="k">LOCATION</span> <span class="s1">&#39;/json/weather&#39;</span><span class="p">;</span>
+
+<span class="k">INSERT</span> <span class="n">OVERWRITE</span> <span class="k">TABLE</span> <span class="n">WeatherOneLine</span>
+<span class="k">SELECT</span> <span class="n">CONCAT_WS</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="n">COLLECT_LIST</span><span class="p">(</span><span class="n">textcol</span><span class="p">))</span> <span class="k">AS</span> <span class="n">singlelineJSON</span>
+      <span class="k">FROM</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">INPUT__FILE__NAME</span><span class="p">,</span><span class="n">BLOCK__OFFSET__INSIDE__FILE</span><span class="p">,</span> <span class="n">textcol</span> <span class="k">FROM</span> <span class="n">RAW_weather</span> <span class="n">DISTRIBUTE</span> <span class="k">BY</span> <span class="n">INPUT__FILE__NAME</span> <span class="n">SORT</span> <span class="k">BY</span> <span class="n">BLOCK__OFFSET__INSIDE__FILE</span><span class="p">)</span> <span class="n">x</span>
+      <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">INPUT__FILE__NAME</span><span class="p">;</span>
+</pre></div>
+
+
+<p>Again, we create a Hive table in HDFS, at the default location /hive/warehouse/<name>. It needs to include the json_body, that was extracted in the previous step. This time we make use of <code>GET_JSON_OBJECT</code> to extract the fields from the json_body.</p>
+<div class="highlight"><pre><span></span><span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">weather</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">weather</span><span class="p">(</span>
+      <span class="n">station_id</span> <span class="n">string</span><span class="p">,</span>
+        <span class="n">wind_kph</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">local_epoch</span> <span class="k">timestamp</span> <span class="p">,</span>
+        <span class="n">json_body</span> <span class="n">STRING</span><span class="p">);</span>
+
+
+<span class="k">INSERT</span> <span class="n">OVERWRITE</span> <span class="k">TABLE</span> <span class="n">weather</span>
+<span class="k">SELECT</span>
+          <span class="n">GET_JSON_OBJECT</span><span class="p">(</span><span class="n">json_body</span><span class="p">,</span> <span class="s1">&#39;$.current_observation.station_id&#39;</span><span class="p">),</span>
+            <span class="n">GET_JSON_OBJECT</span><span class="p">(</span><span class="n">json_body</span><span class="p">,</span> <span class="s1">&#39;$.current_observation.wind_kph&#39;</span><span class="p">),</span>
+            <span class="n">from_unixtime</span><span class="p">(</span><span class="k">cast</span><span class="p">(</span><span class="n">GET_JSON_OBJECT</span><span class="p">(</span><span class="n">json_body</span><span class="p">,</span> <span class="s1">&#39;$.current_observation.local_epoch&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="nb">int</span><span class="p">)),</span>
+            <span class="n">json_body</span>
+<span class="k">FROM</span> <span class="n">WeatherOneLine</span><span class="p">;</span>
+</pre></div>
+
+
+<p>While this is a rather clean way of accessing fields in nested documents, there is one disadvantage. The json_body, i.e., the entire content returned by the API call, is added as a column to the Hive table. Since that is probably not desired we have to drop this column. In Hive, dropping columns are not as easy as in SQL, so instead of dropping the column we redefine the columns of the table and leave out the column we want to remove.</p>
+<div class="highlight"><pre><span></span><span class="c1">--drop the long json_body field</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">weather</span> <span class="k">REPLACE</span> <span class="n">COLUMNS</span><span class="p">(</span>
+  <span class="n">station_id</span> <span class="n">string</span><span class="p">,</span>
+  <span class="n">wind_kph</span> <span class="nb">float</span><span class="p">,</span>
+  <span class="n">local_epoch</span> <span class="k">timestamp</span>
+  <span class="p">);</span>
+</pre></div>
+
+
+<h2>Creating and storing an enriched table in the lake</h2>
+<p>Now that we have a table called "sensors", which contains the energy production data, and another table called "weather", which contains the information about the weather, we can combine these two data sources to create an enriched table which is more valuable than the sum of it parts.</p>
+<p>Suppose that we want to know how weather conditions influence the energy production at a wind farm. If we already know which weather station is closest to the wind farm we can select its weather data from the weather table.</p>
+<p>We also need to ensure that the time stamps match up when we compare weather to energy production. I have set up the weather information retrieval to run every 30 minutes, while we sensors from the power plants are streaming thousands of measurements per minute. The easiest is to add a start and stop of the validity of the weather information as calculated fields, and use that to <em>left join</em> the weather to the sensor data.</p>
+<div class="highlight"><pre><span></span><span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">sensors_weather</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">sensors_weather</span> <span class="k">AS</span>
+<span class="k">SELECT</span> <span class="o">*</span>
+    <span class="k">FROM</span> <span class="p">(</span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">sensors</span>
+    <span class="k">WHERE</span> <span class="n">meteringpointid</span> <span class="o">=</span> <span class="mi">42</span>
+    <span class="k">OR</span> <span class="n">meteringpointid</span> <span class="o">=</span> <span class="mi">1337</span>
+    <span class="p">)</span> <span class="k">AS</span> <span class="n">s</span>
+    <span class="k">LEFT</span> <span class="k">JOIN</span> <span class="p">(</span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">weather</span> <span class="k">WHERE</span> <span class="n">station_id</span> <span class="o">=</span> <span class="ss">&quot;IBERNE6&quot;</span><span class="p">)</span> <span class="k">AS</span> <span class="n">w</span>
+    <span class="k">WHERE</span> <span class="n">s</span><span class="p">.</span><span class="n">meteringtimestamp</span> <span class="o">&gt;=</span> <span class="n">w</span><span class="p">.</span><span class="n">epoch_start</span> <span class="k">and</span> <span class="n">s</span><span class="p">.</span><span class="n">meteringtimestamp</span> <span class="o">&lt;</span> <span class="n">w</span><span class="p">.</span><span class="n">epoch_end</span>
+    <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">s</span><span class="p">.</span><span class="n">meteringtimestamp</span> <span class="k">ASC</span><span class="p">;</span>
+</pre></div>
+
+
+<p>The result is an enriched Hive table on HDFS which is filtered to only contain information that we care about.</p>
+<h2>Summary and next steps</h2>
+<p>This blog posts showed</p>
+<ul>
+<li>two ways of querying JSON files on the Azure cloud using Hive and</li>
+<li>how to create enriched Hive tables by joining different data sets.</li>
+</ul>
+<p>The enriched table can then be used in Azure Machine Learning, Spark or R to understand how weather conditions affects energy production, and create a model for predicting shortages of energy production based on weather forecasts.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "building-a-data-lake-2-querying-json-from-hive.html";
+        var disqus_url = "https://rsandstroem.github.io/building-a-data-lake-2-querying-json-from-hive.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//Data Scientist Blog.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://ch.linkedin.com/in/rikard-sandström-a0b3229">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme <a href="https://github.com/blueicefield/pelican-blueidea/">blueidea</a>, inspired by the default theme.</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'Data Scientist Blog';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
