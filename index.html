@@ -3,7 +3,8 @@
 <head>
         <meta charset="utf-8" />
         <title>Data Scientist Blog</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link rel="stylesheet" href="https://rsandstroem.github.io/theme/css/main.css" />
+        <link href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Data Scientist Blog Atom Feed" />
 
         <!--[if IE]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -15,75 +16,74 @@
 <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
 </a>
         <header id="banner" class="body">
-                <h1><a href="/">Data Scientist Blog </a></h1>
+                <h1><a href="https://rsandstroem.github.io/">Data Scientist Blog </a></h1>
                 <nav><ul>
     
-                        <li><a href="/pages/about.html">about</a></li>
-                    <li><a href="/category/posts.html">posts</a></li>
+                        <li><a href="https://rsandstroem.github.io/pages/about.html">about</a></li>
+                    <li><a href="https://rsandstroem.github.io/category/posts.html">posts</a></li>
                 </ul>
                 </nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/discovery-of-the-higgs-boson.html">Discovery of the Higgs Boson</a></h1>
+                    <h1 class="entry-title"><a href="https://rsandstroem.github.io/chatbotNLP.html">Building a chat bot - first steps</a></h1>
 <footer class="post-info">
-        <span>Don 09 Februar 2017</span>
-<span>| tags: <a href="/tag/higgs.html">higgs</a><a href="/tag/physics.html">physics</a><a href="/tag/announcement.html">announcement</a></span>
-</footer><!-- /.post-info -->
-<h2>Introduction</h2>
-<p><img align="right" src="/images/higgsdiscoverybook.png" width="300">
-I had a rather long break from writing blog posts, but it has not been due to inactivity, quite the opposite! The good side of this busy period is that there is a large backlog of new topics to write about on this blog.</p>
-<p>This week I wanted to draw attention to the book that my former colleagues and I wrote, and which was recently published. It is great to finally have it in my hand! The book is about the discovery of the Higgs boson at the Large Hadron Collider at CERN.</p>
-<h2>What is the Higgs boson?</h2>
-<p>So what exactly is a Higgs boson? Well, as the name implies, it is a particle of type <em>boson</em>.
-There are two types of particles in the Universe, fermions and bosons. That is it, there is no third type! 
-Matter consists of fermions. 
-Bosons, on the other hand, carries the forces between particles.</p>
-<p>A long time ago, Peter Higgs and some other smart people proposed that there is a field everywhere in the Universe, and that particles interact with this field all the time.
-Since then we call this crazy idea the Higgs field.
-According to theory, the Higgs field gives mass to elementary particles.
-Without the Higgs field, elementary particles would not have any mass, and the world would not exist as we know it.
-The Higgs boson is an excitation of the Higgs field, similar to how a wave is a ripple on a pool of water.
-In a matter of speaking, we are searching for waves to conclude that there is water nearby, so by finding the Higgs boson we know that the Higgs field exist.</p>
-<p>Sometimes I hear people saying that the Higgs boson is responsible for all mass in the Universe. 
-While this is true for elementary particles, you cannot blame the Higgs boson if you are overweight, since most of your body mass comes from atoms and atoms are not elementary particles.
-Atoms consist of protons and neutrons, who in turn consists of quarks, and it is the forces that holds them together that is the source of most of the visible mass.
-I say <em>visible</em> here, because cosmology tells us that there is also dark matter, which we frankly have no clue about what it is.</p>
-<h2>How we discovered it</h2>
-<p>Heavier particles interact more strongly with the Higgs field, and in fact the mass of the particle is created through the Higgs mechanism. 
-This means that a Higgs boson is more likely to decay to heavier particles rather than light ones, and this property played a major role in how we set up our Higgs hunting strategies.</p>
-<p>The heavy decay products are very short lived and also decays into lighter particles. 
-The result can look like the picture I made below a few years ago, where a Higgs boson candidate decays into two <em>W</em>-bosons, one <em>W</em>-boson decays to a pair of quarks, the other into a muon-neutrino pair.</p>
-<p><img alt="drawing" src="/images/vp1_HWW_run191933_ev44097939.png" width="98%" /></p>
-<p>Since we cannot see the <em>W</em>-bosons directly, much less the Higgs boson itself, we have to look for final state particles that are creating signatures in the detector that <em>could</em> mean that a they were produced by a decaying Higgs boson.
-When you take into account that we collected about 40 TB of data per second, finding a needle in a haystack does not even come close to describing the challenge.
-To process all this data CERN developed a distributed computing called the <a href="http://wlcg-public.web.cern.ch/">GRID</a> which was absolutely crucial to the success.</p>
-<p>Another strategy is to select an extremely rare combination of final state particles where also the false positives, the background noise, is heavily suppressed. 
-Regardless of the strategy of each individual Higgs hunter group, having a thorough understanding of the background noise was of very high importance. 
-To understand what we should expect to see in the case the Higgs boson did not exist (the null hypothesis), we frequently turned to Monte Carlo simulations.
-The simulations were in turn validated by special minimum bias streams in the data collection and a whole battery of tests and scrutiny.</p>
-<p>In practice we did not limit ourselves to only one strategy, but we did all of them at once, and combined all the results into one confidence interval to rule them all.
-And with success too: On 4 July 2012, the ATLAS and CMS experiments at CERN's Large Hadron Collider announced they had each observed a new particle in the mass region around 126 GeV. 
-This particle is consistent with the Higgs boson predicted by the Standard Model. 
-The year after, the Nobel Prize was awarded for the discovery of the Higgs boson.</p>
-<h2>Importance of the discovery</h2>
-<p>The Higgs boson was the final missing particle in the Standard Model of particle physics. 
-It unifies three of the four forces of the Universe, the Strong force, the Weak force and Electromagnetism. (Sorry Gravity, you are just too weird to fit in at this party.)
-If we had concluded that the Higgs field does not exist this entire house of cards would have collapsed and we would have had to admit that we know nothing and start all over again.</p>
-<p>So what can we do with this newfound knowledge? Sadly we do not have any business use cases just yet. 
-Then again, we did not plan on using GPS when Einstein discovered the theory of relativity. 
-Nor did we think of mobile phones when electricity was discovered, or Netflix when CERN invented the World Wide Web for that matter.</p>
-<p>While the Higgs bosons was the last piece of a very complex puzzle, we know it is not the end. 
-For example, neutrinos have always been a poor fit to the Standard Model. They should be massless, yet they aren't...
-Where did all the anti-matter go? And what is all this dark matter anyway? 
-It looks like Nature has not yet revealed all her secrets to us.</p>
-<p>The book is available for purchase at <a href="http://www.worldscientific.com/worldscibooks/10.1142/8595">World Scientific</a></p>
-    </div><!-- /.entry-content -->
-
-  </article>
-</section>
-                </article>
+        <span>Die 28 März 2017</span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/chat-bot.html">chat bot</a><a href="https://rsandstroem.github.io/tag/natural-language-processing.html">natural language processing</a></span>
+</footer><!-- /.post-info --><h2>Introduction</h2>
+<p>In conjunction with a public referendum I was given the task to create an intelligent chat bot. The chat bot could understand what the user wanted to know and provide the answers that our subject matter experts had prepared. This post describes the first step of setting up such a chat bot.</p>
+<h2>Overview</h2>
+<p>The chat bot was built from a number of different components. While there are many options available online, I decided to do it all using Microsoft tools, and host all components on the Microsoft Azure cloud.</p>
+<ul>
+<li>The bot is centered on the Bot Service, which is using Microsoft Bot Framework (https://dev.botframework.com/). </li>
+<li>The user communicates with the bot through a web interface, which I decided to host on Azure as Web App, but could really be a corporate website or another chat connector such as Skype, Slack or Facebook Messenger. </li>
+<li>To understand what the user is saying messages are being sent from the Bot Service to LUIS, which is part of Microsoft’s Cognitive Services APIs. LUIS replies to the bot with recognized “Intents” and “Entities”.</li>
+<li>Information that we decide to store for further use is stored on a rather simple Azure Table and can be queried from another program.</li>
+</ul>
+<p><img alt="High level bot architecture" width="98%" src="/images/botOverview.png" /></p>
+<h2>Natural Language Processing</h2>
+<p>The Natural Language Processing is using the <a href="https://www.luis.ai/">LUIS framework</a>, Language Understanding Intelligent Service. </p>
+<p>After signing in you will find yourself on the “My Applications” page. These applications are essentially the models that you create for making the bot understand natural language. To create a new application click the “+ New App” icon in the top left and fill in the details. Do not forget to set the language culture. I choose German language in this case.</p>
+<p>In the main window you will find a left pane containing your Intents and Entities, and the center part of the screen is dedicated for dealing with Utterances. </p>
+<ul>
+<li>An intent is the recognition that the user want the bot to take some form of action. For example, if the user says “Help” you probably want the bot to display instructions.</li>
+<li>An entity is a part of the sentence that you want the bot to make use of in the conversation. It can be a name, a location, a date etc.</li>
+<li>An utterance is something that a user provided as input. The goal of our implementation of LUIS is to turn Utterances to Intents and Entities.</li>
+</ul>
+<p><img alt="LUIS interface" width="98%" src="/images/luisInterface.png" /></p>
+<p>In the screenshot above the utterance is a question about what effects the new tax reform will have on my Zurich based company. The utterance is a good match to the intent “EffectsOfUSR3”, and if you think it should rather be matched to another intent you can change it in the drop-down menu. </p>
+<p>The coloring of the text indicate recognized entities, where orange is intents of type Topic, and yellow is Kanton. The advantage of this recognition is that the bot does not need to ask questions about information that the user already provided. In this case, it would be awkward if the bot responded by asking which canton the company is located in, since the user already provided that information in the question. If you have entities that consist of multiple words it can be convenient to create composite entities to ensure that LUIS is capturing the whole string of words.</p>
+<h3>Training and publishing the model</h3>
+<p>When you are done with adding Intents and Entities and teaching LUIS how they should be used given an utterance, you should train the model. Click the recycle icon in the bottom left and wait for the training to finish.
+To enable the bot to make use of the newly trained model you need to publish it. Click “Publish”, directly above “Intents” and update the published application. </p>
+<p>If you want to debug your model you might find the verbose output to be helpful. Type in the utterance you want to test and click the URL. This will provide you with the JSON response, which is also what your bot will see as a reply from LUIS.</p>
+<p>One thing to note here is the URL contains the subscription details of the language model. You will need this information in the subsequent steps.</p>
+<p>Last but not least the “App settings” menu item contains the subscription key to the Cognitive Services API. You can work with the free model, but I find the paid subscription to be cheap. You can buy a key directly from the blue link in this window, it will take you to the <a href="https://portal.azure.com">Azure portal</a>.</p>
+<h2>Creating the bot service</h2>
+<p>With the LUIS language understanding up and running it is time to create the bot service that will talk to LUIS. We choose to stick to the Microsoft product stack, and use their <a href="https://dev.botframework.com">Bot Framework</a>.</p>
+<p>You can create the bot service through the <a href="https://portal.azure.com">Azure Portal</a>. Click the green plus in the top left corner and search for “Bot Service”.</p>
+<p><img alt="Bot creation" width="98%" src="/images/botCreationPortal.png" /></p>
+<p>After creating the bot with appropriate name, resource group etc you will be prompted for the App ID for the bot. </p>
+<p><img alt="Bot service created" width="98%" src="/images/botServiceCreated.png" /></p>
+<p>If you followed these instructions up to now you do not yet have an App ID, so go ahead and click the blue button to create one. This will take you to the registration portal for the bot, where you get assigned the App ID and a password. Make sure to copy password since you will never see it again!</p>
+<p><img alt="Bot registration" width="98%" src="/images/botRegistry.png" /></p>
+<p>With this completed you will be taken back to the Azure portal, where you paste in the password you just copied. </p>
+<p>Select if you want to use C# or node.js as programming language for the bot. In this case I choose to use node.js. The choice of template does not really matter, you will anyway modify that code later.</p>
+<p>After creating the bot you need to wait a few minutes before you are taken to a page similar to the one below:</p>
+<p><img alt="Bot editing from portal" width="98%" src="/images/botEditingAzurePortal.png" /></p>
+<p>With this view you can already edit your bot (center pane) and test the bot by chatting with it using the chat window on the right.</p>
+<h2>Linking the bot service with LUIS</h2>
+<p>So far the bot and LUIS have no relation with each other. To change that click on the “Settings” tab, and open “Application settings”. Scroll down and you will find a list of key-value pairs. </p>
+<p><img alt="Bot application settings" width="98%" src="/images/botApplicationSettings.png" /></p>
+<p>Enter the LuisAppId, LuisAPIKey and LusiAPIHostName as this example shows. The values associated to these keys can be extracted from the URL in “Publish” section of the LUIS model.</p>
+<h2>Code repository</h2>
+<p>Rather than editing the bot within the Azure portal I strongly recommend linking the bot service to a code repository. This allows version control, release management and other standard software engineering practices. </p>
+<p>Still on the “Settings” tab, click on “Configure” next to “Continuous integration”. Follow the steps show in the portal, i.e., download the code, create a repository etc. Then click on “Set up integration source”, followed by “Setup” in the top row. Choose you repository, e.g., GitHub and provide the configuration details. </p>
+<p><img alt="Bot application settings" width="98%" src="/images/setupGitIntegration.png" /></p>
+<p>When happy click “OK”. Wait a few minutes and the portal should automatically pull in the code from the repository and redeploy the bot.</p>
+<h2>What is next</h2>
+<p>In this blog post we have seen the different components of the blog and how they work together. However, the bot is not currently doing anything. For that we need to write some code. This topic will be covered in the next blog post.</p><p><a href="https://rsandstroem.github.io/chatbotNLP.html#disqus_thread">comments</a></p>                </article>
             </aside><!-- /#featured -->
                 <section id="content" class="body">
                     <h1>Other articles</h1>
@@ -91,122 +91,137 @@ It looks like Nature has not yet revealed all her secrets to us.</p>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/predicting-retail-sales.html" rel="bookmark"
+                    <h1><a href="https://rsandstroem.github.io/discovery-of-the-higgs-boson.html" rel="bookmark"
+                           title="Permalink to Discovery of the Higgs Boson">Discovery of the Higgs Boson</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <span>Don 09 Februar 2017</span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/higgs.html">higgs</a><a href="https://rsandstroem.github.io/tag/physics.html">physics</a><a href="https://rsandstroem.github.io/tag/announcement.html">announcement</a></span>
+</footer><!-- /.post-info -->                Microsoft Azure provides big data infrastructure through the HDInsight product. However, they bill you per hour, no matter if you use the computing resources or not. One option is to destroy clusters when they are not needed, but to get the clusters back up with minimum effort it is best to use predefined scripts or templates. This post shows you a few alternatives how to accomplish this.
+                <a class="readmore" href="https://rsandstroem.github.io/discovery-of-the-higgs-boson.html">read more</a>
+<p><a href="https://rsandstroem.github.io/discovery-of-the-higgs-boson.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://rsandstroem.github.io/predicting-retail-sales.html" rel="bookmark"
                            title="Permalink to Predicting retail sales">Predicting retail sales</a></h1>
                 </header>
 
                 <div class="entry-content">
 <footer class="post-info">
         <span>Don 09 Februar 2017</span>
-<span>| tags: <a href="/tag/python.html">python</a><a href="/tag/machine-learning.html">machine learning</a><a href="/tag/retail.html">retail</a><a href="/tag/tutorial.html">tutorial</a></span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/machine-learning.html">machine learning</a><a href="https://rsandstroem.github.io/tag/retail.html">retail</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
 </footer><!-- /.post-info -->                Sometime you have a time series of historical data and you would like to know how this series of data will look in the days or years to come. If the data looks 
-                <a class="readmore" href="/predicting-retail-sales.html">read more</a>
-                </div><!-- /.entry-content -->
+                <a class="readmore" href="https://rsandstroem.github.io/predicting-retail-sales.html">read more</a>
+<p><a href="https://rsandstroem.github.io/predicting-retail-sales.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/building-a-data-lake-2-querying-json-from-hive.html" rel="bookmark"
+                    <h1><a href="https://rsandstroem.github.io/building-a-data-lake-2-querying-json-from-hive.html" rel="bookmark"
                            title="Permalink to Building a data lake 2: Querying JSON from Hive">Building a data lake 2: Querying JSON from Hive</a></h1>
                 </header>
 
                 <div class="entry-content">
 <footer class="post-info">
         <span>Don 06 Oktober 2016</span>
-<span>| tags: <a href="/tag/azure.html">azure</a><a href="/tag/hive.html">hive</a><a href="/tag/json.html">json</a><a href="/tag/tutorial.html">tutorial</a><a href="/tag/big-data.html">big data</a></span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/azure.html">azure</a><a href="https://rsandstroem.github.io/tag/hive.html">hive</a><a href="https://rsandstroem.github.io/tag/json.html">json</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a><a href="https://rsandstroem.github.io/tag/big-data.html">big data</a></span>
 </footer><!-- /.post-info -->                Tutorial on creating Hive tables from JSON documents and joining the tables to create an enriched data set.
-                <a class="readmore" href="/building-a-data-lake-2-querying-json-from-hive.html">read more</a>
-                </div><!-- /.entry-content -->
+                <a class="readmore" href="https://rsandstroem.github.io/building-a-data-lake-2-querying-json-from-hive.html">read more</a>
+<p><a href="https://rsandstroem.github.io/building-a-data-lake-2-querying-json-from-hive.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/installing-r-studio-on-azure-hdinsight.html" rel="bookmark"
+                    <h1><a href="https://rsandstroem.github.io/installing-r-studio-on-azure-hdinsight.html" rel="bookmark"
                            title="Permalink to Installing R-studio on Azure HDInsight">Installing R-studio on Azure HDInsight</a></h1>
                 </header>
 
                 <div class="entry-content">
 <footer class="post-info">
         <span>Son 11 September 2016</span>
-<span>| tags: <a href="/tag/azure.html">azure</a><a href="/tag/r.html">r</a><a href="/tag/tutorial.html">tutorial</a></span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/azure.html">azure</a><a href="https://rsandstroem.github.io/tag/r.html">r</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
 </footer><!-- /.post-info -->                Running R on Spark brings the advantage of distributed in memory computing and access to data stored in HDFS. In this context, it is convenient to have access to R-studio hosted from the R-server. In this post I will show a few ways how to install R-studio on the edge node of a HDInsight Spark cluster.
-                <a class="readmore" href="/installing-r-studio-on-azure-hdinsight.html">read more</a>
-                </div><!-- /.entry-content -->
+                <a class="readmore" href="https://rsandstroem.github.io/installing-r-studio-on-azure-hdinsight.html">read more</a>
+<p><a href="https://rsandstroem.github.io/installing-r-studio-on-azure-hdinsight.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/create-azure-hdinsight-clusters-using-templates.html" rel="bookmark"
+                    <h1><a href="https://rsandstroem.github.io/create-azure-hdinsight-clusters-using-templates.html" rel="bookmark"
                            title="Permalink to Create Azure HDInsight clusters using templates">Create Azure HDInsight clusters using templates</a></h1>
                 </header>
 
                 <div class="entry-content">
 <footer class="post-info">
         <span>Don 01 September 2016</span>
-<span>| tags: <a href="/tag/azure.html">azure</a><a href="/tag/cloud.html">cloud</a><a href="/tag/architecture.html">architecture</a><a href="/tag/tutorial.html">tutorial</a><a href="/tag/big-data.html">big data</a></span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/azure.html">azure</a><a href="https://rsandstroem.github.io/tag/cloud.html">cloud</a><a href="https://rsandstroem.github.io/tag/architecture.html">architecture</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a><a href="https://rsandstroem.github.io/tag/big-data.html">big data</a></span>
 </footer><!-- /.post-info -->                Microsoft Azure provides big data infrastructure through the HDInsight product. However, they bill you per hour, no matter if you use the computing resources or not. One option is to destroy clusters when they are not needed, but to get the clusters back up with minimum effort it is best to use predefined scripts or templates. This post shows you a few alternatives how to accomplish this.
-                <a class="readmore" href="/create-azure-hdinsight-clusters-using-templates.html">read more</a>
-                </div><!-- /.entry-content -->
+                <a class="readmore" href="https://rsandstroem.github.io/create-azure-hdinsight-clusters-using-templates.html">read more</a>
+<p><a href="https://rsandstroem.github.io/create-azure-hdinsight-clusters-using-templates.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/can-you-trust-your-data.html" rel="bookmark"
+                    <h1><a href="https://rsandstroem.github.io/can-you-trust-your-data.html" rel="bookmark"
                            title="Permalink to Can you trust your data?">Can you trust your data?</a></h1>
                 </header>
 
                 <div class="entry-content">
 <footer class="post-info">
         <span>Son 28 August 2016</span>
-<span>| tags: <a href="/tag/business.html">business</a><a href="/tag/statistics.html">statistics</a><a href="/tag/perspective.html">perspective</a></span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/business.html">business</a><a href="https://rsandstroem.github.io/tag/statistics.html">statistics</a><a href="https://rsandstroem.github.io/tag/perspective.html">perspective</a></span>
 </footer><!-- /.post-info -->                Business is the process of managing under conditions of uncertainty. To ensure optimal outcome business leaders must base their decisions on information of varying reliability. This is not new, humans always had a need for making decisions with uncertain outcomes. “Is he a friend or foe?” “Should I trade my food for a hammer?” “Can I reach safety if I turn and run, or should I fight the lion?”
-                <a class="readmore" href="/can-you-trust-your-data.html">read more</a>
-                </div><!-- /.entry-content -->
+                <a class="readmore" href="https://rsandstroem.github.io/can-you-trust-your-data.html">read more</a>
+<p><a href="https://rsandstroem.github.io/can-you-trust-your-data.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/impact-of-big-data-on-the-insurance-industry.html" rel="bookmark"
+                    <h1><a href="https://rsandstroem.github.io/impact-of-big-data-on-the-insurance-industry.html" rel="bookmark"
                            title="Permalink to Impact of Big Data on the Insurance Industry">Impact of Big Data on the Insurance Industry</a></h1>
                 </header>
 
                 <div class="entry-content">
 <footer class="post-info">
         <span>Son 28 August 2016</span>
-<span>| tags: <a href="/tag/business.html">business</a><a href="/tag/big-data.html">big data</a><a href="/tag/insurance.html">insurance</a><a href="/tag/perspective.html">perspective</a></span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/business.html">business</a><a href="https://rsandstroem.github.io/tag/big-data.html">big data</a><a href="https://rsandstroem.github.io/tag/insurance.html">insurance</a><a href="https://rsandstroem.github.io/tag/perspective.html">perspective</a></span>
 </footer><!-- /.post-info -->                Big Data is bringing decisive advantages to insurers through more relevant, detailed, and up to date information than was previously possible. At the center of this transformation are customers. They expect to be able to select products defined and driven by their needs, preferences and convenience.
-                <a class="readmore" href="/impact-of-big-data-on-the-insurance-industry.html">read more</a>
-                </div><!-- /.entry-content -->
+                <a class="readmore" href="https://rsandstroem.github.io/impact-of-big-data-on-the-insurance-industry.html">read more</a>
+<p><a href="https://rsandstroem.github.io/impact-of-big-data-on-the-insurance-industry.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/building-a-data-lake-1-weather-and-time.html" rel="bookmark"
+                    <h1><a href="https://rsandstroem.github.io/building-a-data-lake-1-weather-and-time.html" rel="bookmark"
                            title="Permalink to Building a data lake 1: Weather and time">Building a data lake 1: Weather and time</a></h1>
                 </header>
 
                 <div class="entry-content">
 <footer class="post-info">
         <span>Sam 20 August 2016</span>
-<span>| tags: <a href="/tag/python.html">python</a><a href="/tag/api.html">api</a><a href="/tag/tutorial.html">tutorial</a></span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/api.html">api</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
 </footer><!-- /.post-info -->                I am currently building a data lake which will be used to improve operations at an energy company using machine learning. Among the many interesting topics the following are prioritized:
 
     Can we predict the energy production of hydroelectric, solar and wind power plants?
     Can we predict the energy consumption using weather reports? After all, home owners need to heat their homes more on a cold winter day than on a sunny day in October.
-                <a class="readmore" href="/building-a-data-lake-1-weather-and-time.html">read more</a>
-                </div><!-- /.entry-content -->
+                <a class="readmore" href="https://rsandstroem.github.io/building-a-data-lake-1-weather-and-time.html">read more</a>
+<p><a href="https://rsandstroem.github.io/building-a-data-lake-1-weather-and-time.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/weathertime.html" rel="bookmark"
+                    <h1><a href="https://rsandstroem.github.io/weathertime.html" rel="bookmark"
                            title="Permalink to Building a data lake 1: Weather and time">Building a data lake 1: Weather and time</a></h1>
                 </header>
 
                 <div class="entry-content">
 <footer class="post-info">
         <span>Sam 20 August 2016</span>
-<span>| tags: <a href="/tag/python.html">python</a><a href="/tag/api.html">api</a><a href="/tag/tutorial.html">tutorial</a></span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/api.html">api</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
 </footer><!-- /.post-info -->                
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -226,20 +241,20 @@ It looks like Nature has not yet revealed all her secrets to us.</p>
 <ul>
 <li>Can we predict the energy production of hydroelectric, solar and wind power plants? </li>
 <li>Can we predict the energy consumption using weather reports? After all, home owners need to heat their homes more on a cold winter day than on a sunny day in October.</li>
-                <a class="readmore" href="/weathertime.html">read more</a>
-                </div><!-- /.entry-content -->
+                <a class="readmore" href="https://rsandstroem.github.io/weathertime.html">read more</a>
+<p><a href="https://rsandstroem.github.io/weathertime.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/GeoMapsFoliumDemo.html" rel="bookmark"
+                    <h1><a href="https://rsandstroem.github.io/GeoMapsFoliumDemo.html" rel="bookmark"
                            title="Permalink to Using Folium to show geographic data">Using Folium to show geographic data</a></h1>
                 </header>
 
                 <div class="entry-content">
 <footer class="post-info">
         <span>Son 14 August 2016</span>
-<span>| tags: <a href="/tag/python.html">python</a><a href="/tag/folium.html">folium</a><a href="/tag/geo.html">geo</a><a href="/tag/tutorial.html">tutorial</a></span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/folium.html">folium</a><a href="https://rsandstroem.github.io/tag/geo.html">geo</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
 </footer><!-- /.post-info -->                
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -280,20 +295,20 @@ It looks like Nature has not yet revealed all her secrets to us.</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Using the method described here, you do not need any local map data. The maps are automatically pulled from OpenStreetMap.</p>
-                <a class="readmore" href="/GeoMapsFoliumDemo.html">read more</a>
-                </div><!-- /.entry-content -->
+                <a class="readmore" href="https://rsandstroem.github.io/GeoMapsFoliumDemo.html">read more</a>
+<p><a href="https://rsandstroem.github.io/GeoMapsFoliumDemo.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="/MongoDBDemo.html" rel="bookmark"
+                    <h1><a href="https://rsandstroem.github.io/MongoDBDemo.html" rel="bookmark"
                            title="Permalink to Simple MongoDB demo">Simple MongoDB demo</a></h1>
                 </header>
 
                 <div class="entry-content">
 <footer class="post-info">
         <span>Son 14 August 2016</span>
-<span>| tags: <a href="/tag/python.html">python</a><a href="/tag/mongodb.html">mongodb</a><a href="/tag/tutorial.html">tutorial</a></span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/mongodb.html">mongodb</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
 </footer><!-- /.post-info -->                
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -311,8 +326,8 @@ It looks like Nature has not yet revealed all her secrets to us.</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This blog post is a tutorial that introduces the basics of MongoDB and how to utilize it within a python environment. To accomplish this we will use pymongo to connect python with MongoDB.</p>
 <p>Mongo DB is a convenient NoSQL database which uses JSON syntax to store and query documents. I am frequently using MongoDB when dealing with streaming data from sensors or APIs. In big data scenarios I find MongoDB powerful since it allows for replication and sharding, thus enabling distributed computing and high availability, but that is a topic for another tutorial!</p>
-                <a class="readmore" href="/MongoDBDemo.html">read more</a>
-                </div><!-- /.entry-content -->
+                <a class="readmore" href="https://rsandstroem.github.io/MongoDBDemo.html">read more</a>
+<p><a href="https://rsandstroem.github.io/MongoDBDemo.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
             </article></li>
             </ol><!-- /#posts-list -->
             </section><!-- /#content -->
@@ -328,6 +343,7 @@ It looks like Nature has not yet revealed all her secrets to us.</p>
                 <div class="social">
                         <h2>social</h2>
                         <ul>
+                            <li><a href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://ch.linkedin.com/in/rikard-sandström-a0b3229">LinkedIn</a></li>
                         </ul>
@@ -338,5 +354,14 @@ It looks like Nature has not yet revealed all her secrets to us.</p>
                 <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme <a href="https://github.com/blueicefield/pelican-blueidea/">blueidea</a>, inspired by the default theme.</p>
         </footer><!-- /#contentinfo -->
 
+<script type="text/javascript">
+    var disqus_shortname = 'Data Scientist Blog';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
 </body>
 </html>
