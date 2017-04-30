@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Building a chat bot - programming</title>
+        <link rel="stylesheet" href="https://rsandstroem.github.io/theme/css/main.css" />
+        <link href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Data Scientist Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="https://github.com/rsandstroem/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="https://rsandstroem.github.io/">Data Scientist Blog </a></h1>
+                <nav><ul>
+    
+                        <li><a href="https://rsandstroem.github.io/pages/about.html">about</a></li>
+                    <li class="active"><a href="https://rsandstroem.github.io/category/posts.html">posts</a></li>
+                </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://rsandstroem.github.io/chatbotJS.html" rel="bookmark"
+           title="Permalink to Building a chat bot - programming">Building a chat bot - programming</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <span>Son 30 April 2017</span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/chat-bot.html">chat bot</a><a href="https://rsandstroem.github.io/tag/javascript.html">javascript</a><a href="https://rsandstroem.github.io/tag/nodejs.html">node.js</a><a href="https://rsandstroem.github.io/tag/azure-table-storage.html">azure table storage</a></span>
+</footer><!-- /.post-info -->      <h2>Introduction</h2>
+<p>In conjunction with a public referendum I was given the task to create an intelligent chat bot. The chat bot could understand what the user wanted to know and provide the answers that our subject matter experts had prepared. This post describes how to program the bot to capture user intents and take action. The post assumes that you have already read the <a href="chatbotNLP.html">first post on this topic</a>.</p>
+<h2>Choose an IDE</h2>
+<p>While I prefer to use a command line editor such as <a href="https://www.nano-editor.org/">nano</a> or vim when editing files over a slow internet connection, or <a href="http://jupyter.org/">Jupyter notebook</a> when running experiments with python, sometimes a Integrated Development Environment, IDE, can really improve your productivity. Since we are going to program the bot in JavaScript, this is one of those situations. I am by no means a JavaScript expert so the built-in autocompletion and other aids are useful supports for me.</p>
+<p>There are plenty of options out there so <a href="http://insights.dice.com/2015/05/19/choosing-an-ide-right-for-you/">choose an IDE that is right for you</a>. While I usually rely on <a href="https://eclipse.org/ide/">Eclipse</a> for Java and C++, I decided to give <a href="https://code.visualstudio.com/">Visual Studio Code</a> a try for this project, and it was a positive experience.
+<img alt="Visual Studio Code" width="98%" src="/images/VisualStudioCode.png" /></p>
+<h2>File structure</h2>
+<p>As was descriped in the previous post, we are creating the chat bot using the <a href="https://dev.botframework.com/">Microsoft Bot Framework</a>. If you followed the instructions in the last post you should now have a git repository with a node.js implementation of the bot framework. 
+<img align="right" src="/images/botFilesFolders.png" width="35%"></p>
+<p>Since we created the code skeleton by exporting it from the Azure portal, the code in your git repository will already contain some files and folders. We will edit those and add more files to set up the bot dialogs. </p>
+<p>The files we will be working with are all located in the <code>messages</code> folder. The main file for the bot is index.js. This is where we set up connections to other services, such as the natural language processing service. It is also from here we steer the conversations into dialogs.</p>
+<p>To keep things tidy, we create a subfolder for all the dialogs that the conversation can enter into, and call it <code>dialogs</code>. </p>
+<p>For quick lookup of answers to questions, we will create a number of dictionaries, which we also store in its own subfolder called <code>dictionaries</code>.</p>
+<p>Region specific settings, such as default messages in the user language, can also be written as dictionaries and stored in <code>locale/CountryCode/</code>, e.g., <code>locale/de/</code> for German.</p>
+<h2>Connecting the bot to LUIS</h2>
+<p>We need to tell the bot which LUIS model it should use and provide the credentials to it. This can be accomplished through <code>process.env</code> which picks up the values that we added in the application settings of the bot service. </p>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">luisAppId</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">LuisAppId</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">luisAPIKey</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">LuisAPIKey</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">luisAPIHostName</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">LuisAPIHostName</span> <span class="o">||</span> <span class="s1">&#39;api.projectoxford.ai&#39;</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">LuisModelUrl</span> <span class="o">=</span> <span class="s1">&#39;https://&#39;</span> <span class="o">+</span> <span class="nx">luisAPIHostName</span> <span class="o">+</span> <span class="s1">&#39;/luis/v2.0/apps/&#39;</span> <span class="o">+</span> <span class="nx">luisAppId</span> <span class="o">+</span> <span class="s1">&#39;?subscription-key=&#39;</span> <span class="o">+</span> <span class="nx">luisAPIKey</span> <span class="o">+</span> <span class="s1">&#39;&amp;verbose=true&#39;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">recognizer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">builder</span><span class="p">.</span><span class="nx">LuisRecognizer</span><span class="p">(</span><span class="nx">LuisModelUrl</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">intents</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">builder</span><span class="p">.</span><span class="nx">IntentDialog</span><span class="p">({</span> <span class="nx">recognizers</span><span class="o">:</span> <span class="p">[</span><span class="nx">recognizer</span><span class="p">]</span> <span class="p">});</span>
+<span class="nx">bot</span><span class="p">.</span><span class="nx">dialog</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">intents</span><span class="p">);</span>
+</pre></div>
+
+
+<p>To do local development and testing it can be useful to add these variables to a local file as well. If you call this file <code>.env</code> the line below will pick up these environment variables.</p>
+<div class="highlight"><pre><span></span><span class="c1">// This loads the environment variables from the .env file</span>
+<span class="nx">require</span><span class="p">(</span><span class="s1">&#39;dotenv-extended&#39;</span><span class="p">).</span><span class="nx">load</span><span class="p">();</span>
+</pre></div>
+
+
+<p>Remember to add <code>.env</code> to your <code>.gitignore</code> file, otherwise you will expose your access credentials to the github community!</p>
+<h2>Dialogs</h2>
+<p>Dialogs are parts of the conversation between the user and the bot. Dialogs are usually triggered by some input from the user, and at the end of the dialog the control is returned to where it started, similar to a method in object oriented programming. 
+To trigger a dialog with a hard coded keyword you can use this syntax:</p>
+<div class="highlight"><pre><span></span><span class="nx">intents</span><span class="p">.</span><span class="nx">matches</span><span class="p">(</span><span class="sr">/^version/i</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">session</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">session</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Bot version 0.1&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>This means that if a user types <code>version</code> in the chat window, a very short dialog will be triggered which only makes the bot reply with <code>Bot version 0.1</code> to the users session.
+To actually make use of LUIS we can listen for a named LUIS intent, in this case the intent <code>Greet</code>. </p>
+<div class="highlight"><pre><span></span><span class="nx">intents</span><span class="p">.</span><span class="nx">matches</span><span class="p">(</span><span class="s1">&#39;Greet&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">session</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">session</span><span class="p">.</span><span class="nx">beginDialog</span><span class="p">(</span><span class="s1">&#39;/greetUser&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">entities</span><span class="o">:</span><span class="nx">args</span><span class="p">.</span><span class="nx">entities</span><span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<p>In this example the bot begins the <code>/greetUser</code> dialog and forwards the entities that LUIS found in the user utterance to that dialog.
+If find it convenient to factor out dialogs to separate files. This keeps the <code>index.js</code> file small and isolates risks for accidentally disrupting dialogs that should remain untouched. To do this you could create a separate file in a subfolder called <code>dialogs</code> and define the dialog in <code>index.js</code>. </p>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">di_greetUser</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./dialogs/greetUser&#39;</span><span class="p">);</span>
+<span class="nx">bot</span><span class="p">.</span><span class="nx">dialog</span><span class="p">(</span><span class="s1">&#39;/greetUser&#39;</span><span class="p">,</span> <span class="nx">di_greetUser</span><span class="p">.</span><span class="nx">Dialog</span><span class="p">);</span>
+<span class="nx">The</span> <span class="nx">file</span> <span class="nx">containing</span> <span class="nx">the</span> <span class="nx">actual</span> <span class="nx">dialog</span> <span class="nx">could</span> <span class="nx">look</span> <span class="nx">like</span> <span class="nx">the</span> <span class="nx">code</span> <span class="nx">below</span><span class="p">.</span> 
+<span class="kd">var</span> <span class="nx">builder</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;botbuilder&quot;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">botbuilder_azure</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;botbuilder-azure&quot;</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">Label</span><span class="o">:</span> <span class="s1">&#39;Greet user&#39;</span><span class="p">,</span>
+    <span class="nx">Dialog</span><span class="o">:</span> <span class="p">[</span>
+        <span class="kd">function</span> <span class="p">(</span><span class="nx">session</span><span class="p">,</span> <span class="nx">args</span><span class="p">,</span>  <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">builder</span><span class="p">.</span><span class="nx">EntityRecognizer</span><span class="p">.</span><span class="nx">findEntity</span><span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">entities</span><span class="p">,</span> <span class="s1">&#39;User&#39;</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// utterance contained a name, update name if necessary</span>
+                <span class="nx">session</span><span class="p">.</span><span class="nx">privateConversationData</span><span class="p">.</span><span class="nx">username</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">entity</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">session</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">&quot;Hallo %s, es freut mich dass Sie den USR III Chatbot nutzen.&quot;</span><span class="p">,</span> <span class="nx">session</span><span class="p">.</span><span class="nx">privateConversationData</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
+            <span class="nx">session</span><span class="p">.</span><span class="nx">endDialog</span><span class="p">(</span><span class="s2">&quot;Was möcten Sie im Zusammenhang mit der USR III wissen?&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>It sets the user name of the conversation based on the provided LUIS entity if it was provided with the utterance (“Hallo, ich bin Rikard”), otherwise makes use of the user name that the bot already has stored in the conversation data. </p>
+<p>A more complex example is the one below:</p>
+<div class="highlight"><pre><span></span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">Label</span><span class="o">:</span> <span class="s1">&#39;Ask Generic Yes No&#39;</span><span class="p">,</span>
+    <span class="nx">Dialog</span><span class="o">:</span> <span class="p">[</span>
+        <span class="kd">function</span> <span class="p">(</span><span class="nx">session</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">session</span><span class="p">.</span><span class="nx">privateConversationData</span><span class="p">.</span><span class="nx">usr3questions</span><span class="p">[</span><span class="nx">session</span><span class="p">.</span><span class="nx">privateConversationData</span><span class="p">.</span><span class="nx">currentQuestionKey</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">session</span><span class="p">.</span><span class="nx">endDialog</span><span class="p">();</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">builder</span><span class="p">.</span><span class="nx">Prompts</span><span class="p">.</span><span class="nx">choice</span><span class="p">(</span><span class="nx">session</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">prompt</span><span class="p">,</span> <span class="s2">&quot;Ja|Nein&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">listStyle</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">retryPrompt</span><span class="o">:</span> <span class="s2">&quot;I verstehe nicht. Bitte antworten &#39;ja&#39; oder &#39;nein&#39;.&quot;</span><span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">},</span>  
+        <span class="kd">function</span> <span class="p">(</span><span class="nx">session</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">session</span><span class="p">.</span><span class="nx">privateConversationData</span><span class="p">.</span><span class="nx">usr3questions</span><span class="p">[</span><span class="nx">session</span><span class="p">.</span><span class="nx">privateConversationData</span><span class="p">.</span><span class="nx">currentQuestionKey</span><span class="p">]</span> <span class="o">=</span> <span class="nx">results</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">entity</span> <span class="o">==</span> <span class="s2">&quot;Ja&quot;</span><span class="p">;</span>
+                <span class="nx">session</span><span class="p">.</span><span class="nx">endDialog</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>The first part checks if the bot has already asked this question. If it has it will end the dialog prematurely to avoid asking for information that was already provided by the user. The second part asks a yes or no question, and the final part waits for a user response and stores this in the conversation data as a binary value. This example makes use of dictionaries to avoid copying the same code over and over, with the only difference in how the question is phrased and the variable where the answer is stored.</p>
+<h2>Dictionaries</h2>
+<p>Dictionaries are a great way to keep the code clean and to get input from contributors who do not have programming experience. In the example above about a generic yes/no question a dialog can be as simple as this:</p>
+<div class="highlight"><pre><span></span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">someQuestion</span><span class="o">:</span> <span class="s2">&quot;Do you understand this tutorial?&quot;</span><span class="p">,</span>
+    <span class="nx">anotherQuestion</span><span class="o">:</span> <span class="s2">&quot;I have chocolate, want some?&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Since it is using JSON syntax it can also contain arrays of synonyms, links to hero card images etc. </p>
+<div class="highlight"><pre><span></span><span class="s2">&quot;Unternehmenssteuerreform III&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;synonyms&quot;</span><span class="o">:</span> <span class="p">[</span>
+            <span class="s2">&quot;USR III&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Unternehmenssteuerreform III&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;USR3&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;longText&quot;</span><span class="o">:</span> <span class="s2">&quot;Mit der USR III soll die ermässigte Besteuerung von Holding-, Domizil- und gemischten Gesellschaften abgeschafft werden. Diese steht nicht mehr im Einklang mit internationalen Standards. Um einen Wettbewerbsverlust der Schweiz zu verhindern, sollen international akzeptierte steuerliche Entlastungsmassnahmen eingeführt werden. Im Vordergrund steht dabei die Förderung von Innovationen. Auch wird der Bund die von den Kantonen beabsichtigten Gewinnsteuersenkungen mittragen.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cards&quot;</span><span class="o">:</span> <span class="p">[</span>
+            <span class="s2">&quot;USR III HL.jpg&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Zweck USR III HL.jpg&quot;</span>
+        <span class="p">]</span>
+<span class="p">},</span>
+</pre></div>
+
+
+<h2>Storing the data</h2>
+<p>Asking a lot of information from the users should eventually lead to some action from our side. For this purpose we are storing the data in an Azure table.</p>
+<p>First we add the storage account and key to the settings in the Azure portal, just like we already did for the LUIS authentication. The variables should be called <code>AZURE_STORAGE_ACCOUNT</code> and <code>AZURE_STORAGE_ACCESS_KEY</code> and their values can be copied from the corresponding storage account blade in the Azure portal.
+<img alt="Accessing Azure storage" width="98%" src="/images/azureStorageAccess.png" /></p>
+<p>To make the bot use the table storage you can add the following to the bot code.</p>
+<div class="highlight"><pre><span></span><span class="c1">// Connection to a remote Azure Table Storage</span>
+<span class="kd">var</span> <span class="nx">tableName</span> <span class="o">=</span> <span class="s1">&#39;MyBotStore&#39;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">tableSvc</span> <span class="o">=</span> <span class="nx">azure</span><span class="p">.</span><span class="nx">createTableService</span><span class="p">();</span>
+<span class="nx">tableSvc</span><span class="p">.</span><span class="nx">createTableIfNotExists</span><span class="p">(</span><span class="nx">tableName</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">response</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">error</span><span class="p">){</span>
+        <span class="c1">// Table exists or created</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+<span class="kd">var</span> <span class="nx">entGen</span> <span class="o">=</span> <span class="nx">azure</span><span class="p">.</span><span class="nx">TableUtilities</span><span class="p">.</span><span class="nx">entityGenerator</span><span class="p">;</span>
+</pre></div>
+
+
+<p>At some point you want to add the conversation data as a new row in the table, where each column contains some detail about the conversation, e.g., the user’s answer to the questions.</p>
+<div class="highlight"><pre><span></span><span class="kd">function</span><span class="p">(</span><span class="nx">session</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">row</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">someQuestion</span><span class="o">:</span> <span class="nx">entGen</span><span class="p">.</span><span class="nb">String</span><span class="p">(</span><span class="nx">session</span><span class="p">.</span><span class="nx">privateConversationData</span><span class="p">.</span><span class="nx">someQuestion</span><span class="p">),</span>
+        <span class="nx">anotherQuestion</span><span class="o">:</span> <span class="nx">entGen</span><span class="p">.</span><span class="nb">String</span><span class="p">(</span><span class="nx">session</span><span class="p">.</span><span class="nx">privateConversationData</span><span class="p">.</span><span class="nx">anotherQuestion</span><span class="p">),</span>
+    <span class="p">};</span>
+    <span class="nx">tableSvc</span><span class="p">.</span><span class="nx">insertEntity</span><span class="p">(</span><span class="nx">tableName</span><span class="p">,</span> <span class="nx">row</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">error</span><span class="p">){</span>
+            <span class="c1">// Entity inserted</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Successfully inserted contact details&quot;</span><span class="p">);</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">row</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Could not insert contact details&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>Testing and debugging</h2>
+<p>It is slow to develop the bot by editing some code, push the changes to the remote repository and wait for the bot service to update and restart with the new changes. It can also be quite hard to understand what is causing bugs if you do not employ any proper debugging functionality. Luckily Visual Studio Code does this quite simple.
+I prefer to start the bot from a terminal window with the debugging enabled.</p>
+<p><code>node --debug-brk=5858 --nolazy index.js</code></p>
+<p><img alt="Accessing Azure storage" width="98%" src="/images/botdebug.png" /></p>
+<p>Next attach the debugger of the IDE to the process. Add some breakpoints, watched expressions etc, and you should find the source of the bug in no time. To test the bot you can either use the terminal window directly if you use the ConsoleConnector, or you could use the <a href="https://docs.botframework.com/en-us/tools/bot-framework-emulator/">Bot Framework Emulator</a> if you want a user experience closer to reality. A third way to test the bot locally is to set up a web connector to the bot from a local html file and host it on your own computer, for example with:</p>
+<p><code>python –m SimpleHTTPServer 8000</code></p>
+<h2>What is next?</h2>
+<p>In this post we used the Microsoft Bot Framework to pull the pieces together which we set up in the first post in this mini-series. By writing some node.js code we started capturing user intents and triggered actions through dialogs. We also save the important conversation data to an external storage and made a small introduction into how to find out what is wrong if the bot does not behave as intended. </p>
+<p>The last part is hosting the bot and making it accessible to your users. This will be covered in the third and last blog post in this series.</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "chatbotJS.html";
+        var disqus_url = "https://rsandstroem.github.io/chatbotJS.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//data-scientist-blog.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://ch.linkedin.com/in/rikard-sandström-a0b3229">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme <a href="https://github.com/blueicefield/pelican-blueidea/">blueidea</a>, inspired by the default theme.</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'data-scientist-blog';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

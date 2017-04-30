@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Data Scientist Blog - natural language processing</title>
+        <link rel="stylesheet" href="https://rsandstroem.github.io/theme/css/main.css" />
+        <link href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Data Scientist Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="https://github.com/rsandstroem/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="https://rsandstroem.github.io/">Data Scientist Blog </a></h1>
+                <nav><ul>
+    
+                        <li><a href="https://rsandstroem.github.io/pages/about.html">about</a></li>
+                    <li><a href="https://rsandstroem.github.io/category/posts.html">posts</a></li>
+                </ul>
+                </nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://rsandstroem.github.io/chatbotNLP.html">Building a chat bot - first steps</a></h1>
+<footer class="post-info">
+        <span>Die 28 März 2017</span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/chat-bot.html">chat bot</a><a href="https://rsandstroem.github.io/tag/natural-language-processing.html">natural language processing</a></span>
+</footer><!-- /.post-info --><h2>Introduction</h2>
+<p>In conjunction with a public referendum I was given the task to create an intelligent chat bot. The chat bot could understand what the user wanted to know and provide the answers that our subject matter experts had prepared. This post describes the first step of setting up such a chat bot.</p>
+<h2>Overview</h2>
+<p>The chat bot was built from a number of different components. While there are many options available online, I decided to do it all using Microsoft tools, and host all components on the Microsoft Azure cloud.</p>
+<ul>
+<li>The bot is centered on the Bot Service, which is using Microsoft Bot Framework (https://dev.botframework.com/). </li>
+<li>The user communicates with the bot through a web interface, which I decided to host on Azure as Web App, but could really be a corporate website or another chat connector such as Skype, Slack or Facebook Messenger. </li>
+<li>To understand what the user is saying messages are being sent from the Bot Service to LUIS, which is part of Microsoft’s Cognitive Services APIs. LUIS replies to the bot with recognized “Intents” and “Entities”.</li>
+<li>Information that we decide to store for further use is stored on a rather simple Azure Table and can be queried from another program.</li>
+</ul>
+<p><img alt="High level bot architecture" width="98%" src="/images/botOverview.png" /></p>
+<h2>Natural Language Processing</h2>
+<p>The Natural Language Processing is using the <a href="https://www.luis.ai/">LUIS framework</a>, Language Understanding Intelligent Service. </p>
+<p>After signing in you will find yourself on the “My Applications” page. These applications are essentially the models that you create for making the bot understand natural language. To create a new application click the “+ New App” icon in the top left and fill in the details. Do not forget to set the language culture. I choose German language in this case.</p>
+<p>In the main window you will find a left pane containing your Intents and Entities, and the center part of the screen is dedicated for dealing with Utterances. </p>
+<ul>
+<li>An intent is the recognition that the user want the bot to take some form of action. For example, if the user says “Help” you probably want the bot to display instructions.</li>
+<li>An entity is a part of the sentence that you want the bot to make use of in the conversation. It can be a name, a location, a date etc.</li>
+<li>An utterance is something that a user provided as input. The goal of our implementation of LUIS is to turn Utterances to Intents and Entities.</li>
+</ul>
+<p><img alt="LUIS interface" width="98%" src="/images/luisInterface.png" /></p>
+<p>In the screenshot above the utterance is a question about what effects the new tax reform will have on my Zurich based company. The utterance is a good match to the intent “EffectsOfUSR3”, and if you think it should rather be matched to another intent you can change it in the drop-down menu. </p>
+<p>The coloring of the text indicate recognized entities, where orange is intents of type Topic, and yellow is Kanton. The advantage of this recognition is that the bot does not need to ask questions about information that the user already provided. In this case, it would be awkward if the bot responded by asking which canton the company is located in, since the user already provided that information in the question. If you have entities that consist of multiple words it can be convenient to create composite entities to ensure that LUIS is capturing the whole string of words.</p>
+<h3>Training and publishing the model</h3>
+<p>When you are done with adding Intents and Entities and teaching LUIS how they should be used given an utterance, you should train the model. Click the recycle icon in the bottom left and wait for the training to finish.
+To enable the bot to make use of the newly trained model you need to publish it. Click “Publish”, directly above “Intents” and update the published application. </p>
+<p>If you want to debug your model you might find the verbose output to be helpful. Type in the utterance you want to test and click the URL. This will provide you with the JSON response, which is also what your bot will see as a reply from LUIS.</p>
+<p>One thing to note here is the URL contains the subscription details of the language model. You will need this information in the subsequent steps.</p>
+<p>Last but not least the “App settings” menu item contains the subscription key to the Cognitive Services API. You can work with the free model, but I find the paid subscription to be cheap. You can buy a key directly from the blue link in this window, it will take you to the <a href="https://portal.azure.com">Azure portal</a>.</p>
+<h2>Creating the bot service</h2>
+<p>With the LUIS language understanding up and running it is time to create the bot service that will talk to LUIS. We choose to stick to the Microsoft product stack, and use their <a href="https://dev.botframework.com">Bot Framework</a>.</p>
+<p>You can create the bot service through the <a href="https://portal.azure.com">Azure Portal</a>. Click the green plus in the top left corner and search for “Bot Service”.</p>
+<p><img alt="Bot creation" width="98%" src="/images/botCreationPortal.png" /></p>
+<p>After creating the bot with appropriate name, resource group etc you will be prompted for the App ID for the bot. </p>
+<p><img alt="Bot service created" width="98%" src="/images/botServiceCreated.png" /></p>
+<p>If you followed these instructions up to now you do not yet have an App ID, so go ahead and click the blue button to create one. This will take you to the registration portal for the bot, where you get assigned the App ID and a password. Make sure to copy password since you will never see it again!</p>
+<p><img alt="Bot registration" width="98%" src="/images/botRegistry.png" /></p>
+<p>With this completed you will be taken back to the Azure portal, where you paste in the password you just copied. </p>
+<p>Select if you want to use C# or node.js as programming language for the bot. In this case I choose to use node.js. The choice of template does not really matter, you will anyway modify that code later.</p>
+<p>After creating the bot you need to wait a few minutes before you are taken to a page similar to the one below:</p>
+<p><img alt="Bot editing from portal" width="98%" src="/images/botEditingAzurePortal.png" /></p>
+<p>With this view you can already edit your bot (center pane) and test the bot by chatting with it using the chat window on the right.</p>
+<h2>Linking the bot service with LUIS</h2>
+<p>So far the bot and LUIS have no relation with each other. To change that click on the “Settings” tab, and open “Application settings”. Scroll down and you will find a list of key-value pairs. </p>
+<p><img alt="Bot application settings" width="98%" src="/images/botApplicationSettings.png" /></p>
+<p>Enter the LuisAppId, LuisAPIKey and LusiAPIHostName as this example shows. The values associated to these keys can be extracted from the URL in “Publish” section of the LUIS model.</p>
+<h2>Code repository</h2>
+<p>Rather than editing the bot within the Azure portal I strongly recommend linking the bot service to a code repository. This allows version control, release management and other standard software engineering practices. </p>
+<p>Still on the “Settings” tab, click on “Configure” next to “Continuous integration”. Follow the steps show in the portal, i.e., download the code, create a repository etc. Then click on “Set up integration source”, followed by “Setup” in the top row. Choose you repository, e.g., GitHub and provide the configuration details. </p>
+<p><img alt="Bot application settings" width="98%" src="/images/setupGitIntegration.png" /></p>
+<p>When happy click “OK”. Wait a few minutes and the portal should automatically pull in the code from the repository and redeploy the bot.</p>
+<h2>What is next</h2>
+<p>In this blog post we have seen the different components of the blog and how they work together. However, the bot is not currently doing anything. For that we need to write some code. This topic will be covered in the next blog post.</p><p><a href="https://rsandstroem.github.io/chatbotNLP.html#disqus_thread">comments</a></p>                </article>
+            </aside><!-- /#featured -->
+            </ol><!-- /#posts-list -->
+            </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://ch.linkedin.com/in/rikard-sandström-a0b3229">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme <a href="https://github.com/blueicefield/pelican-blueidea/">blueidea</a>, inspired by the default theme.</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'data-scientist-blog';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
