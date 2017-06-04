@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Building a chat bot - hosting</title>
+        <link rel="stylesheet" href="https://rsandstroem.github.io/theme/css/main.css" />
+        <link href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Data Scientist Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="https://github.com/rsandstroem/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="https://rsandstroem.github.io/">Data Scientist Blog </a></h1>
+                <nav><ul>
+    
+                        <li><a href="https://rsandstroem.github.io/pages/about.html">about</a></li>
+                    <li class="active"><a href="https://rsandstroem.github.io/category/posts.html">posts</a></li>
+                </ul>
+                </nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://rsandstroem.github.io/chatbotHosting.html" rel="bookmark"
+           title="Permalink to Building a chat bot - hosting">Building a chat bot - hosting</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <span>Son 04 Juni 2017</span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/chat-bot.html">chat bot</a><a href="https://rsandstroem.github.io/tag/azure.html">azure</a></span>
+</footer><!-- /.post-info -->      <h2>Introduction</h2>
+<p>In conjunction with a public referendum I was given the task to create an intelligent chat bot. The chat bot could understand what the user wanted to know and provide the answers our subject matter experts had prepared. This post describes you can give users access to the bot by hosting it at a web service. It also describes how to add more developers to the project. The post assumes that you have already read the <a href="chatbotNLP.html">first post</a> and <a href="chatbotJS">second post</a> on this topic.</p>
+<h2>Hosting the bot</h2>
+<p>All the prior work would be in vain if we did not give our users a way to interact with the bot. Luckily, this is the easiest step in creating a chat bot, and where the strengths of the Microsof Bot Framework are are real advantaged. To set up some communication channels, log in at https://dev.botframework.com and select the bot in question under the “My Bots” tab. </p>
+<p><img alt="Setting up communication channels for the bot" width="98%" src="/images/botChannels.png" /></p>
+<p>Here you see active channels and you can add others as well, for example Facebook Messenger. Having an easy way to deploy the same bot in multiple channels removes a lot of duplicate work. Very convenient! Getting the bot to work with Skype is simple, just follow the instructions, add the bot as a Skype contact and start chatting with your bot.</p>
+<h3>Web Chat channel</h3>
+<p>Let’s set up the Web Chat! Click on “Edit” and it will give this page:</p>
+<p><img alt="Configuring web chat" width="98%" src="/images/webChatConfig.png" /></p>
+<p>Generate a secret key and replace the “YOUR_SECRET_HERE” with the generated key. All you need to do is to add that iframe line to a webpage and a chat window should magically appear on the page. Web design is outside the scope of this blog, so you probably should look for documentation elsewhere, or hand the iframe code snippet to your online customer relations team. The page where you decide to host it can be any page connected to the Internet, for example a public corporate page or a privately hosted website.</p>
+<h3>Hosting as a Web Chat on an Azure</h3>
+<p>You can of course also host the webpage containing the bot on Azure. If you want to host it on Azure you can create a new App Service in the portal and configure it as you deem appropriate, taking expected traffic into account. The web app will be available at <code>http://[web app name].azurewebsites.net.</code></p>
+<p><img alt="Configuring Azure web app" width="98%" src="/images/azureWebApp.png" /></p>
+<p>You should now have a place to host the bot, but you are not yet telling your new Azure website what it should show the world. To add the html file containing the chat window to this new site you can access the cloud folder structure using the FTP username and hostname that the Azure portal provides (see screenshot above). If you are using Ubuntu like me, you can access this directly with the “Files” program, no third party tools necessary. If not a search engine should help you find a suitable tool without much problem. Once you have opened the remote folder, please put the html file in <code>site/wwwroot/</code>. You should be able to access the page from the url that you specified when creating the app service, e.g., <code>http://[web app name].azurewebsites.net/[page name].html</code>.</p>
+<h2>Add more contributors</h2>
+<p>It is possible to add more contributors to your bot if they are in the same Azure Active Directory. To do so head over to <a href="https://dev.botframework.com">https://dev.botframework.com</a>, select your bot and click “Edit” in the “Details” box. </p>
+<p><img alt="Administrating the bot framework" width="98%" src="/images/botAdministration.png" /></p>
+<p>At the bottom of this page you will find an “Admin” box. Additional admins can be added if they are separated by “,” without any adjacent spaces.</p>
+<p>For LUIS however, we are not so lucky. By the time I set up LUIS it was not possible to have more than one person contributing to the Language Understanding. I discussed this with Microsoft directly who mentioned that I was not the first person requesting this feature, so this situation could change. To circumvent this limitation we resorted to create a joint email account which we used for configuring LUIS.</p>
+<h2>Summary</h2>
+<p>In this post we have seen how we can make the bot available to users through many different channels, a process made easier by using the Microsoft Bot Framework. A concrete example on how to integrate the bot with a web page and host it on Azure was given. Finally, the post provided some help on how to add more developers to the project.</p>
+<p>If you have comments, questions or suggestions please leave a note below!</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "chatbotHosting.html";
+        var disqus_url = "https://rsandstroem.github.io/chatbotHosting.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//data-scientist-blog.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://ch.linkedin.com/in/rikard-sandström-a0b3229">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme <a href="https://github.com/blueicefield/pelican-blueidea/">blueidea</a>, inspired by the default theme.</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'data-scientist-blog';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
