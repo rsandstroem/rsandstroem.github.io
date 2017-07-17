@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Data Scientist Blog - gpu</title>
+        <link rel="stylesheet" href="https://rsandstroem.github.io/theme/css/main.css" />
+        <link href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Data Scientist Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="https://github.com/rsandstroem/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="https://rsandstroem.github.io/">Data Scientist Blog </a></h1>
+                <nav><ul>
+    
+                        <li><a href="https://rsandstroem.github.io/pages/about.html">about</a></li>
+                    <li><a href="https://rsandstroem.github.io/category/posts.html">posts</a></li>
+                </ul>
+                </nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://rsandstroem.github.io/gpuDeepLearningWindows.html">GPU Accelerated Deep Learning on Windows</a></h1>
+<footer class="post-info">
+        <span>Mon 17 Juli 2017</span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/gpu.html">gpu</a><a href="https://rsandstroem.github.io/tag/deep-learning.html">deep learning</a><a href="https://rsandstroem.github.io/tag/machine-learning.html">machine learning</a><a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/installation.html">installation</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
+</footer><!-- /.post-info --><p>My business case involved running GPU accelerated deep learning jobs on a set of local desktops, and was looking for installation instructions to provide the administrators. Since nearly all installation instructions assume that the operating system is Linux, I decided to write my own instructions for Windows, which I share with you. I hope you find these instructions useful.</p>
+<h2>Introduction</h2>
+<p>The computers at my workplace are all running some version of Microsoft Windows. While that makes perfect sense in a Business Intelligence context, it unusual for a Data Science setup. </p>
+<p>My business case involved running GPU accelerated deep learning jobs on a set of local desktops, and was looking for installation instructions to provide the administrators. Since nearly all installation instructions assume that the operating system is Linux, I decided to write my own instructions for Windows, which I share with you. </p>
+<p>The tool stack is based on two popular open source deep learning libraries which we will access through a python API. </p>
+<p>The instructions were tested on a Dell XPS 15, equipped with a NVidia GTX 1050, running Windows 10, while the production machines are equipped with much more powerful hardware from the same generation. I hope you find these instructions useful, please leave comments and questions below the article.</p>
+<h2>Anaconda</h2>
+<p>The foundation for machine learning in python consists of commonly used packages such as numpy and scipy. Luckily <a href="https://www.continuum.io/downloads">Anaconda</a> from Continuum contains most of what we need. While Anaconda does not itself contain any deep learning libraries, it bundles <a href="http://scikit-learn.org/stable">scikit-learn</a>, which is a great resource for traditional machine learning in python.</p>
+<p>There are python 2.x and 3.x versions of Anaconda, as well as 32-bit and 64-bit versions. <em>Due to that Tensorflow only supports python 3.5 on Windows we want to install 64-bit version of Anaconda for python 3.x.</em></p>
+<h2>CUDA Toolkit</h2>
+<p>To run the deep learning on GPU we need some CUDA libraries and tools. Follow the <a href="http://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/#axzz4ilSOohuu">instructions to install CUDA Toolkit on Windows</a>.</p>
+<p>We need CUDA Toolkit v8.0. Select the correct version of Windows and <a href="https://developer.nvidia.com/cuda-downloads">download the installer</a>.</p>
+<p><img alt="CUDA Toolkit" width="98%" src="/images/cudaToolkit.png"/></p>
+<p>By default the toolkit will be installed in <code>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0</code>.
+Once installed, <a href="https://www.howtogeek.com/118594/how-to-edit-your-system-path-for-easy-command-line-access/">add the installation folder to the system <code>%PATH%</code> variable</a>.</p>
+<h2>cuDNN</h2>
+<p>Next we need the NVIDIA CUDA® Deep Neural Network library <a href="https://developer.nvidia.com/cudnn">cuDNN</a>.
+To access it you need to create an account, if you do not have one already, and log in with your NVidia Developer credentials. 
+<em>We need cuDNN 5.1 for the CUDA Toolkit version we just installed earlier, i.e., 8.0.</em>
+<img alt="cuDNN" width="98%" src="/images/cuDNN.png"/>
+Once downloaded, simply copy the files to folder where you installed the CUDA Toolkit. If you followed these instructions you should already have the system <code>%PATH%</code> pointing to this folder so you are good to go. </p>
+<p>Reboot the machine before going to the next steps.</p>
+<h2>Tensorflow</h2>
+<p>Finally we are ready to install Google's deep learning framework, Tensorflow. Since we are going to use GPU accelerated learning follow the <a href="https://www.tensorflow.org/install/install_windows">GPU specific instructions</a>.
+Before you get started, however, I found this method the easiest to obtain reliable installation results:</p>
+<div class="highlight"><pre><span></span>conda create --name deeplearning <span class="nv">python</span><span class="o">=</span>3.5 
+activate deeplearning<span class="o">(</span>deeplearning<span class="o">)</span>C:&gt; pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/windows/gpu/tensorflow_gpu-1.1.0-cp35-cp35m-win_amd64.whl
+</pre></div>
+
+
+<p>This will set up our existing Anaconda installation to use python 3.5 and install tensorflow into this new environment. The environment "deeplearning" can of course be called anything else, just remember your choice since you will need to activate this environment every time that you want to use Tensorflow.</p>
+<p>To test if the installation was successful open a python prompt or jupyter notebook and run a hello world script:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<span class="n">hello</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;Hello Tensorflow!&#39;</span><span class="p">)</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">hello</span><span class="p">)</span>
+</pre></div>
+
+
+<h2>Theano</h2>
+<p>While we are at it, lets also install the Theano deep learning framework. Please read the <a href="http://www.deeplearning.net/software/theano/install_windows.html">instructions for Theano installation on Windows</a>.</p>
+<p>Set up an environment with conda just like we did for Tensorflow. I recommend to avoid reusing the same environment that we set up for Tensorflow, since they currently require conflicting versions of SciPy.</p>
+<div class="highlight"><pre><span></span>conda create --name theano <span class="nv">python</span><span class="o">=</span>3.5
+activate theano
+</pre></div>
+
+
+<p><img alt="Theano env" width="98%" src="/images/theanoCondaEnv.png"/></p>
+<p>Next we need to get some classical linux compilers like gcc, so start with the following command from within the environment (<code>activate theano</code>).</p>
+<div class="highlight"><pre><span></span>conda install m2w64-toolchain
+</pre></div>
+
+
+<p>Theano can run without this, but you will pay a performance penalty and get this angry warning every time you import theano:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">theano</span>
+<span class="n">WARNING</span> <span class="p">(</span><span class="n">theano</span><span class="o">.</span><span class="n">configdefaults</span><span class="p">):</span> <span class="n">g</span><span class="o">++</span> <span class="ow">not</span> <span class="n">available</span><span class="p">,</span> <span class="k">if</span> <span class="n">using</span> <span class="n">conda</span><span class="p">:</span> <span class="sb">`conda install m2w64-toolchain`</span>
+<span class="n">WARNING</span> <span class="p">(</span><span class="n">theano</span><span class="o">.</span><span class="n">configdefaults</span><span class="p">):</span> <span class="n">g</span><span class="o">++</span> <span class="ow">not</span> <span class="n">detected</span> <span class="err">!</span> <span class="n">Theano</span> <span class="n">will</span> <span class="n">be</span> <span class="n">unable</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">optimized</span> <span class="n">C</span><span class="o">-</span><span class="n">implementations</span> <span class="p">(</span><span class="k">for</span> <span class="n">both</span> <span class="n">CPU</span> <span class="ow">and</span> <span class="n">GPU</span><span class="p">)</span> <span class="ow">and</span> <span class="n">will</span> <span class="n">default</span> <span class="n">to</span> <span class="n">Python</span> <span class="n">implementations</span><span class="o">.</span> <span class="n">Performance</span> <span class="n">will</span> <span class="n">be</span> <span class="n">severely</span> <span class="n">degraded</span><span class="o">.</span> <span class="n">To</span> <span class="n">remove</span> <span class="n">this</span> <span class="n">warning</span><span class="p">,</span> <span class="nb">set</span> <span class="n">Theano</span> <span class="n">flags</span> <span class="n">cxx</span> <span class="n">to</span> <span class="n">an</span> <span class="n">empty</span> <span class="n">string</span><span class="o">.</span>
+</pre></div>
+
+
+<p>Once the compilers are installed, go ahead and install theano using conda:</p>
+<div class="highlight"><pre><span></span>conda install theano pygpu
+</pre></div>
+
+
+<p><img alt="Theano installation using conda" width="98%" src="/images/theanoCondaInstall.png"/></p>
+<p>Now run a little python program to see if the installation is OK:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">theano</span> <span class="kn">import</span> <span class="n">function</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dscalar</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dscalar</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">function</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span>
+<span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+
+<p><code>array(5.0)</code></p>
+<h2>Keras</h2>
+<p>Finally install <a href="https://keras.io/#installation">Keras</a>, which provides a convenient interface to both Tensorflow and Theano.</p>
+<div class="highlight"><pre><span></span>pip install keras
+</pre></div>
+
+
+<p>To switch between Tensorflow and Theano follow the <a href="https://keras.io/backend/">instructions</a>. </p>
+<p>Keras will inform you which backend it is using when you import it in python:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">keras</span>
+<span class="n">Using</span> <span class="n">TensorFlow</span> <span class="n">backend</span><span class="o">.</span>
+</pre></div>
+
+
+<h2>What is next?</h2>
+<p>This blog post gave end-to-end instructions on setting up a Windows machine for GPU-accelerated deep learning with python. In a later article I will show how to take advantage of this setup to solve some real world problems. </p>
+<p>If you do not yet have the hardware for running deep learning on a GPU, I warmly recommend reading <a href="http://timdettmers.com/2017/04/09/which-gpu-for-deep-learning/">Tim Dettmer's blog</a> on that topic before going shopping.</p><p><a href="https://rsandstroem.github.io/gpuDeepLearningWindows.html#disqus_thread">comments</a></p>                </article>
+            </aside><!-- /#featured -->
+            </ol><!-- /#posts-list -->
+            </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://rsandstroem.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://ch.linkedin.com/in/rikard-sandström-a0b3229">LinkedIn</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme <a href="https://github.com/blueicefield/pelican-blueidea/">blueidea</a>, inspired by the default theme.</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'data-scientist-blog';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
