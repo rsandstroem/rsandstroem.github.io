@@ -70,7 +70,7 @@ Once downloaded, simply copy the files to folder where you installed the CUDA To
 <h2>Tensorflow</h2>
 <p>Finally we are ready to install Google's deep learning framework, Tensorflow. Since we are going to use GPU accelerated learning follow the <a href="https://www.tensorflow.org/install/install_windows">GPU specific instructions</a>.
 Before you get started, however, I found this method the easiest to obtain reliable installation results:</p>
-<div class="highlight"><pre><span></span>conda create --name deeplearning <span class="nv">python</span><span class="o">=</span>3.5 
+<div class="highlight"><pre><span></span>conda create --name deeplearning <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5 
 activate deeplearning<span class="o">(</span>deeplearning<span class="o">)</span>C:&gt; pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/windows/gpu/tensorflow_gpu-1.1.0-cp35-cp35m-win_amd64.whl
 </pre></div>
 
@@ -87,7 +87,7 @@ activate deeplearning<span class="o">(</span>deeplearning<span class="o">)</span
 <h2>Theano</h2>
 <p>While we are at it, lets also install the Theano deep learning framework. Please read the <a href="http://www.deeplearning.net/software/theano/install_windows.html">instructions for Theano installation on Windows</a>.</p>
 <p>Set up an environment with conda just like we did for Tensorflow. I recommend to avoid reusing the same environment that we set up for Tensorflow, since they currently require conflicting versions of SciPy.</p>
-<div class="highlight"><pre><span></span>conda create --name theano <span class="nv">python</span><span class="o">=</span>3.5
+<div class="highlight"><pre><span></span>conda create --name theano <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5
 activate theano
 </pre></div>
 
@@ -210,39 +210,6 @@ activate theano
     Can we predict the energy consumption using weather reports? After all, home owners need to heat their homes more on a cold winter day than on a sunny day in October.
                 <a class="readmore" href="https://rsandstroem.github.io/building-a-data-lake-1-weather-and-time.html">read more</a>
 <p><a href="https://rsandstroem.github.io/building-a-data-lake-1-weather-and-time.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/weathertime.html" rel="bookmark"
-                           title="Permalink to Building a data lake 1: Weather and time">Building a data lake 1: Weather and time</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Sam 20 August 2016</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/api.html">api</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
-</footer><!-- /.post-info -->                
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>I am currently building a data lake which will be used to improve operations at an energy company using machine learning. Among the many interesting topics the following are prioritized:</p>
-<ul>
-<li>Can we predict the energy production of hydroelectric, solar and wind power plants? </li>
-<li>Can we predict the energy consumption using weather reports? After all, home owners need to heat their homes more on a cold winter day than on a sunny day in October.</li>
-                <a class="readmore" href="https://rsandstroem.github.io/weathertime.html">read more</a>
-<p><a href="https://rsandstroem.github.io/weathertime.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">

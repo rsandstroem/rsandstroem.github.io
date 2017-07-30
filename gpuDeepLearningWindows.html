@@ -89,7 +89,7 @@ Once downloaded, simply copy the files to folder where you installed the CUDA To
 <h2>Tensorflow</h2>
 <p>Finally we are ready to install Google's deep learning framework, Tensorflow. Since we are going to use GPU accelerated learning follow the <a href="https://www.tensorflow.org/install/install_windows">GPU specific instructions</a>.
 Before you get started, however, I found this method the easiest to obtain reliable installation results:</p>
-<div class="highlight"><pre><span></span>conda create --name deeplearning <span class="nv">python</span><span class="o">=</span>3.5 
+<div class="highlight"><pre><span></span>conda create --name deeplearning <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5 
 activate deeplearning<span class="o">(</span>deeplearning<span class="o">)</span>C:&gt; pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/windows/gpu/tensorflow_gpu-1.1.0-cp35-cp35m-win_amd64.whl
 </pre></div>
 
@@ -106,7 +106,7 @@ activate deeplearning<span class="o">(</span>deeplearning<span class="o">)</span
 <h2>Theano</h2>
 <p>While we are at it, lets also install the Theano deep learning framework. Please read the <a href="http://www.deeplearning.net/software/theano/install_windows.html">instructions for Theano installation on Windows</a>.</p>
 <p>Set up an environment with conda just like we did for Tensorflow. I recommend to avoid reusing the same environment that we set up for Tensorflow, since they currently require conflicting versions of SciPy.</p>
-<div class="highlight"><pre><span></span>conda create --name theano <span class="nv">python</span><span class="o">=</span>3.5
+<div class="highlight"><pre><span></span>conda create --name theano <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5
 activate theano
 </pre></div>
 

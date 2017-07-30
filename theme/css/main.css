@@ -134,7 +134,7 @@ aside, nav, article, figure {
 }
 
 /***** Layout *****/
-.body {clear: both; margin: 0 auto; width: 1100px;}
+.body {clear: both; margin: 0 auto; width: 1200px;}
 img.right, figure.right {float: right; margin: 0 0 2em 2em;}
 img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 
@@ -172,13 +172,13 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 		margin: 0 auto 2em auto;
 		padding: 0;
 		text-align: center;
-		width: 1100px;
+		width: 1200px;
 		border-radius: 5px;
 		-moz-border-radius: 5px;
 		-webkit-border-radius: 5px;
 	}
 	
-	#banner nav ul {list-style: none; margin: 0 auto; width: 1100px;}
+	#banner nav ul {list-style: none; margin: 0 auto; width: 1200px;}
 	#banner nav li {float: left; display: inline; margin: 0;}
 	
 	#banner nav a:link, #banner nav a:visited {
@@ -239,7 +239,7 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 		margin: -2.3em auto 2em auto;
 		padding: 0px;
 		text-align: center;
-		width: 1090px;
+		width: 1190px;
 	}
 	#banner #submenu ul {clear: both; list-style: none; margin: 0;}
 	#banner #submenu li {float: left; display: inline; margin: 0;}
@@ -280,7 +280,7 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 	margin-bottom: 2em;
 	overflow: hidden;
 	padding: 20px;
-	width: 1060px;
+	width: 1160px;
 	
 	border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -309,7 +309,7 @@ img.left, figure.left {float: left; margin: 0 2em 2em 0;}
 	/*margin-bottom: 2em;*/
 	overflow: hidden;
 	padding: 20px 20px;
-	width: 1060px;
+	width: 1160px;
 	
 	border-radius: 10px 10px 0 0;
 	-moz-border-radius: 10px 10px 0 0;
