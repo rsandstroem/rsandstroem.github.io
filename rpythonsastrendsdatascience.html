@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Data Scientist Blog - posts</title>
+        <title>Which is the most popular language for data science in 2017?</title>
         <link rel="stylesheet" href="https://rsandstroem.github.io/theme/css/main.css" />
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script>
@@ -26,6 +26,25 @@
         <!--[if IE]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+                <meta property="og:title" content="Which is the most popular language for data science in 2017?" />
+                <meta property="og:type" content="article" />
+                <meta property="og:url" content="https://rsandstroem.github.io/rpythonsastrendsdatascience.html" />
+                <meta property="og:description" content="Which is the most popular language for data science in 2017? While performing a market analysis for a business case I looked at some trends in the field, and made a quick query to answer the above question &#34;for fun&#34;. Since the result was both striking and rather unexpected I decided to share it with you in this blog post. (Plus, it gave me an excuse to add support for Bokeh" />
+                <meta property="og:locale" content="" />
+                <meta property="og:site_name" content="Data Scientist Blog" />
+                <meta property="article:published_time" content="2017-08-20" />
+                <meta property="article:section" content="posts" />
+                <meta property="article:tag" content="r" />
+                <meta property="article:tag" content="python" />
+                <meta property="article:tag" content="sas" />
+                <meta property="article:tag" content="data science" />
+ 
+                <link rel='stylesheet' href='https://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.css' type="text/css">
+                <script src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.js" type="text/javascript"></script>
+                <script type="text/javascript">
+                    Bokeh.set_log_level("info");
+                </script>
+ 
 
 </head>
 
@@ -42,15 +61,19 @@
                 </ul>
                 </nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://rsandstroem.github.io/rpythonsastrendsdatascience.html" rel="bookmark"
+           title="Permalink to Which is the most popular language for data science in 2017?">Which is the most popular language for data science in 2017?</a></h1>
+    </header>
 
-
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="https://rsandstroem.github.io/rpythonsastrendsdatascience.html">Which is the most popular language for data science in 2017?</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <span>Son 20 August 2017</span>
 <span>| tags: <a href="https://rsandstroem.github.io/tag/r.html">r</a><a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/sas.html">sas</a><a href="https://rsandstroem.github.io/tag/data-science.html">data science</a></span>
-</footer><!-- /.post-info -->
+</footer><!-- /.post-info -->      
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -232,11 +255,11 @@ var element = $('#5ff16a7b-82d6-4f2f-be19-eb10046129b0');
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Background">Background<a class="anchor-link" href="#Background">¶</a></h1><p>In the past a lot of <a href="http://www.kdnuggets.com/2015/05/r-vs-python-data-science.html">articles</a> have been written comparing different programming languages and tools for data science. Depending on exactly what was studied, and how the data was collected, different results were published. I think it is fair to say that SAS was the largest analytics program in the past, but it was overtaken by open source alternative, most notably R. Historically python has been used for much the same tasks as R, but did not have quite as large following in the data science field.</p>
+<h1 id="Background">Background<a class="anchor-link" href="#Background"></a></h1><p>In the past a lot of <a href="http://www.kdnuggets.com/2015/05/r-vs-python-data-science.html">articles</a> have been written comparing different programming languages and tools for data science. Depending on exactly what was studied, and how the data was collected, different results were published. I think it is fair to say that SAS was the largest analytics program in the past, but it was overtaken by open source alternative, most notably R. Historically python has been used for much the same tasks as R, but did not have quite as large following in the data science field.</p>
 <p>A trend that cannot have escaped anyone, at least not readers of this blog, is that the topic of data science has completely exploded in the last few years. It has gone from something that only geeks do for fun to a hot board room question. So which programming language is lingua franca of data science today?</p>
-<h1 id='What-do-we-mean-by-"popular"-anyway?'>What do we mean by "popular" anyway?<a class="anchor-link" href='#What-do-we-mean-by-"popular"-anyway?'>¶</a></h1><p>Some studies have been made on mentions in online job postings. That is a good measure of demand for skills. However it is difficult to obtain an unbiased result, since python is used by many people not having anything to do with data science. Also, words in job description is a measure of how popular some topics are in the minds of HR, but I have some doubts that they really know what the role really requires, and is often based on outdated assumptions.</p>
+<h1 id='What-do-we-mean-by-"popular"-anyway?'>What do we mean by "popular" anyway?<a class="anchor-link" href='#What-do-we-mean-by-"popular"-anyway?'></a></h1><p>Some studies have been made on mentions in online job postings. That is a good measure of demand for skills. However it is difficult to obtain an unbiased result, since python is used by many people not having anything to do with data science. Also, words in job description is a measure of how popular some topics are in the minds of HR, but I have some doubts that they really know what the role really requires, and is often based on outdated assumptions.</p>
 <p>There are many other metrics we could use to measure the popularity, e.g., activity on <a href="https://stackoverflow.com/">Stack Overflow</a>, questions on Quora, number blog posts, discussions on twitter etc. Ultimately it comes down to what we mean by popularity.</p>
-<h1 id="What-is-measured">What is measured<a class="anchor-link" href="#What-is-measured">¶</a></h1><p>With that said, I decided to extract data from what people have been searching on with Google. The data source was <a href="https://trends.google.com/trends">Google Trends</a>, and I pulled all data since the beginning of time until 18 August 2017. To ensure that we only capture searches relevant to data science the search terms were "r data science", "python data science" and "sas data science". This was the result:</p>
+<h1 id="What-is-measured">What is measured<a class="anchor-link" href="#What-is-measured"></a></h1><p>With that said, I decided to extract data from what people have been searching on with Google. The data source was <a href="https://trends.google.com/trends">Google Trends</a>, and I pulled all data since the beginning of time until 18 August 2017. To ensure that we only capture searches relevant to data science the search terms were "r data science", "python data science" and "sas data science". This was the result:</p>
 </div>
 </div>
 </div>
@@ -411,7 +434,7 @@ var element = $('#5ff16a7b-82d6-4f2f-be19-eb10046129b0');
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The first thing we notice is that starting around 2013 there were a loot more searches for all three tools. That is the rise of data science. However, we knew already that there is a significant hype around data science.</p>
 <p>A more interesting thing to note is that python has been growing faster than R during the rise of data science, and that python became the most popular data science languange in 2016.</p>
-<h1 id="The-most-popular-language-for-data-science-in-2017">The most popular language for data science in 2017<a class="anchor-link" href="#The-most-popular-language-for-data-science-in-2017">¶</a></h1><p>Looking at the market shares of the three languages, the trend is still true. Python now is at about 59%, while R has a relative popularity rating of about 36%. Meanwhile, SAS has a loyal user base which shows a less rapid decline than R and is now at approximately 5%. However, these numbers do not account for that data scientists are often using more than one of these tools. I am personally using all three tools, depending on the task at hand and external factors.</p>
+<h1 id="The-most-popular-language-for-data-science-in-2017">The most popular language for data science in 2017<a class="anchor-link" href="#The-most-popular-language-for-data-science-in-2017"></a></h1><p>Looking at the market shares of the three languages, the trend is still true. Python now is at about 59%, while R has a relative popularity rating of about 36%. Meanwhile, SAS has a loyal user base which shows a less rapid decline than R and is now at approximately 5%. However, these numbers do not account for that data scientists are often using more than one of these tools. I am personally using all three tools, depending on the task at hand and external factors.</p>
 </div>
 </div>
 </div>
@@ -578,7 +601,7 @@ var element = $('#5ff16a7b-82d6-4f2f-be19-eb10046129b0');
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="The-most-popular-language-for-machine-learning">The most popular language for machine learning<a class="anchor-link" href="#The-most-popular-language-for-machine-learning">¶</a></h1><p>The trend in data science is very striking, but maybe it is just that practitioners using R use a different jargon? If python is really overtaking R as the most popular language for data science, it would make sense if it also is the most popular language for machine learning. This is what is observed when we change the search terms to "R machine learning" etc:</p>
+<h1 id="The-most-popular-language-for-machine-learning">The most popular language for machine learning<a class="anchor-link" href="#The-most-popular-language-for-machine-learning"></a></h1><p>The trend in data science is very striking, but maybe it is just that practitioners using R use a different jargon? If python is really overtaking R as the most popular language for data science, it would make sense if it also is the most popular language for machine learning. This is what is observed when we change the search terms to "R machine learning" etc:</p>
 </div>
 </div>
 </div>
@@ -746,7 +769,7 @@ var element = $('#5ff16a7b-82d6-4f2f-be19-eb10046129b0');
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The same trend is observed, but the python dominance is even stronger.</p>
-<h1 id="Why-this-change-now?">Why this change now?<a class="anchor-link" href="#Why-this-change-now?">¶</a></h1><p>This is where things get tricky. The descriptive analysis above is clear and simple. A diagnostic analysis answering the question <em>why</em> rather than <em>what</em> requires speculative hypothesis to be made, which can be hard to test.</p>
+<h1 id="Why-this-change-now?">Why this change now?<a class="anchor-link" href="#Why-this-change-now?"></a></h1><p>This is where things get tricky. The descriptive analysis above is clear and simple. A diagnostic analysis answering the question <em>why</em> rather than <em>what</em> requires speculative hypothesis to be made, which can be hard to test.</p>
 <p>A parallel trend in this field is deep learning. Major companies like Facebook, Google and Microsoft are investing heavily in this area. Google release its deep learning framework <a href="https://www.tensorflow.org/">Tensorflow</a> a while back, and it interacts well with python. After all, python is one of the most used languages at Google alongside Java, C++ and Go. Furthermore, <a href="https://www.tensorflow.org/">Keras</a>, a deep learning library for python which simplifies Tensorflow and Theano, is growing very popular. Until now, there was no equivalent for R, so data scientist who wanted to develop deep learning models had to learn python.</p>
 </div>
 </div>
@@ -915,9 +938,9 @@ var element = $('#5ff16a7b-82d6-4f2f-be19-eb10046129b0');
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>While this figure does not prove that deep learning is the reason for the increase in python's popularity, the timing of the two trends suggests that there is some truth to this hypothesis. If deep learning and the popularity of Keras is a driver of this change the recent <a href="https://rstudio.github.io/keras/">Keras for R package</a> might have an impact of the popularity of R. It will be interesting to see how this plays out!</p>
-<h1 id="Beyond-the-Horizon">Beyond the Horizon<a class="anchor-link" href="#Beyond-the-Horizon">¶</a></h1><p>It looks like the rise of python in data science will continue to grow. However, it is hard to make predictions, especially about the future! Perhaps something else will come along that will place both R and python on the sidelines, next to SAS. A potential candidate is <a href="http://ucidatascienceinitiative.github.io/IntroToJulia/Html/JuliaMentalModel">Julia</a> which has a number of features which are valuable for data science. Another "best of both worlds" language is <a href="https://www.scala-lang.org/">Scala</a>, which already fuels the very popular Spark. SAS, R and python are very old and mature languages with well tested features, and if this is worth giving up for the new fancy languages depends very much on how important stability is for your use case.</p>
+<h1 id="Beyond-the-Horizon">Beyond the Horizon<a class="anchor-link" href="#Beyond-the-Horizon"></a></h1><p>It looks like the rise of python in data science will continue to grow. However, it is hard to make predictions, especially about the future! Perhaps something else will come along that will place both R and python on the sidelines, next to SAS. A potential candidate is <a href="http://ucidatascienceinitiative.github.io/IntroToJulia/Html/JuliaMentalModel">Julia</a> which has a number of features which are valuable for data science. Another "best of both worlds" language is <a href="https://www.scala-lang.org/">Scala</a>, which already fuels the very popular Spark. SAS, R and python are very old and mature languages with well tested features, and if this is worth giving up for the new fancy languages depends very much on how important stability is for your use case.</p>
 <p>I do not think that R or python will die any time soon. While SAS is tiny in data science all industries considered, it is the standard for my financial services clients, and that will most likely still be the case five years from now too.</p>
-<h1 id="Final-words">Final words<a class="anchor-link" href="#Final-words">¶</a></h1><p>Rather than focussing on which tools you use, start from the problem. Once you know what you need to do to solve it, choose the right tool for the job. For this, it helps to know many languages, to avoid going to work with a single tool in your toolbox.</p>
+<h1 id="Final-words">Final words<a class="anchor-link" href="#Final-words"></a></h1><p>Rather than focussing on which tools you use, start from the problem. Once you know what you need to do to solve it, choose the right tool for the job. For this, it helps to know many languages, to avoid going to work with a single tool in your toolbox.</p>
 <p>Please questions, comments, corrections and suggestions in the comment field below.</p>
 </div>
 </div>
@@ -950,291 +973,39 @@ var element = $('#5ff16a7b-82d6-4f2f-be19-eb10046129b0');
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 </script>
-<p><a href="https://rsandstroem.github.io/rpythonsastrendsdatascience.html#disqus_thread">comments</a></p>                </article>
-                <section>
-                    <p id="post-share-links">
-                    Share on:
-                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//rsandstroem.github.io/rpythonsastrendsdatascience.html&title=Which%20is%20the%20most%20popular%20language%20for%20data%20science%20in%202017%3F&summary=Which%20is%20the%20most%20popular%20language%20for%20data%20science%20in%202017%3F%0AWhile%20performing%20a%20market%20analysis%20for%20a%20business%20case%20I%20looked%20at%20some%20trends%20in%20the%20field%2C%20and%20made%20a%20quick%20query%20to%20answer%20the%20above%20question%20%22for%20fun%22.%20Since%20the%20result%20was%20both%20striking%20and%20rather%20unexpected%20I%20decided%20to%20share%20it%20with%20you%20in%20this%20blog%20post.%20%28Plus%2C%20it%20gave%20me%20an%20excuse%20to%20add%20support%20for%20Bokeh&source=https%3A//rsandstroem.github.io/rpythonsastrendsdatascience.html" target="_blank" title="Share on LinkedIn">LinkedIn</a>
-                    ❄
-                    <a href="http://twitter.com/home?status=Which%20is%20the%20most%20popular%20language%20for%20data%20science%20in%202017%3F%20https%3A//rsandstroem.github.io/rpythonsastrendsdatascience.html" target="_blank" title="Share on Twitter">Twitter</a>
-                    ❄
-                    <a href="http://www.facebook.com/sharer/sharer.php?u=https%3A//rsandstroem.github.io/rpythonsastrendsdatascience.html" target="_blank" title="Share on Facebook">Facebook</a>
-                    ❄
-                    <a href="https://plus.google.com/share?url=https%3A//rsandstroem.github.io/rpythonsastrendsdatascience.html" target="_blank" title="Share on Google Plus">Google+</a>
-                    ❄
-                    <a href="mailto:?subject=Which%20is%20the%20most%20popular%20language%20for%20data%20science%20in%202017%3F&amp;body=https%3A//rsandstroem.github.io/rpythonsastrendsdatascience.html" target="_blank" title="Share via Email">Email</a>
-                    </p>
-                </section>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <ol id="posts-list" class="hfeed">
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/gpuDeepLearningWindows.html" rel="bookmark"
-                           title="Permalink to GPU Accelerated Deep Learning on Windows">GPU Accelerated Deep Learning on Windows</a></h1>
-                </header>
+    </div><!-- /.entry-content -->
 
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Mon 17 Juli 2017</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/gpu.html">gpu</a><a href="https://rsandstroem.github.io/tag/deep-learning.html">deep learning</a><a href="https://rsandstroem.github.io/tag/machine-learning.html">machine learning</a><a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/installation.html">installation</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
-</footer><!-- /.post-info -->                <p>The computers at my workplace are all running some version of Microsoft Windows. While that makes perfect sense in a Business Intelligence context, it unusual for a Data Science setup.</p>
-                <a class="readmore" href="https://rsandstroem.github.io/gpuDeepLearningWindows.html">read more</a>
-<p><a href="https://rsandstroem.github.io/gpuDeepLearningWindows.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
+      <section>
+        <p id="post-share-links">
+          Share on:
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//rsandstroem.github.io/rpythonsastrendsdatascience.html&title=Which%20is%20the%20most%20popular%20language%20for%20data%20science%20in%202017%3F&summary=Which%20is%20the%20most%20popular%20language%20for%20data%20science%20in%202017%3F%0AWhile%20performing%20a%20market%20analysis%20for%20a%20business%20case%20I%20looked%20at%20some%20trends%20in%20the%20field%2C%20and%20made%20a%20quick%20query%20to%20answer%20the%20above%20question%20%22for%20fun%22.%20Since%20the%20result%20was%20both%20striking%20and%20rather%20unexpected%20I%20decided%20to%20share%20it%20with%20you%20in%20this%20blog%20post.%20%28Plus%2C%20it%20gave%20me%20an%20excuse%20to%20add%20support%20for%20Bokeh&source=https%3A//rsandstroem.github.io/rpythonsastrendsdatascience.html" target="_blank" title="Share on LinkedIn">LinkedIn</a>
+          ❄
+          <a href="http://twitter.com/home?status=Which%20is%20the%20most%20popular%20language%20for%20data%20science%20in%202017%3F%20https%3A//rsandstroem.github.io/rpythonsastrendsdatascience.html" target="_blank" title="Share on Twitter">Twitter</a>
+          ❄
+          <a href="http://www.facebook.com/sharer/sharer.php?u=https%3A//rsandstroem.github.io/rpythonsastrendsdatascience.html" target="_blank" title="Share on Facebook">Facebook</a>
+          ❄
+          <a href="https://plus.google.com/share?url=https%3A//rsandstroem.github.io/rpythonsastrendsdatascience.html" target="_blank" title="Share on Google Plus">Google+</a>
+          ❄
+          <a href="mailto:?subject=Which%20is%20the%20most%20popular%20language%20for%20data%20science%20in%202017%3F&amp;body=https%3A//rsandstroem.github.io/rpythonsastrendsdatascience.html" target="_blank" title="Share via Email">Email</a>
+        </p>
+      </section>
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "rpythonsastrendsdatascience.html";
+        var disqus_url = "https://rsandstroem.github.io/rpythonsastrendsdatascience.html";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//data-scientist-blog.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/sparkkmeans.html" rel="bookmark"
-                           title="Permalink to Running KMeans clustering on Spark">Running KMeans clustering on Spark</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Don 06 Juli 2017</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/spark.html">spark</a><a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/kmeans.html">kmeans</a><a href="https://rsandstroem.github.io/tag/machine-learning.html">machine learning</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
-</footer><!-- /.post-info -->                
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>In a recent project I was facing the task of running machine learning on about 100 TB of data. This amount of data was exceeding the capacity of my workstation, so I translated the code from running on scikit-learn to Apache Spark using the PySpark API. This allowed me to process that data using in-memory distributed computing.</p>
-                <a class="readmore" href="https://rsandstroem.github.io/sparkkmeans.html">read more</a>
-<p><a href="https://rsandstroem.github.io/sparkkmeans.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/chatbotHosting.html" rel="bookmark"
-                           title="Permalink to Building a chat bot - hosting">Building a chat bot - hosting</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Son 04 Juni 2017</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/chat-bot.html">chat bot</a><a href="https://rsandstroem.github.io/tag/azure.html">azure</a></span>
-</footer><!-- /.post-info -->                <p>In conjunction with a public referendum I was given the task to create an intelligent chat bot. The chat bot could understand what the user wanted to know and provide the answers our subject matter experts had prepared. This post describes you can give users access to the bot by hosting it at a web service. It also describes how to add more developers to the project. The post assumes that you have already read the <a href="chatbotNLP.html">first post</a> and <a href="chatbotJS">second post</a> on this topic.</p>
-                <a class="readmore" href="https://rsandstroem.github.io/chatbotHosting.html">read more</a>
-<p><a href="https://rsandstroem.github.io/chatbotHosting.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/chatbotJS.html" rel="bookmark"
-                           title="Permalink to Building a chat bot - programming">Building a chat bot - programming</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Son 30 April 2017</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/chat-bot.html">chat bot</a><a href="https://rsandstroem.github.io/tag/javascript.html">javascript</a><a href="https://rsandstroem.github.io/tag/nodejs.html">node.js</a><a href="https://rsandstroem.github.io/tag/azure-table-storage.html">azure table storage</a></span>
-</footer><!-- /.post-info -->                <p>In conjunction with a public referendum I was given the task to create an intelligent chat bot. The chat bot could understand what the user wanted to know and provide the answers our subject matter experts had prepared. This post describes how to program the bot to capture user intents and take action. The post assumes that you have already read the <a href="chatbotNLP.html">first post on this topic</a>.</p>
-                <a class="readmore" href="https://rsandstroem.github.io/chatbotJS.html">read more</a>
-<p><a href="https://rsandstroem.github.io/chatbotJS.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/chatbotNLP.html" rel="bookmark"
-                           title="Permalink to Building a chat bot - first steps">Building a chat bot - first steps</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Die 28 März 2017</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/chat-bot.html">chat bot</a><a href="https://rsandstroem.github.io/tag/natural-language-processing.html">natural language processing</a></span>
-</footer><!-- /.post-info -->                <p>In conjunction with a public referendum I was given the task to create an intelligent chat bot. The chat bot could understand what the user wanted to know and provide the answers our subject matter experts had prepared. This post describes the first step of setting up such a chat bot.</p>
-                <a class="readmore" href="https://rsandstroem.github.io/chatbotNLP.html">read more</a>
-<p><a href="https://rsandstroem.github.io/chatbotNLP.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/discovery-of-the-higgs-boson.html" rel="bookmark"
-                           title="Permalink to Discovery of the Higgs Boson">Discovery of the Higgs Boson</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Don 09 Februar 2017</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/higgs.html">higgs</a><a href="https://rsandstroem.github.io/tag/physics.html">physics</a><a href="https://rsandstroem.github.io/tag/announcement.html">announcement</a></span>
-</footer><!-- /.post-info -->                This week I wanted to draw attention to the book that my former colleagues and I wrote, and which was recently published. It is great to finally have it in my hand! The book is about the discovery of the Higgs boson at the Large Hadron Collider at CERN.
-                <a class="readmore" href="https://rsandstroem.github.io/discovery-of-the-higgs-boson.html">read more</a>
-<p><a href="https://rsandstroem.github.io/discovery-of-the-higgs-boson.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/predicting-retail-sales.html" rel="bookmark"
-                           title="Permalink to Predicting retail sales">Predicting retail sales</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Don 09 Februar 2017</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/machine-learning.html">machine learning</a><a href="https://rsandstroem.github.io/tag/retail.html">retail</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
-</footer><!-- /.post-info -->                Sometime you have a time series of historical data and you would like to know how this series of data will look in the days or years to come. If the data looks 
-                <a class="readmore" href="https://rsandstroem.github.io/predicting-retail-sales.html">read more</a>
-<p><a href="https://rsandstroem.github.io/predicting-retail-sales.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/building-a-data-lake-2-querying-json-from-hive.html" rel="bookmark"
-                           title="Permalink to Building a data lake 2: Querying JSON from Hive">Building a data lake 2: Querying JSON from Hive</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Don 06 Oktober 2016</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/azure.html">azure</a><a href="https://rsandstroem.github.io/tag/hive.html">hive</a><a href="https://rsandstroem.github.io/tag/json.html">json</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a><a href="https://rsandstroem.github.io/tag/big-data.html">big data</a></span>
-</footer><!-- /.post-info -->                Tutorial on creating Hive tables from JSON documents and joining the tables to create an enriched data set.
-                <a class="readmore" href="https://rsandstroem.github.io/building-a-data-lake-2-querying-json-from-hive.html">read more</a>
-<p><a href="https://rsandstroem.github.io/building-a-data-lake-2-querying-json-from-hive.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/installing-r-studio-on-azure-hdinsight.html" rel="bookmark"
-                           title="Permalink to Installing R-studio on Azure HDInsight">Installing R-studio on Azure HDInsight</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Son 11 September 2016</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/azure.html">azure</a><a href="https://rsandstroem.github.io/tag/r.html">r</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
-</footer><!-- /.post-info -->                Running R on Spark brings the advantage of distributed in memory computing and access to data stored in HDFS. In this context, it is convenient to have access to R-studio hosted from the R-server. In this post I will show a few ways how to install R-studio on the edge node of a HDInsight Spark cluster.
-                <a class="readmore" href="https://rsandstroem.github.io/installing-r-studio-on-azure-hdinsight.html">read more</a>
-<p><a href="https://rsandstroem.github.io/installing-r-studio-on-azure-hdinsight.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/create-azure-hdinsight-clusters-using-templates.html" rel="bookmark"
-                           title="Permalink to Create Azure HDInsight clusters using templates">Create Azure HDInsight clusters using templates</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Don 01 September 2016</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/azure.html">azure</a><a href="https://rsandstroem.github.io/tag/cloud.html">cloud</a><a href="https://rsandstroem.github.io/tag/architecture.html">architecture</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a><a href="https://rsandstroem.github.io/tag/big-data.html">big data</a></span>
-</footer><!-- /.post-info -->                Microsoft Azure provides big data infrastructure through the HDInsight product. However, they bill you per hour, no matter if you use the computing resources or not. One option is to destroy clusters when they are not needed, but to get the clusters back up with minimum effort it is best to use predefined scripts or templates. This post shows you a few alternatives how to accomplish this.
-                <a class="readmore" href="https://rsandstroem.github.io/create-azure-hdinsight-clusters-using-templates.html">read more</a>
-<p><a href="https://rsandstroem.github.io/create-azure-hdinsight-clusters-using-templates.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/can-you-trust-your-data.html" rel="bookmark"
-                           title="Permalink to Can you trust your data?">Can you trust your data?</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Son 28 August 2016</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/business.html">business</a><a href="https://rsandstroem.github.io/tag/statistics.html">statistics</a><a href="https://rsandstroem.github.io/tag/perspective.html">perspective</a></span>
-</footer><!-- /.post-info -->                Business is the process of managing under conditions of uncertainty. To ensure optimal outcome business leaders must base their decisions on information of varying reliability. This is not new, humans always had a need for making decisions with uncertain outcomes. “Is he a friend or foe?” “Should I trade my food for a hammer?” “Can I reach safety if I turn and run, or should I fight the lion?”
-                <a class="readmore" href="https://rsandstroem.github.io/can-you-trust-your-data.html">read more</a>
-<p><a href="https://rsandstroem.github.io/can-you-trust-your-data.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/impact-of-big-data-on-the-insurance-industry.html" rel="bookmark"
-                           title="Permalink to Impact of Big Data on the Insurance Industry">Impact of Big Data on the Insurance Industry</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Son 28 August 2016</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/business.html">business</a><a href="https://rsandstroem.github.io/tag/big-data.html">big data</a><a href="https://rsandstroem.github.io/tag/insurance.html">insurance</a><a href="https://rsandstroem.github.io/tag/perspective.html">perspective</a></span>
-</footer><!-- /.post-info -->                Big Data is bringing decisive advantages to insurers through more relevant, detailed, and up to date information than was previously possible. At the center of this transformation are customers. They expect to be able to select products defined and driven by their needs, preferences and convenience.
-                <a class="readmore" href="https://rsandstroem.github.io/impact-of-big-data-on-the-insurance-industry.html">read more</a>
-<p><a href="https://rsandstroem.github.io/impact-of-big-data-on-the-insurance-industry.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/building-a-data-lake-1-weather-and-time.html" rel="bookmark"
-                           title="Permalink to Building a data lake 1: Weather and time">Building a data lake 1: Weather and time</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Sam 20 August 2016</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/api.html">api</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
-</footer><!-- /.post-info -->                I am currently building a data lake which will be used to improve operations at an energy company using machine learning. Among the many interesting topics the following are prioritized:
-
-    Can we predict the energy production of hydroelectric, solar and wind power plants?
-    Can we predict the energy consumption using weather reports? After all, home owners need to heat their homes more on a cold winter day than on a sunny day in October.
-                <a class="readmore" href="https://rsandstroem.github.io/building-a-data-lake-1-weather-and-time.html">read more</a>
-<p><a href="https://rsandstroem.github.io/building-a-data-lake-1-weather-and-time.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/GeoMapsFoliumDemo.html" rel="bookmark"
-                           title="Permalink to Using Folium to show geographic data">Using Folium to show geographic data</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Son 14 August 2016</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/folium.html">folium</a><a href="https://rsandstroem.github.io/tag/geo.html">geo</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
-</footer><!-- /.post-info -->                
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>This post demonstrates how to</p>
-<ul>
-<li>Display a map from OpenStreetMaps using Folium</li>
-<li>Add custom shape files to define regions of interest</li>
-<li>Color the regions of interest based on data in a pandas dataframe</li>
-<li>(New) Brief introduction to GeoPandas.</li>
-</ul>
-<p>The code of this post is available at <a href="https://github.com/rsandstroem/IPythonNotebooks/blob/master/GeoMapsFoliumDemo/GeoMapsFoliumDemo.ipynb">https://github.com/rsandstroem/IPythonNotebooks/blob/master/GeoMapsFoliumDemo/GeoMapsFoliumDemo.ipynb</a> .</p>
-<p><em>August 1, 2017: This post is almost a year old, but I decided to make some technical improvements to it to improve the viewing experience online. (It is the Swiss National Day after all!) During this renovation, I stumbled upon GeoPandas, which is a great package worth mentioning in this context.</em>
-                <a class="readmore" href="https://rsandstroem.github.io/GeoMapsFoliumDemo.html">read more</a>
-<p><a href="https://rsandstroem.github.io/GeoMapsFoliumDemo.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://rsandstroem.github.io/MongoDBDemo.html" rel="bookmark"
-                           title="Permalink to Simple MongoDB demo">Simple MongoDB demo</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <span>Son 14 August 2016</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/mongodb.html">mongodb</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
-</footer><!-- /.post-info -->                
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">¶</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>This blog post is a tutorial that introduces the basics of MongoDB and how to utilize it within a python environment. To accomplish this we will use pymongo to connect python with MongoDB.</p>
-<p>Mongo DB is a convenient NoSQL database which uses JSON syntax to store and query documents. I am frequently using MongoDB when dealing with streaming data from sensors or APIs. In big data scenarios I find MongoDB powerful since it allows for replication and sharding, thus enabling distributed computing and high availability, but that is a topic for another tutorial!</p>
-                <a class="readmore" href="https://rsandstroem.github.io/MongoDBDemo.html">read more</a>
-<p><a href="https://rsandstroem.github.io/MongoDBDemo.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
-            </article></li>
-            </ol><!-- /#posts-list -->
-            </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>
