@@ -46,122 +46,300 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://rsandstroem.github.io/gpuDeepLearningWindows.html">GPU Accelerated Deep Learning on Windows</a></h1>
+                    <h1 class="entry-title"><a href="https://rsandstroem.github.io/serverlessPredictionService.html">Hosting a machine learning prediction service on serverless infrastructure</a></h1>
 <footer class="post-info">
-        <span>Mon 17 Juli 2017</span>
-<span>| tags: <a href="https://rsandstroem.github.io/tag/gpu.html">gpu</a><a href="https://rsandstroem.github.io/tag/deep-learning.html">deep learning</a><a href="https://rsandstroem.github.io/tag/machine-learning.html">machine learning</a><a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/installation.html">installation</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
-</footer><!-- /.post-info --><p>My business case involved running GPU accelerated deep learning jobs on a set of local desktops, and was looking for installation instructions to provide the administrators. Since nearly all installation instructions assume that the operating system is Linux, I decided to write my own instructions for Windows, which I share with you. I hope you find these instructions useful.</p>
-<h2>Introduction</h2>
-<p>The computers at my workplace are all running some version of Microsoft Windows. While that makes perfect sense in a Business Intelligence context, it unusual for a Data Science setup. </p>
-<p>My business case involved running GPU accelerated deep learning jobs on a set of local desktops, and was looking for installation instructions to provide the administrators. Since nearly all installation instructions assume that the operating system is Linux, I decided to write my own instructions for Windows, which I share with you. </p>
-<p>The tool stack is based on two popular open source deep learning libraries which we will access through a python API. </p>
-<p>The instructions were tested on a Dell XPS 15, equipped with a NVidia GTX 1050, running Windows 10, while the production machines are equipped with much more powerful hardware from the same generation. I hope you find these instructions useful, please leave comments and questions below the article.</p>
-<h2>Anaconda</h2>
-<p>The foundation for machine learning in python consists of commonly used packages such as numpy and scipy. Luckily <a href="https://www.continuum.io/downloads">Anaconda</a> from Continuum contains most of what we need. While Anaconda does not itself contain any deep learning libraries, it bundles <a href="http://scikit-learn.org/stable">scikit-learn</a>, which is a great resource for traditional machine learning in python.</p>
-<p>There are python 2.x and 3.x versions of Anaconda, as well as 32-bit and 64-bit versions. <em>Due to that Tensorflow only supports python 3.5 on Windows we want to install 64-bit version of Anaconda for python 3.x.</em></p>
-<h2>CUDA Toolkit</h2>
-<p>To run the deep learning on GPU we need some CUDA libraries and tools. Follow the <a href="http://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/#axzz4ilSOohuu">instructions to install CUDA Toolkit on Windows</a>.</p>
-<p>We need CUDA Toolkit v8.0. Select the correct version of Windows and <a href="https://developer.nvidia.com/cuda-downloads">download the installer</a>.</p>
-<p><img alt="CUDA Toolkit" width="98%" src="/images/cudaToolkit.png"/></p>
-<p>By default the toolkit will be installed in <code>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0</code>.
-Once installed, <a href="https://www.howtogeek.com/118594/how-to-edit-your-system-path-for-easy-command-line-access/">add the installation folder to the system <code>%PATH%</code> variable</a>.</p>
-<h2>cuDNN</h2>
-<p>Next we need the NVIDIA CUDA® Deep Neural Network library <a href="https://developer.nvidia.com/cudnn">cuDNN</a>.
-To access it you need to create an account, if you do not have one already, and log in with your NVidia Developer credentials. 
-<em>We need cuDNN 5.1 for the CUDA Toolkit version we just installed earlier, i.e., 8.0.</em>
-<img alt="cuDNN" width="98%" src="/images/cuDNN.png"/>
-Once downloaded, simply copy the files to folder where you installed the CUDA Toolkit. If you followed these instructions you should already have the system <code>%PATH%</code> pointing to this folder so you are good to go. </p>
-<p>Reboot the machine before going to the next steps.</p>
-<h2>Tensorflow</h2>
-<p>Finally we are ready to install Google's deep learning framework, Tensorflow. Since we are going to use GPU accelerated learning follow the <a href="https://www.tensorflow.org/install/install_windows">GPU specific instructions</a>.
-Before you get started, however, I found this method the easiest to obtain reliable installation results:</p>
-<div class="highlight"><pre><span></span>conda create --name deeplearning <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5 
-activate deeplearning<span class="o">(</span>deeplearning<span class="o">)</span>C:&gt; pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/windows/gpu/tensorflow_gpu-1.1.0-cp35-cp35m-win_amd64.whl
+        <span>Don 04 Januar 2018</span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/aws.html">aws</a><a href="https://rsandstroem.github.io/tag/azure.html">azure</a><a href="https://rsandstroem.github.io/tag/machine-learning.html">machine learning</a><a href="https://rsandstroem.github.io/tag/serverless.html">serverless</a><a href="https://rsandstroem.github.io/tag/lambda.html">lambda</a><a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/flask.html">flask</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
+</footer><!-- /.post-info --><h1>Background</h1>
+<p>I was asked to administrate all users and resources of my employer's Amazon Web Services (<a href="https://aws.amazon.com/">AWS</a>) a few months ago. To demonstrate that I have the appropriate training to take on this role, an AWS Certified Solutions Architect diploma was required. During my online course with <a href="https://acloud.guru/">A Cloud Guru</a> I learned about serverless architectures. After passing the certification exam, I decided to experiment if a serverless architecture can help me out in my daily work as a data scientist. I am happy to share my experience with you below.</p>
+<h1>Introduction</h1>
+<p>This post shows how to host machine learning prediction services on the cloud with infinite scaling, zero downtime, zero maintenance, at a very low cost. By using serverless cloud services it is possible to create end to end solutions for data science projects and enable end-users to consume the insights over the Internet.</p>
+<p><img alt="Data Science Life Cycle" width="48%" src="/images/datasciencelifecycle.png" align="right"/>
+First let us back up a bit and set the stage. The data science life cycle involves </p>
+<ul>
+<li>understanding the business, </li>
+<li>acquire, understand and prepare the data</li>
+<li>train a machine learning model on the data</li>
+<li>validate the model and estimate uncertainties</li>
+<li>deploy a prediction service based on the model</li>
+</ul>
+<p>The first steps of this life cycle are typically done on-premise with local tools and resources. However, at some point the users need to access the prediction service that you prepared. They cannot all connect to you laptop to consume the insights your new service provides. A common solution is to deploy the prediction service as an API, which can be accessible only to enterprise users, or be open to anyone on the Internet depending on the project requirements.</p>
+<p><a href="https://studio.azureml.net/">Azure Machine Learning</a> makes creation of an API really easy. Once your model is trained and validated, it is just a few clicks in the graphical interface and you are ready to integrate the new prediction service with web apps or Microsoft Office. </p>
+<p>A downside to Azure Machine Learning is that the data used in the training is exposed to the Internet. For many companies this is a red flag. Either regulations prevent sensitive data from leaving enterprise data centres, or the risk appetite of the business is a significant hurdle.</p>
+<p>But what if you could keep all enterprise confidential data on the corporate network, and only host the prediction service with a web interface? The only data being exposed to the cloud provider is the data that the user sends as input to the prediction service.</p>
+<p>Serverless architectures provide infinite scaling, zero downtime, zero maintenance, at a very low cost. Serverless architectures have revolutionized the way we think of hosting services since its introduction in 2014, so I am going to show how to host a machine learning prediction service on AWS Lambda in addition to hosting it on the local corporate network. </p>
+<h1>Training the classifier</h1>
+<p>In the data science community <a href="http://scikit-learn.org/stable/">scikit-learn</a> is a very popular choice for traditional machine learning. To demonstrate how you can host a scikit-learn model as a prediction service on serverless infrastructure we must first create and train a scikit-learn model. </p>
+<p>The example below pulls in thousands of newsgroup messages and builds a model that can detect if the topic of the discussion is guns and firearms.</p>
+<div class="highlight"><pre><span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_20newsgroups</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.externals</span> <span class="kn">import</span> <span class="n">joblib</span>
+
+<span class="n">twenty_train</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> 
+                                  <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+                                  <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">twenty_test</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> 
+                                 <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+                                 <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># create a list of 0 for negative labels and 1 for positive labels</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">label</span> <span class="o">==</span> <span class="mi">16</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">twenty_train</span><span class="o">.</span><span class="n">target</span><span class="p">]</span> 
+<span class="n">y_val</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">label</span> <span class="o">==</span> <span class="mi">16</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">twenty_test</span><span class="o">.</span><span class="n">target</span><span class="p">]</span>
+
+<span class="c1"># train the preprocessing of the data</span>
+<span class="n">preproc</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">preproc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">twenty_train</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">preproc</span><span class="p">,</span> <span class="s1">&#39;preproc_cvtfidf.pkl&#39;</span><span class="p">)</span>
+
+<span class="c1"># preprocess the data</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">preproc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">twenty_train</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">X_val</span> <span class="o">=</span> <span class="n">preproc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">twenty_test</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># train the classifier</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="n">class_weight</span><span class="o">=</span><span class="s1">&#39;balanced&#39;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="s1">&#39;clf_sdg.pkl&#39;</span><span class="p">)</span>
 </pre></div>
 
 
-<p>This will set up our existing Anaconda installation to use python 3.5 and install tensorflow into this new environment. The environment "deeplearning" can of course be called anything else, just remember your choice since you will need to activate this environment every time that you want to use Tensorflow.</p>
-<p>To test if the installation was successful open a python prompt or jupyter notebook and run a hello world script:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
-<span class="n">hello</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="s1">&#39;Hello Tensorflow!&#39;</span><span class="p">)</span>
-<span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
-<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">hello</span><span class="p">)</span>
+<p>In a real world scenario you should spend time on validating the model, quantify sampling bias, propagate uncertainties etc, but for this tutorial the simple script above is fit for purpose.</p>
+<p><em>This model is a very basic logistic regression implemented with stochastic gradient decent and TF-IDF preprocessing. Give me a shout in the comments section below if you want to see a more sophisticated text classification in another blog post.</em></p>
+<p>The preprocessing and the classifier are persistified as local files. We need those to set up an independent prediction service.</p>
+<h1>Setting up a prediction service</h1>
+<h2>Testing basic prediction locally</h2>
+<p>Before publishing your new gun detection model to the world you should make sure it works as intended. Simply load the model files and send some random text messages through the model.</p>
+<div class="highlight"><pre><span></span><span class="c1"># coding: utf-8</span>
+<span class="kn">from</span> <span class="nn">sklearn.externals</span> <span class="kn">import</span> <span class="n">joblib</span>
+<span class="n">pre</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;preproc_cvtfidf.pkl&#39;</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;clf_sdg.pkl&#39;</span><span class="p">)</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I shot the sheriff.&quot;</span><span class="p">,</span> <span class="s2">&quot;School shooting in Las Vegas. Gunman killed by police.&quot;</span><span class="p">,</span> <span class="s2">&quot;Prime minister struggles to settle Brexit deal.&quot;</span><span class="p">]</span> 
+<span class="n">X</span> <span class="o">=</span> <span class="n">pre</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+<span class="n">output</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)[:],</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">print</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">output</span><span class="p">))</span>
 </pre></div>
 
 
-<h2>Theano</h2>
-<p>While we are at it, lets also install the Theano deep learning framework. Please read the <a href="http://www.deeplearning.net/software/theano/install_windows.html">instructions for Theano installation on Windows</a>.</p>
-<p>Set up an environment with conda just like we did for Tensorflow. I recommend to avoid reusing the same environment that we set up for Tensorflow, since they currently require conflicting versions of SciPy.</p>
-<div class="highlight"><pre><span></span>conda create --name theano <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.5
-activate theano
+<p>Output should look like this if all is well:</p>
+<div class="highlight"><pre><span></span><span class="o">[(</span><span class="s1">&#39;I shot the sheriff.&#39;</span>, <span class="m">0</span>, <span class="m">0</span>.33693677715786069<span class="o">)</span>, 
+<span class="o">(</span><span class="s1">&#39;School shooting in Las Vegas. Gunman killed by police.&#39;</span>, <span class="m">1</span>, <span class="m">0</span>.5571287620731008<span class="o">)</span>, 
+<span class="o">(</span><span class="s1">&#39;Prime minister struggles to settle Brexit deal.&#39;</span>, <span class="m">0</span>, <span class="m">0</span>.10020190594453801<span class="o">)]</span>
 </pre></div>
 
 
-<p><img alt="Theano env" width="98%" src="/images/theanoCondaEnv.png"/></p>
-<p>Next we need to get some classical linux compilers like gcc, so start with the following command from within the environment (<code>activate theano</code>).</p>
-<div class="highlight"><pre><span></span>conda install m2w64-toolchain
+<p>The output shows that the model works as intended; messages are scored higher if they contain words that suggest that the topic is firearms.</p>
+<h2>Local webservice</h2>
+<p>In preparation of hosting the prediction service on the cloud we copy the two model files to an S3 bucket. Using <a href="https://aws.amazon.com/cli/">AWS Command Line Interface</a> :</p>
+<div class="highlight"><pre><span></span>aws s3 cp clf_sdg.pkl s3://yourbucketname
+aws s3 cp preproc_cvtfidf.pkl s3://yourbucketname
 </pre></div>
 
 
-<p>Theano can run without this, but you will pay a performance penalty and get this angry warning every time you import theano:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">theano</span>
-<span class="n">WARNING</span> <span class="p">(</span><span class="n">theano</span><span class="o">.</span><span class="n">configdefaults</span><span class="p">):</span> <span class="n">g</span><span class="o">++</span> <span class="ow">not</span> <span class="n">available</span><span class="p">,</span> <span class="k">if</span> <span class="n">using</span> <span class="n">conda</span><span class="p">:</span> <span class="sb">`conda install m2w64-toolchain`</span>
-<span class="n">WARNING</span> <span class="p">(</span><span class="n">theano</span><span class="o">.</span><span class="n">configdefaults</span><span class="p">):</span> <span class="n">g</span><span class="o">++</span> <span class="ow">not</span> <span class="n">detected</span> <span class="err">!</span> <span class="n">Theano</span> <span class="n">will</span> <span class="n">be</span> <span class="n">unable</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">optimized</span> <span class="n">C</span><span class="o">-</span><span class="n">implementations</span> <span class="p">(</span><span class="k">for</span> <span class="n">both</span> <span class="n">CPU</span> <span class="ow">and</span> <span class="n">GPU</span><span class="p">)</span> <span class="ow">and</span> <span class="n">will</span> <span class="n">default</span> <span class="n">to</span> <span class="n">Python</span> <span class="n">implementations</span><span class="o">.</span> <span class="n">Performance</span> <span class="n">will</span> <span class="n">be</span> <span class="n">severely</span> <span class="n">degraded</span><span class="o">.</span> <span class="n">To</span> <span class="n">remove</span> <span class="n">this</span> <span class="n">warning</span><span class="p">,</span> <span class="nb">set</span> <span class="n">Theano</span> <span class="n">flags</span> <span class="n">cxx</span> <span class="n">to</span> <span class="n">an</span> <span class="n">empty</span> <span class="n">string</span><span class="o">.</span>
+<p>You can of course upload the files using the AWS console, or some alternative method.</p>
+<p>Next you need to set up a virtual environment to ensure that all dependencies are available once you move the service into a Lambda function.</p>
+<div class="highlight"><pre><span></span>mkdir lambda
+<span class="nb">cd</span> lambda/
+pip install virtualenv
+virtualenv lambda_demo
+<span class="nb">source</span> lambda_demo/bin/activate
+pip install scikit-learn flask boto numpy scipy zappa
 </pre></div>
 
 
-<p>Once the compilers are installed, go ahead and install theano using conda:</p>
-<div class="highlight"><pre><span></span>conda install theano pygpu
+<p>We will get to Zappa later, but at the moment of writing there is a problem with one of Zappa's dependencies, so we need to forcefully install an older version.</p>
+<div class="highlight"><pre><span></span>pip install <span class="nv">toml</span><span class="o">==</span><span class="m">0</span>.9.2 --force-reinstall
 </pre></div>
 
 
-<p><img alt="Theano installation using conda" width="98%" src="/images/theanoCondaInstall.png"/></p>
-<p>Now run a little python program to see if the installation is OK:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">T</span>
-<span class="kn">from</span> <span class="nn">theano</span> <span class="kn">import</span> <span class="n">function</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dscalar</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dscalar</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
-<span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">function</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span>
-<span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<p>The prediction service is going to be provided as an API written in <a href="http://flask.pocoo.org/">Flask</a> where both input and output formats will be JSON. Below is the code for my example Flask app, saved as <code>prediction_lambda.py</code>.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.externals</span> <span class="kn">import</span> <span class="n">joblib</span>
+<span class="kn">import</span> <span class="nn">boto</span>
+<span class="kn">from</span> <span class="nn">boto.s3.key</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">json</span>
+
+<span class="n">BUCKET_NAME</span> <span class="o">=</span> <span class="s1">&#39;yourbucketname&#39;</span>
+<span class="n">PREP_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;preproc_cvtfidf.pkl&#39;</span>
+<span class="n">PREP_LOCAL_PATH</span> <span class="o">=</span> <span class="n">PREP_FILE_NAME</span>
+<span class="n">MODEL_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;clf_sdg.pkl&#39;</span>
+<span class="n">MODEL_LOCAL_PATH</span> <span class="o">=</span> <span class="n">MODEL_FILE_NAME</span>
+<span class="n">AWS_S3_HOST</span> <span class="o">=</span> <span class="s1">&#39;s3.eu-central-1.amazonaws.com&#39;</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="c1"># retrieve message as json, should contain a payload</span>
+    <span class="n">inMessage</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="n">inMessage</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;payload&#39;</span><span class="p">]</span>
+    <span class="c1"># assign score to documents in the payload</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">prediction</span>
+
+
+<span class="k">def</span> <span class="nf">load_preprocess</span><span class="p">():</span>
+    <span class="c1"># read the preprocessing from a S3 bucket</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">boto</span><span class="o">.</span><span class="n">connect_s3</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">AWS_S3_HOST</span><span class="p">)</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">BUCKET_NAME</span><span class="p">)</span>
+    <span class="n">key_obj</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
+    <span class="n">key_obj</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">PREP_FILE_NAME</span>
+    <span class="n">contents</span> <span class="o">=</span> <span class="n">key_obj</span><span class="o">.</span><span class="n">get_contents_to_filename</span><span class="p">(</span><span class="n">PREP_LOCAL_PATH</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">PREP_LOCAL_PATH</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">load_model</span><span class="p">():</span>
+    <span class="c1"># read the machine learning model from a S3 bucket</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">boto</span><span class="o">.</span><span class="n">connect_s3</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">AWS_S3_HOST</span><span class="p">)</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">BUCKET_NAME</span><span class="p">)</span>
+    <span class="n">key_obj</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
+    <span class="n">key_obj</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">MODEL_FILE_NAME</span>
+    <span class="n">contents</span> <span class="o">=</span> <span class="n">key_obj</span><span class="o">.</span><span class="n">get_contents_to_filename</span><span class="p">(</span><span class="n">MODEL_LOCAL_PATH</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">MODEL_LOCAL_PATH</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="c1"># Preprocess the data</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">load_preprocess</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1"># Create a dictionary containing input and scores</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">load_model</span><span class="p">()</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># listen on all IPs</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">)</span>
 </pre></div>
 
 
-<p><code>array(5.0)</code></p>
-<h2>Keras</h2>
-<p>Finally install <a href="https://keras.io/#installation">Keras</a>, which provides a convenient interface to both Tensorflow and Theano.</p>
-<div class="highlight"><pre><span></span>pip install keras
+<p>To read the model files that you uploaded to the S3 bucket, app needs to have access to the bucket, so read permission should be set, and credential are needed. The AWS credentials can be saved in <code>~/.aws/config</code>. In my case, I created a <em>role</em> for my EC2 instance used for development which allows it to read and write to S3. (It goes without saying that if you do not indent to host the service on the cloud you could use local file paths instead of configuring AWS permissions.)</p>
+<p>To host the Flask app on your local machine simply use</p>
+<div class="highlight"><pre><span></span>python prediction_lambda.py
 </pre></div>
 
 
-<p>To switch between Tensorflow and Theano follow the <a href="https://keras.io/backend/">instructions</a>. </p>
-<p>Keras will inform you which backend it is using when you import it in python:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">keras</span>
-<span class="n">Using</span> <span class="n">TensorFlow</span> <span class="n">backend</span><span class="o">.</span>
+<p>and the service will be reachable on port 5000 of localhost. To test if the service is working send it a JSON payload as POST:</p>
+<div class="highlight"><pre><span></span>curl -X POST -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -d <span class="s1">&#39;{&quot;payload&quot;: [&quot;I shot the sheriff&quot;,&quot;But I did not shot the deputy&quot;]}&#39;</span> localhost:5000
 </pre></div>
 
 
-<h2>What is next?</h2>
-<p>This blog post gave end-to-end instructions on setting up a Windows machine for GPU-accelerated deep learning with python. In a later article I will show how to take advantage of this setup to solve some real world problems. </p>
-<p>If you do not yet have the hardware for running deep learning on a GPU, I warmly recommend reading <a href="http://timdettmers.com/2017/04/09/which-gpu-for-deep-learning/">Tim Dettmer's blog</a> on that topic before going shopping.</p><p><a href="https://rsandstroem.github.io/gpuDeepLearningWindows.html#disqus_thread">comments</a></p>                </article>
+<p>If you only want to host your gun detection service on the corporate network you are done now, congratulations! In the following section we are going to deploy it as a serverless service.</p>
+<h2>Deploy to AWS Lambda</h2>
+<p>AWS Lambda let's you write code and AWS magically makes sure that the code works and scales with changing load. In theory. In reality Lambda is completely clueless of what scikit-learn is, and the same goes for any other packages you might be using in your code. </p>
+<p>Enter <a href="https://github.com/Miserlou/Zappa">Zappa</a>. What Zappa does is take care of all the configuration of the Lambda function and the API Gateway, so you can get your local Flask app hosted as a Lambda function with minimal effort.</p>
+<p>From the folder where you saved <code>prediction_lambda.py</code>, initialize Zappa:</p>
+<div class="highlight"><pre><span></span>zappa init
+</pre></div>
+
+
+<p>Once you have answered the questions you should have a file called <code>zappa_settings.json</code> in the local folder. Since your machine learning environment is most likely exceeding the Lambda size limit, you need to manually add <code>"slim_handler": true</code> to <code>zappa_settings.json</code>.</p>
+<div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;dev&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;app_function&quot;</span><span class="p">:</span> <span class="s2">&quot;prediction_lambda.app&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;aws_region&quot;</span><span class="p">:</span> <span class="s2">&quot;eu-central-1&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;profile_name&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;project_name&quot;</span><span class="p">:</span> <span class="s2">&quot;lambda&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;runtime&quot;</span><span class="p">:</span> <span class="s2">&quot;python3.6&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;s3_bucket&quot;</span><span class="p">:</span> <span class="s2">&quot;yourbucketname&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;slim_handler&quot;</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>To deploy, and later update the deployed Lambda function, simply type</p>
+<div class="highlight"><pre><span></span>zappa deploy dev
+zappa update dev
+</pre></div>
+
+
+<p>respectively. To see more information of the Lambda function the <code>status</code> command is very handy. </p>
+<div class="highlight"><pre><span></span><span class="o">(</span>lambda_demo<span class="o">)</span> ubuntu@ec2devbox:~/PredictLambdaDemo/lambda$ zappa status
+<span class="o">(</span>toml <span class="m">0</span>.9.2 <span class="o">(</span>/home/ubuntu/PredictLambdaDemo/lambda/lambda_demo/lib/python3.6/site-packages<span class="o">)</span>, Requirement.parse<span class="o">(</span><span class="s1">&#39;toml&gt;=0.9.3&#39;</span><span class="o">)</span>, <span class="o">{</span><span class="s1">&#39;zappa&#39;</span><span class="o">})</span>
+Status <span class="k">for</span> lambda-dev: 
+    Lambda Versions:      <span class="m">3</span>
+    Lambda Name:          lambda-dev
+    Lambda ARN:           arn:aws:lambda:eu-central-1:070741064749:function:lambda-dev
+    Lambda Role ARN:      arn:aws:iam::070741064749:role/lambda-dev-ZappaLambdaExecutionRole
+    Lambda Handler:       handler.lambda_handler
+    Lambda Code Size:     <span class="m">10336816</span>
+    Lambda Version:       <span class="nv">$LATEST</span>
+    Lambda Last Modified: <span class="m">2017</span>-12-08T13:59:41.904+0000
+    Lambda Memory Size:   <span class="m">512</span>
+    Lambda Timeout:       <span class="m">30</span>
+    Lambda Runtime:       python3.6
+    Lambda VPC ID:        None
+    Invocations <span class="o">(</span>24h<span class="o">)</span>:    <span class="m">6</span>
+    Errors <span class="o">(</span>24h<span class="o">)</span>:         <span class="m">0</span>
+    Error Rate <span class="o">(</span>24h<span class="o">)</span>:     <span class="m">0</span>.00%
+    API Gateway URL:      https://qdb669kwf9.execute-api.eu-central-1.amazonaws.com/dev
+    Domain URL:           None Supplied
+    Num. Event Rules:     <span class="m">1</span>
+    Event Rule Name:      lambda-dev-zappa-keep-warm-handler.keep_warm_callback
+    Event Rule Schedule:  rate<span class="o">(</span><span class="m">4</span> minutes<span class="o">)</span>
+    Event Rule State:     Enabled
+    Event Rule ARN:       arn:aws:events:eu-central-1:070741064749:rule/lambda-dev-zappa-keep-warm-handler.keep_warm_callback
+</pre></div>
+
+
+<p>The <code>API Gateway URL:</code> indicates the new home of your gun detection service.</p>
+<h2>Confirm that the service is working</h2>
+<p>Once the new Lambda service is up and running you can call it using curl like you did when testing locally, but exchanging the endpoint from <code>localhost:5000</code> to the API Gateway URL.</p>
+<div class="highlight"><pre><span></span>curl -X POST -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -d <span class="s1">&#39;{&quot;payload&quot;: [</span>
+<span class="s1">    &quot;Trump Bannon row: White House lawyers threaten former aide&quot;,&quot;Caravan self-defence shotgun killer jailed for firearm possession&quot;</span>
+<span class="s1">    ]}&#39;</span> https://qdk769zwf8.execute-api.eu-central-1.amazonaws.com/dev
+
+<span class="o">{</span>
+    <span class="s2">&quot;Caravan self-defence shotgun killer jailed for firearm possession&quot;</span>: <span class="m">0</span>.7338601611795328, 
+    <span class="s2">&quot;Trump Bannon row: White House lawyers threaten former aide&quot;</span>: <span class="m">0</span>.14908094037784062
+<span class="o">}</span>
+</pre></div>
+
+
+<p>If you prefer a graphical interface you could use <a href="https://www.getpostman.com/">Postman</a>. Provide the endpoint and payload as in the screenshot below, and you should receive a JSON document back with the scores if everything is working as intended.
+<img alt="Testing the service with Postman" width="98%" src="/images/postman.png"/></p>
+<h1>Summary</h1>
+<p>If you followed all the steps you should now have a live web service that can score text documents depending on their likelihood to discuss weapons and firearms. </p>
+<p>A software engineer can now be add this service as a component of a product. For example, you could add a frontend to provide the text input and return the scores, or you could integrate it with a program running locally. </p>
+<p>The ability to deploy the prediction service independently of the training of the model, enables organizations to benefit from the high availability and low cost of a serverless solution while retaining full control of the data used in training the machine learning model.</p>
+<p>Please let me know if you have comments or questions below.</p><p><a href="https://rsandstroem.github.io/serverlessPredictionService.html#disqus_thread">comments</a></p>                </article>
                 <section>
                     <p id="post-share-links">
                     Share on:
-                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//rsandstroem.github.io/gpuDeepLearningWindows.html&title=GPU%20Accelerated%20Deep%20Learning%20on%20Windows&summary=The%20computers%20at%20my%20workplace%20are%20all%20running%20some%20version%20of%20Microsoft%20Windows.%20While%20that%20makes%20perfect%20sense%20in%20a%20Business%20Intelligence%20context%2C%20it%20unusual%20for%20a%20Data%20Science%20setup.&source=https%3A//rsandstroem.github.io/gpuDeepLearningWindows.html" target="_blank" title="Share on LinkedIn">LinkedIn</a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//rsandstroem.github.io/serverlessPredictionService.html&title=Hosting%20a%20machine%20learning%20prediction%20service%20on%20serverless%20infrastructure&summary=Learn%20how%20to%20host%20machine%20learning%20prediction%20services%20on%20the%20cloud%20with%20infinite%20scaling%2C%20zero%20downtime%2C%20zero%20maintenance%2C%20at%20a%20very%20low%20cost.&source=https%3A//rsandstroem.github.io/serverlessPredictionService.html" target="_blank" title="Share on LinkedIn">LinkedIn</a>
                     ❄
-                    <a href="http://twitter.com/home?status=GPU%20Accelerated%20Deep%20Learning%20on%20Windows%20https%3A//rsandstroem.github.io/gpuDeepLearningWindows.html" target="_blank" title="Share on Twitter">Twitter</a>
+                    <a href="http://twitter.com/home?status=Hosting%20a%20machine%20learning%20prediction%20service%20on%20serverless%20infrastructure%20https%3A//rsandstroem.github.io/serverlessPredictionService.html" target="_blank" title="Share on Twitter">Twitter</a>
                     ❄
-                    <a href="http://www.facebook.com/sharer/sharer.php?u=https%3A//rsandstroem.github.io/gpuDeepLearningWindows.html" target="_blank" title="Share on Facebook">Facebook</a>
+                    <a href="http://www.facebook.com/sharer/sharer.php?u=https%3A//rsandstroem.github.io/serverlessPredictionService.html" target="_blank" title="Share on Facebook">Facebook</a>
                     ❄
-                    <a href="https://plus.google.com/share?url=https%3A//rsandstroem.github.io/gpuDeepLearningWindows.html" target="_blank" title="Share on Google Plus">Google+</a>
+                    <a href="https://plus.google.com/share?url=https%3A//rsandstroem.github.io/serverlessPredictionService.html" target="_blank" title="Share on Google Plus">Google+</a>
                     ❄
-                    <a href="mailto:?subject=GPU%20Accelerated%20Deep%20Learning%20on%20Windows&amp;body=https%3A//rsandstroem.github.io/gpuDeepLearningWindows.html" target="_blank" title="Share via Email">Email</a>
+                    <a href="mailto:?subject=Hosting%20a%20machine%20learning%20prediction%20service%20on%20serverless%20infrastructure&amp;body=https%3A//rsandstroem.github.io/serverlessPredictionService.html" target="_blank" title="Share via Email">Email</a>
                     </p>
                 </section>
             </aside><!-- /#featured -->
                 <section id="content" class="body">
                     <h1>Other articles</h1>
                     <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://rsandstroem.github.io/gpuDeepLearningWindows.html" rel="bookmark"
+                           title="Permalink to GPU Accelerated Deep Learning on Windows">GPU Accelerated Deep Learning on Windows</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <span>Mon 17 Juli 2017</span>
+<span>| tags: <a href="https://rsandstroem.github.io/tag/gpu.html">gpu</a><a href="https://rsandstroem.github.io/tag/deep-learning.html">deep learning</a><a href="https://rsandstroem.github.io/tag/machine-learning.html">machine learning</a><a href="https://rsandstroem.github.io/tag/python.html">python</a><a href="https://rsandstroem.github.io/tag/installation.html">installation</a><a href="https://rsandstroem.github.io/tag/tutorial.html">tutorial</a></span>
+</footer><!-- /.post-info -->                <p>The computers at my workplace are all running some version of Microsoft Windows. While that makes perfect sense in a Business Intelligence context, it unusual for a Data Science setup.</p>
+                <a class="readmore" href="https://rsandstroem.github.io/gpuDeepLearningWindows.html">read more</a>
+<p><a href="https://rsandstroem.github.io/gpuDeepLearningWindows.html#disqus_thread">comments</a></p>                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
